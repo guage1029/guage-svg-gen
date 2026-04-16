@@ -1,0 +1,10 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: url(https://evil.com/malicious.png); }
+    </style>
+  </defs>
+  <rect class="bg" width="100" height="100" />
+  <title>External URL</title>
+  <desc>Test case</desc>
+</svg>
