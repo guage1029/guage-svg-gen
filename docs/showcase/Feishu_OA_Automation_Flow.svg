@@ -1,0 +1,72 @@
+<svg width="800" height="400" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="400" fill="#F9FAFB"/>
+  <rect width="800" height="400" fill="url(#grid_pattern)" fill-opacity="0.05"/>
+  
+  <!-- Definitions -->
+  <defs>
+    <pattern id="grid_pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#6366F1" stroke-width="0.5"/>
+    </pattern>
+    <linearGradient id="blue_grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="100%" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <!-- Step 1: Raw Data -->
+  <g transform="translate(50, 150)" filter="url(#shadow)">
+    <rect width="140" height="100" rx="12" fill="white" stroke="#E5E7EB"/>
+    <text x="70" y="45" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6B7280">tendency.xls</text>
+    <rect x="30" y="60" width="80" height="8" rx="4" fill="#F3F4F6"/>
+    <rect x="30" y="75" width="50" height="8" rx="4" fill="#F3F4F6"/>
+    <circle cx="70" cy="25" r="10" fill="#10B981" fill-opacity="0.1"/>
+    <path d="M 66 25 L 69 28 L 74 23" stroke="#10B981" stroke-width="2" fill="none"/>
+    <text x="70" y="125" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="600" fill="#374151">原始数据</text>
+  </g>
+
+  <!-- Arrow 1 -->
+  <path d="M 210 200 L 260 200" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 2: AI Agent -->
+  <g transform="translate(280, 130)" filter="url(#shadow)">
+    <rect width="180" height="140" rx="16" fill="white" stroke="url(#blue_grad)" stroke-width="2"/>
+    <circle cx="90" cy="60" r="30" fill="url(#blue_grad)" fill-opacity="0.1"/>
+    <path d="M 80 60 Q 90 45 100 60 Q 90 75 80 60" fill="url(#blue_grad)"/>
+    <text x="90" y="110" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="url(#blue_grad)">AI Agent</text>
+    <text x="90" y="130" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#8B5CF6">Lark CLI + Skills</text>
+    <text x="90" y="185" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="600" fill="#374151">自动化执行</text>
+  </g>
+
+  <!-- Arrow 2 -->
+  <path d="M 480 200 L 530 200" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 3: Insight Dashboard -->
+  <g transform="translate(550, 150)" filter="url(#shadow)">
+    <rect width="200" height="120" rx="12" fill="white" stroke="#E5E7EB"/>
+    <!-- Tiny Chart 1 -->
+    <rect x="20" y="30" width="40" height="60" rx="4" fill="#EEF2FF"/>
+    <path d="M 20 80 Q 30 50 40 70" stroke="#6366F1" stroke-width="2" fill="none"/>
+    <!-- Tiny Chart 2 -->
+    <rect x="75" y="30" width="105" height="40" rx="4" fill="#F0FDF4"/>
+    <circle cx="95" cy="50" r="10" stroke="#10B981" stroke-width="2" fill="none"/>
+    <!-- Tiny Text -->
+    <rect x="75" y="80" width="105" height="8" rx="4" fill="#F3F4F6"/>
+    <rect x="75" y="95" width="70" height="8" rx="4" fill="#F3F4F6"/>
+    <text x="100" y="145" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="600" fill="#374151">多维表看板+洞察</text>
+  </g>
+
+  <!-- Marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#D1D5DB" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="60" text-anchor="middle" font-family="sans-serif" font-size="24" font-weight="bold" fill="#111827">一键跨越：从 xls 到决策看板</text>
+  <text x="400" y="90" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#6B7280">AI Agent + 飞书 CLI 自动化链路全景</text>
+</svg>

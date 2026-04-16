@@ -1,0 +1,41 @@
+<svg width="1200" height="500" viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景定义 -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F172A" />
+      <stop offset="100%" style="stop-color:#1E293B" />
+    </linearGradient>
+    <linearGradient id="geminiGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4F46E5" />
+      <stop offset="50%" style="stop-color:#9333EA" />
+      <stop offset="100%" style="stop-color:#EC4899" />
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="15" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- 背景矩形 (纯黑底色) -->
+  <rect width="1200" height="500" fill="#000000" rx="16" />
+
+  <!-- 装饰性网格 (极简科技质感) -->
+  <g opacity="0.03">
+    <path d="M0 50h1200M0 100h1200M0 150h1200M0 200h1200M0 250h1200M0 300h1200M0 350h1200M0 400h1200M0 450h1200" stroke="#94A3B8" stroke-width="1" />
+    <path d="M50 0v500M100 0v500M150 0v500M200 0v500M250 0v500M300 0v500M350 0v500M400 0v500M450 0v500M500 0v500M550 0v500M600 0v500M650 0v500M700 0v500M750 0v500M800 0v500M850 0v500M900 0v500M950 0v500M1000 0v500M1050 0v500M1100 0v500M1150 0v500" stroke="#94A3B8" stroke-width="1" />
+  </g>
+
+  <!-- 中心内容组：Logo + Text (向右偏移 60px) -->
+  <g transform="translate(660, 250)">
+    <!-- Gemini 星火图标 (2.0x) -->
+    <g transform="translate(-440, 0) scale(2.0)">
+      <path d="M0 -45 Q6 -6 45 0 Q6 6 0 45 Q-6 6 -45 0 Q-6 -6 0 -45" fill="url(#geminiGradient)" filter="url(#glow)" />
+    </g>
+
+    <!-- 主标题：gemini cli (极端粗细对比) -->
+    <text x="-320" y="55" style="font-family:'Outfit', 'Segoe UI', sans-serif; letter-spacing:-0.06em;">
+      <tspan fill="#FFFFFF" style="font-weight:900; font-size:160px;">gemini</tspan>
+      <tspan fill="url(#geminiGradient)" style="font-weight:200; font-size:160px;"> cli</tspan>
+    </text>
+  </g>
+</svg>

@@ -6,6 +6,30 @@
 
 ---
 
+## 🖼️ 设计成品展示 (Showcase)
+
+以下是通过 `svg-architect` 引擎直接生成的工业级设计稿：
+
+### 1. 架构全景图 (System Architecture)
+![Agent Context Architecture](docs/showcase/Agent%20Context%20架构全景图.svg)
+
+### 2. 自动化流程图 (Workflow Automation)
+![Feishu OA Automation Flow](docs/showcase/Feishu_OA_Automation_Flow.svg)
+
+### 3. 公众号封面与运营配图
+<p align="center">
+  <img src="docs/showcase/gemini_cli_v0.38_cover_v2.svg" width="45%" alt="Gemini CLI Cover" />
+  <img src="docs/showcase/Wechat_Cover_Feishu_Skill_19.svg" width="45%" alt="Feishu Skill Cover" />
+</p>
+
+### 4. 逻辑模型与思维导图
+<p align="center">
+  <img src="docs/showcase/AI编程的三种模式.svg" width="45%" alt="AI Programming Modes" />
+  <img src="docs/showcase/svg生图最终交付清单.svg" width="45%" alt="SVG Delivery Checklist" />
+</p>
+
+---
+
 ## 🚀 核心特性
 
 - **工业级交付标准**：生成的 SVG 采用绝对路径（Absolute Paths），无冗余内联样式，确保跨平台渲染一致性。
@@ -43,6 +67,8 @@ gemini extension list
 ```text
 .
 ├── gemini-extension.json     # 扩展定义文件
+├── docs/                     # 文档与静态资源
+│   └── showcase/             # 设计作品展示
 └── skills/
     └── svg-architect/        # 核心 Skill 逻辑
         ├── SKILL.md          # 指令集与设计规范
@@ -64,13 +90,6 @@ Skill 会引导您经历以下三个阶段：
 - **[Phase 0] 场景对齐**：确认画布尺寸（封面、配图或图卡）。
 - **[Phase 1] 方案发现**：确定配色方案（Palette）与视觉重心。
 - **[Phase 2] 交付输出**：直接输出高保真 SVG 代码，并自动调用校验脚本。
-
-### 3. 支持的预设风格
-| 风格标识 | 描述 | 适用场景 |
-| :--- | :--- | :--- |
-| `Tech Dark` | 纯黑背景 + 亮色霓虹 | 架构图、硬核技术文章 |
-| `Apple Light` | 纯白背景 + 细腻阴影 | 商业演示、极简图卡 |
-| `Glassmorphism` | 磨砂玻璃 + 渐变 | 现代 UI 设计稿 |
 
 ---
 

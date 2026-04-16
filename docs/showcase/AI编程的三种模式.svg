@@ -1,0 +1,95 @@
+<svg width="800" height="auto" style="max-width: 800px; display: block; margin: 0 auto;" viewBox="0 0 1800 766" xmlns="http://www.w3.org/2000/svg">
+  <title>AI Programming Modes - Vibe vs Plan vs Spec</title>
+  <desc>Evolution of AI development paradigms from intuition to engineering specs.</desc>
+  
+  <!-- Background -->
+  <rect width="100%" height="auto" style="max-width: 800px; display: block; margin: 0 auto;" fill="#0A0A0B" />
+  
+  <defs>
+    <!-- Grid -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1E293B" stroke-width="0.5" opacity="0.3"/>
+    </pattern>
+    
+    <!-- Gradients -->
+    <linearGradient id="vibeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F43F5E;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#881337;stop-opacity:0.1" />
+    </linearGradient>
+    <linearGradient id="planGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#1E3A8A;stop-opacity:0.1" />
+    </linearGradient>
+    <linearGradient id="specGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#064E3B;stop-opacity:0.1" />
+    </linearGradient>
+
+    <!-- Filters -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background Layers -->
+  <rect width="100%" height="auto" style="max-width: 800px; display: block; margin: 0 auto;" fill="url(#grid)" />
+
+  <!-- Main Title Area -->
+  <text x="150" y="130" font-family="Inter, system-ui, sans-serif" font-size="80" font-weight="800" fill="#F8FAFC" letter-spacing="4">
+    AI 编程的三种模式
+  </text>
+  <rect x="150" y="160" width="120" height="6" fill="#3B82F6" rx="3" />
+
+  <!-- Card 1: Vibe Coding -->
+  <g transform="translate(150, 250)">
+    <rect width="480" height="420" rx="20" fill="url(#vibeGrad)" stroke="#F43F5E" stroke-width="1.5" />
+    <text x="40" y="70" font-family="Inter, sans-serif" font-size="36" font-weight="700" fill="#F43F5E">Vibe Coding</text>
+    <text x="40" y="110" font-family="PingFang SC, sans-serif" font-size="20" fill="#FDA4AF">氛围驱动 · 野路子</text>
+    
+    <!-- Visual Symbol: Chaotic Aura -->
+    <path d="M 150 220 Q 240 150 330 220 T 450 220" fill="none" stroke="#F43F5E" stroke-width="2" opacity="0.4" stroke-dasharray="5,5" />
+    <circle cx="240" cy="250" r="50" fill="#F43F5E" opacity="0.15" filter="url(#glow)" />
+    
+    <g font-family="PingFang SC" font-size="17" fill="#E2E8F0">
+      <text x="40" y="320">· 依赖直觉，不关注架构</text>
+      <text x="40" y="355">· 适用于快速验证和 Demo</text>
+    </g>
+  </g>
+
+  <!-- Card 2: Plan Coding -->
+  <g transform="translate(660, 250)">
+    <rect width="480" height="420" rx="20" fill="url(#planGrad)" stroke="#3B82F6" stroke-width="1.5" />
+    <text x="40" y="70" font-family="Inter, sans-serif" font-size="36" font-weight="700" fill="#3B82F6">Plan Coding</text>
+    <text x="40" y="110" font-family="PingFang SC, sans-serif" font-size="20" fill="#93C5FD">计划驱动 · 有章法</text>
+    
+    <!-- Visual Symbol: Step Logic -->
+    <rect x="100" y="200" width="80" height="30" rx="6" fill="#3B82F6" opacity="0.4" />
+    <rect x="200" y="170" width="80" height="30" rx="6" fill="#3B82F6" opacity="0.6" />
+    <rect x="300" y="140" width="80" height="30" rx="6" fill="#3B82F6" opacity="0.8" />
+    
+    <g font-family="PingFang SC" font-size="17" fill="#E2E8F0">
+      <text x="40" y="320">· 前置逻辑梳理与步骤拆解</text>
+      <text x="40" y="355">· 适用于明确的小型独立任务</text>
+    </g>
+  </g>
+
+  <!-- Card 3: Spec Coding -->
+  <g transform="translate(1170, 250)">
+    <rect width="480" height="420" rx="20" fill="url(#specGrad)" stroke="#10B981" stroke-width="2" />
+    <text x="40" y="70" font-family="Inter, sans-serif" font-size="36" font-weight="700" fill="#10B981">Spec Coding</text>
+    <text x="40" y="110" font-family="PingFang SC, sans-serif" font-size="20" fill="#6EE7B7">规范驱动 · 正规军</text>
+    
+    <!-- Visual Symbol: Precise Grid -->
+    <g opacity="0.5">
+      <rect x="100" y="160" width="280" height="120" rx="4" fill="none" stroke="#10B981" stroke-width="1" stroke-dasharray="4,2" />
+      <path d="M 100 200 L 380 200 M 100 240 L 380 240 M 170 160 L 170 280 M 240 160 L 240 280" stroke="#10B981" stroke-width="0.5" />
+    </g>
+    <circle cx="240" cy="220" r="10" fill="#10B981" filter="url(#glow)" />
+    
+    <g font-family="PingFang SC" font-size="17" fill="#E2E8F0">
+      <text x="40" y="320">· 详尽架构设计与工程化定义</text>
+      <text x="40" y="355">· 适用于中大型项目和复杂环境</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,56 @@
+<svg width="1800" height="766" viewBox="0 0 1800 766" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with subtle tech grid -->
+  <rect width="1800" height="766" fill="#0D1117"/>
+  <defs>
+    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#3370FF" stroke-width="0.5" stroke-opacity="0.1"/>
+    </pattern>
+    <linearGradient id="puzzle_grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3370FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00E5FF;stop-opacity:1" />
+    </linearGradient>
+    <filter id="text_glow">
+      <feGaussianBlur stdDeviation="15" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  <rect width="1800" height="766" fill="url(#grid)"/>
+
+  <!-- Left Top: Logo Area -->
+  <g transform="translate(100, 80)">
+    <rect width="360" height="66" rx="8" fill="#3370FF"/>
+    <text x="25" y="44" fill="white" font-family="monospace" font-size="31" font-weight="900">>_ Agent Native</text>
+  </g>
+
+  <!-- Background Data Contrast (Subtle behind title) -->
+  <text x="100" y="300" fill="#3370FF" opacity="0.05" font-family="Arial" font-size="220" font-weight="900">2500+</text>
+  <text x="1350" y="600" fill="#3370FF" opacity="0.05" font-family="Arial" font-size="220" font-weight="900">OAPI</text>
+
+  <!-- Main Hero Section -->
+  <g transform="translate(100, 240)">
+    <!-- Main Catchphrase -->
+    <text x="0" y="0" fill="#FFD600" font-family="sans-serif" font-size="70" font-weight="900">FeiShu CLI</text>
+    
+    <!-- Hero Title -->
+    <g transform="translate(0, 150)">
+      <text x="0" y="0" fill="white" font-family="sans-serif" font-size="176" font-weight="900" letter-spacing="-4">19</text>
+      <text x="230" y="0" fill="white" font-family="sans-serif" font-size="132" font-weight="900">个官方 Skill</text>
+    </g>
+
+    <!-- Value Statement -->
+    <g transform="translate(0, 290)">
+      <rect width="750" height="88" rx="12" fill="#161B22" stroke="#3370FF" stroke-width="2"/>
+      <text x="30" y="60" fill="#C9D1D9" font-family="sans-serif" font-size="46" font-weight="bold">补齐 Agent 最后一块办公拼图</text>
+    </g>
+  </g>
+
+  <!-- Right Decorative Element: Glowing Puzzle Piece -->
+  <g transform="translate(1350, 200) rotate(15)">
+    <!-- Stylized Puzzle Shape -->
+    <path d="M100 0 H200 C220 0 240 20 240 40 V100 C240 120 260 140 280 140 C300 140 320 120 320 100 V40 C320 20 340 0 360 0 H460 C480 0 500 20 500 40 V140 C500 160 480 180 460 180 H400 C380 180 360 200 360 220 C360 240 380 260 400 260 H460 C480 260 500 280 500 300 V400 C500 420 480 440 460 440 H100 C80 440 60 420 60 400 V300 C60 280 40 260 20 260 C0 260 -20 280 -20 300 V400 C-20 420 -40 440 -60 440 H-160 C-180 440 -200 420 -200 400 V40 C-200 20 -180 0 -160 0 H-100" fill="url(#puzzle_grad)" filter="url(#text_glow)" opacity="0.8"/>
+    <!-- Terminal Icon inside Puzzle -->
+    <rect x="100" y="150" width="120" height="80" rx="12" fill="#0D1117" opacity="0.6"/>
+    <text x="125" y="205" fill="#3370FF" font-family="monospace" font-size="53" font-weight="bold">>_</text>
+  </g>
+
+</svg>
