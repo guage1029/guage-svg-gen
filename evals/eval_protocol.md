@@ -19,7 +19,6 @@ evals/
 ├── negative_evals.json           # 负例（16 条，should_trigger 全部为 false）；评测脚本应分别加载两文件，勿混用
 ├── style_coverage_evals.json     # 风格覆盖（6 风格 × 2 平台 = 12 条）
 ├── output_quality_evals.json     # 输出质量断言（12 case，三类断言）
-├── legacy_evals.json             # 早期草稿（v14.0 前），不参与当前评测，仅作历史存档
 └── runs/
     └── <YYYYMMDD>/
         └── <case_id>/

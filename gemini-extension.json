@@ -1,12 +1,12 @@
 {
-  “name”: “svg-architect”,
-  “description”: “公众号专属 SVG 设计 Skill。生成封面图（1800×766）、配图（1200×500），支持六种风格：tech_dark / minimal_clean / glass_premium / neubrutalism / bento_info / clay_soft。内置规范校验与 QA 预览渲染。”,
-  “version”: “0.14.0”,
-  “skills”: [
+  "name": "svg-architect",
+  "description": "公众号专属 SVG 设计 Skill。生成封面图（1800x766）、配图（1200x500），支持六种风格：tech_dark / minimal_clean / glass_premium / neubrutalism / bento_info / clay_soft。内置规范校验与 QA 预览渲染。",
+  "version": "0.15.0",
+  "skills": [
     {
-      “name”: “svg-architect”,
-      “description”: “公众号专属 SVG 设计 Skill。生成封面图（1800×766）、配图（1200×500），支持六种风格：tech_dark / minimal_clean / glass_premium / neubrutalism / bento_info / clay_soft。内置规范校验与 QA 预览渲染。”,
-      “path”: “skills/svg-architect/SKILL.md”
+      "name": "svg-architect",
+      "description": "公众号专属 SVG 设计 Skill。生成封面图（1800x766）、配图（1200x500），支持六种风格：tech_dark / minimal_clean / glass_premium / neubrutalism / bento_info / clay_soft。内置规范校验与 QA 预览渲染。",
+      "path": "skills/svg-architect/SKILL.md"
     }
   ]
 }

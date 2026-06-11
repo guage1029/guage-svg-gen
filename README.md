@@ -79,8 +79,7 @@ svg-architect/
 │       │       ├── bento_info.md
 │       │       └── clay_soft.md
 │       ├── assets/                 # 静态资源
-│       │   ├── fonts_whitelist.json
-│       │   └── templates/
+│       │   └── fonts_whitelist.json
 │       ├── scripts/                # 验证与后处理脚本
 │       │   ├── svg_validator.py    # 规范校验（ID前缀/字体/对比度/尺寸）
 │       │   ├── render_svg_preview.py  # QA 预览渲染（Playwright/cairosvg）
@@ -89,7 +88,7 @@ svg-architect/
 │       │   ├── run_pipeline.py
 │       │   └── tests/
 │       │       ├── run_smoke_tests.sh  # 17 条冒烟测试
-│       │       └── cases/             # 12 个 SVG 测试用例
+│       │       └── cases/             # 11 个 SVG 测试用例
 │       └── requirements.txt
 ├── evals/                          # 评测体系
 │   ├── eval_protocol.md            # 评测执行协议

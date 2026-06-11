@@ -64,10 +64,10 @@ echo "正在检查 Python 依赖..."
 if command -v python3 &>/dev/null; then
     echo "  ✓ Python3 已就绪"
     if [ -f "$SKILL_SRC/requirements.txt" ]; then
-        echo "  安装依赖（可选，仅 PNG 导出需要）..."
+        echo "  安装依赖（可选，PNG 导出与 QA 预览渲染需要）..."
         python3 -m pip install -q -r "$SKILL_SRC/requirements.txt" && \
             echo "  ✓ Python 依赖安装完成" || \
-            echo "  ⚠ 依赖安装失败（不影响 SVG 生成，仅影响 PNG 导出）"
+            echo "  ⚠ 依赖安装失败（不影响 SVG 生成，仅影响 PNG 导出与 QA 预览渲染）"
     fi
 else
     echo "  ⚠ 未检测到 Python3，scripts/ 中的验证脚本将无法运行"
