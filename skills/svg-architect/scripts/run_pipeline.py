@@ -26,7 +26,7 @@ def run_cmd(cmd, env=None):
     return res.returncode, res.stdout, res.stderr
 
 def main():
-    parser = argparse.ArgumentParser(description="Industrial SVG Orchestrator v13 (Hard Reporting)")
+    parser = argparse.ArgumentParser(description="Industrial SVG Orchestrator v14 (Hard Reporting)")
     parser.add_argument("--svg", required=True)
     parser.add_argument("--plan")
     parser.add_argument("--slug", default="asset")
@@ -34,7 +34,7 @@ def main():
     parser.add_argument("--max-retries", type=int, default=3)
     parser.add_argument("--repair-cmd", help="External command to fix errors")
     parser.add_argument("--export-format", default="svg", choices=["svg", "png", "all"])
-    parser.add_argument("--output-dir", default="/Users/zhaodonglin/Documents/gemini/writer/images/svg")
+    parser.add_argument("--output-dir", default=os.environ.get("SVG_ARCHITECT_WORKSPACE", "/Users/zhaodonglin/Documents/workspace/svg-architect"))
     args = parser.parse_args()
 
     out_dir = Path(args.output_dir)
@@ -124,7 +124,7 @@ def main():
             print("status: FAILED")
             print(f"reason: {pp_report}")
             sys.exit(4)
-    except:
+    except Exception:
         # 强制：解析失败绝不输出 SUCCESS
         print("status: FAILED")
         print("[💥] Post-processing report malformed or empty.")

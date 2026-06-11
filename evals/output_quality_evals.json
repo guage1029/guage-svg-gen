@@ -1,0 +1,440 @@
+{
+  "meta": {
+    "skill": "svg-architect",
+    "version": "14.0",
+    "description": "输出质量评测，共 12 个 case。每个 case 含机械断言（script 自动验证）、平台断言（规则验证）和视觉断言（human/LLM judge）。",
+    "assertion_types": {
+      "script": "由 svg_validator.py 自动检查，结果为 PASS/FAIL",
+      "rule": "通过文本解析或正则匹配验证，结果为 PASS/FAIL",
+      "human_or_llm": "需要人工审阅或 LLM judge 打分，结果为 PASS/FAIL/PARTIAL"
+    },
+    "grading": {
+      "high_fail": "不通过 → 该 case 判定为 FAIL",
+      "medium_fail": "不通过 → 记录为 WARNING，case 仍可 PASS",
+      "low_fail": "不通过 → 记录为 NOTE，不影响结果",
+      "pass_threshold": "所有 high severity 断言通过"
+    }
+  },
+  "cases": [
+    {
+      "id": "quality-tech-dark-cover-01",
+      "prompt": "帮我做一张公众号封面，主题是「从 RAG 到 Agent」，科技暗黑风格",
+      "expected_platform": "wechat_cover",
+      "expected_style": "tech_dark",
+      "assertions": [
+        {
+          "id": "mech-viewbox",
+          "type": "script",
+          "check": "viewBox 为 0 0 1800 766",
+          "severity": "high"
+        },
+        {
+          "id": "mech-no-external",
+          "type": "script",
+          "check": "无外部资源链接（E_SECURITY_EXTERNAL 不存在）",
+          "severity": "high"
+        },
+        {
+          "id": "mech-id-prefix",
+          "type": "script",
+          "check": "所有 id 带 svga- 前缀（E_ID_PREFIX_MISSING 不存在）",
+          "severity": "high"
+        },
+        {
+          "id": "mech-font-fallback",
+          "type": "script",
+          "check": "所有文本有 font-family 且含 sans-serif/monospace（E_FONT_FALLBACK_MISSING 不存在）",
+          "severity": "high"
+        },
+        {
+          "id": "mech-font-size",
+          "type": "script",
+          "check": "字号 ≥ 18px（E_FONT_SIZE_TOO_SMALL 不存在）",
+          "severity": "high"
+        },
+        {
+          "id": "mech-a11y",
+          "type": "script",
+          "check": "包含 <title> 和 <desc>",
+          "severity": "medium"
+        },
+        {
+          "id": "platform-safe-area",
+          "type": "rule",
+          "check": "主要文字和关键视觉在水平中间 60% 区域内（x 在 360~1440 之间）",
+          "severity": "high"
+        },
+        {
+          "id": "visual-style",
+          "type": "human_or_llm",
+          "check": "背景深色，蓝/紫强调色，有发光效果，科技感强",
+          "severity": "high"
+        },
+        {
+          "id": "visual-hierarchy",
+          "type": "human_or_llm",
+          "check": "主标题突出，层级清晰（主标题 > 副标题 > 说明文字）",
+          "severity": "high"
+        },
+        {
+          "id": "visual-thumbnail",
+          "type": "human_or_llm",
+          "check": "缩略图（300×128）中标题仍可辨认，无被遮挡的关键信息",
+          "severity": "medium"
+        }
+      ]
+    },
+    {
+      "id": "quality-minimal-cover-01",
+      "prompt": "做一张极简风格公众号封面，主题是「单一职责原则」",
+      "expected_platform": "wechat_cover",
+      "expected_style": "minimal_clean",
+      "assertions": [
+        {
+          "id": "mech-viewbox",
+          "type": "script",
+          "check": "viewBox 为 0 0 1800 766",
+          "severity": "high"
+        },
+        {
+          "id": "mech-no-external",
+          "type": "script",
+          "check": "无外部资源链接",
+          "severity": "high"
+        },
+        {
+          "id": "mech-font-fallback",
+          "type": "script",
+          "check": "font-family 含 sans-serif fallback",
+          "severity": "high"
+        },
+        {
+          "id": "visual-style",
+          "type": "human_or_llm",
+          "check": "浅色/白色背景，大量留白，强调色不超过 2 种",
+          "severity": "high"
+        },
+        {
+          "id": "visual-no-clutter",
+          "type": "human_or_llm",
+          "check": "信息密度低，无过度装饰，重点突出",
+          "severity": "medium"
+        }
+      ]
+    },
+    {
+      "id": "quality-glass-cover-01",
+      "prompt": "做一张公众号封面，主题是企业级 AI Agent 平台，玻璃高级感",
+      "expected_platform": "wechat_cover",
+      "expected_style": "glass_premium",
+      "assertions": [
+        {
+          "id": "mech-viewbox",
+          "type": "script",
+          "check": "viewBox 为 0 0 1800 766",
+          "severity": "high"
+        },
+        {
+          "id": "mech-no-external",
+          "type": "script",
+          "check": "无外部资源链接",
+          "severity": "high"
+        },
+        {
+          "id": "mech-id-prefix",
+          "type": "script",
+          "check": "所有 id 带 svga- 前缀",
+          "severity": "high"
+        },
+        {
+          "id": "visual-style",
+          "type": "human_or_llm",
+          "check": "深色背景，有半透明面板效果（opacity 层叠模拟玻璃），光晕强调，无仿 backdrop-filter",
+          "severity": "high"
+        },
+        {
+          "id": "thumbnail-focus",
+          "type": "human_or_llm",
+          "check": "主标题和关键视觉居中于水平 50% 区域",
+          "severity": "medium"
+        }
+      ]
+    },
+    {
+      "id": "quality-neubrutalism-cover-01",
+      "prompt": "做一张新粗野主义风格封面，主题是「开源 LLM 大战」",
+      "expected_platform": "wechat_cover",
+      "expected_style": "neubrutalism",
+      "assertions": [
+        {
+          "id": "mech-viewbox",
+          "type": "script",
+          "check": "viewBox 为 0 0 1800 766",
+          "severity": "high"
+        },
+        {
+          "id": "mech-font-fallback",
+          "type": "script",
+          "check": "font-family 含 sans-serif fallback",
+          "severity": "high"
+        },
+        {
+          "id": "visual-style",
+          "type": "human_or_llm",
+          "check": "有粗黑描边（stroke-width ≥ 4），硬投影（非模糊阴影），高饱和强调色",
+          "severity": "high"
+        },
+        {
+          "id": "visual-no-softness",
+          "type": "human_or_llm",
+          "check": "无发光效果、无高斯模糊、无半透明玻璃，风格硬朗",
+          "severity": "medium"
+        }
+      ]
+    },
+    {
+      "id": "quality-bento-cover-01",
+      "prompt": "出一张 bento 格栅封面，展示 2026 年 5 大 AI 技术趋势",
+      "expected_platform": "wechat_cover",
+      "expected_style": "bento_info",
+      "assertions": [
+        {
+          "id": "mech-viewbox",
+          "type": "script",
+          "check": "viewBox 为 0 0 1800 766",
+          "severity": "high"
+        },
+        {
+          "id": "visual-grid",
+          "type": "human_or_llm",
+          "check": "画面有明确的格栅分区，至少 3 个独立信息卡片",
+          "severity": "high"
+        },
+        {
+          "id": "visual-info-density",
+          "type": "human_or_llm",
+          "check": "各卡片信息独立完整，有标题 + 要点，不堆砌文字",
+          "severity": "medium"
+        }
+      ]
+    },
+    {
+      "id": "quality-clay-cover-01",
+      "prompt": "做一张黏土软萌风格公众号封面，主题是「AI 伴侣时代」",
+      "expected_platform": "wechat_cover",
+      "expected_style": "clay_soft",
+      "assertions": [
+        {
+          "id": "mech-viewbox",
+          "type": "script",
+          "check": "viewBox 为 0 0 1800 766",
+          "severity": "high"
+        },
+        {
+          "id": "visual-style",
+          "type": "human_or_llm",
+          "check": "暖色/奶油色背景，大圆角，软阴影，无尖锐边缘",
+          "severity": "high"
+        },
+        {
+          "id": "visual-no-tech-dark",
+          "type": "human_or_llm",
+          "check": "不含深色背景或蓝紫发光效果，风格应是温柔可爱而非科技冷酷",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "id": "quality-tech-dark-article-01",
+      "prompt": "画一张配图，展示 LLM 推理中的 KV Cache 机制，科技风",
+      "expected_platform": "wechat_article",
+      "expected_style": "tech_dark",
+      "assertions": [
+        {
+          "id": "mech-viewbox",
+          "type": "script",
+          "check": "viewBox 为 0 0 1200 500",
+          "severity": "high"
+        },
+        {
+          "id": "mech-font-size",
+          "type": "script",
+          "check": "字号 ≥ 16px（wechat_article 下限）",
+          "severity": "high"
+        },
+        {
+          "id": "mech-id-prefix",
+          "type": "script",
+          "check": "所有 id 带 svga- 前缀",
+          "severity": "high"
+        },
+        {
+          "id": "visual-content",
+          "type": "human_or_llm",
+          "check": "图中能看出 KV Cache 的核心概念（缓存块、命中/未命中、token 复用等）",
+          "severity": "high"
+        },
+        {
+          "id": "visual-readability",
+          "type": "human_or_llm",
+          "check": "在 1200×500 尺寸下文字清晰可读，无文字溢出或相互遮挡",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "id": "quality-flow-article-01",
+      "prompt": "帮我画一张流程图配图，描述用户通过飞书机器人触发 AI 工作流的全过程",
+      "expected_platform": "wechat_article",
+      "expected_style": "tech_dark",
+      "assertions": [
+        {
+          "id": "mech-viewbox",
+          "type": "script",
+          "check": "viewBox 为 0 0 1200 500",
+          "severity": "high"
+        },
+        {
+          "id": "mech-no-external",
+          "type": "script",
+          "check": "无外部资源链接",
+          "severity": "high"
+        },
+        {
+          "id": "visual-flow",
+          "type": "human_or_llm",
+          "check": "图中有清晰的方向箭头或连线，表达流程顺序",
+          "severity": "high"
+        },
+        {
+          "id": "visual-nodes",
+          "type": "human_or_llm",
+          "check": "至少 4 个有标签的流程节点",
+          "severity": "medium"
+        }
+      ]
+    },
+    {
+      "id": "quality-arch-article-01",
+      "prompt": "做一张 RAG 检索增强生成的技术架构图",
+      "expected_platform": "wechat_article",
+      "expected_style": "tech_dark",
+      "assertions": [
+        {
+          "id": "mech-viewbox",
+          "type": "script",
+          "check": "viewBox 为 0 0 1200 500",
+          "severity": "high"
+        },
+        {
+          "id": "mech-font-fallback",
+          "type": "script",
+          "check": "font-family 含 sans-serif fallback",
+          "severity": "high"
+        },
+        {
+          "id": "visual-components",
+          "type": "human_or_llm",
+          "check": "图中包含 RAG 核心组件：Query、Retriever、Vector Store、LLM 中的至少 3 个",
+          "severity": "high"
+        },
+        {
+          "id": "visual-connections",
+          "type": "human_or_llm",
+          "check": "组件之间有连线表达数据流向",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "id": "quality-seq-article-01",
+      "prompt": "出一张时序图，展示 OAuth2.0 授权码模式的完整交互",
+      "expected_platform": "wechat_article",
+      "expected_style": "tech_dark",
+      "assertions": [
+        {
+          "id": "mech-viewbox",
+          "type": "script",
+          "check": "viewBox 为 0 0 1200 500",
+          "severity": "high"
+        },
+        {
+          "id": "mech-font-size",
+          "type": "script",
+          "check": "字号 ≥ 16px",
+          "severity": "high"
+        },
+        {
+          "id": "visual-actors",
+          "type": "human_or_llm",
+          "check": "图中有至少 3 个参与方（User/Browser、App、Auth Server）",
+          "severity": "high"
+        },
+        {
+          "id": "visual-sequence",
+          "type": "human_or_llm",
+          "check": "交互步骤有编号或从上到下的时序排列，箭头方向清晰",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "id": "quality-indirect-cover-01",
+      "prompt": "这篇文章缺一张头图，主题是「用 Claude 4 做代码审查」",
+      "expected_platform": "wechat_cover",
+      "expected_style": "tech_dark",
+      "assertions": [
+        {
+          "id": "mech-viewbox",
+          "type": "script",
+          "check": "viewBox 为 0 0 1800 766（头图 = cover）",
+          "severity": "high"
+        },
+        {
+          "id": "mech-no-external",
+          "type": "script",
+          "check": "无外部资源",
+          "severity": "high"
+        },
+        {
+          "id": "visual-theme",
+          "type": "human_or_llm",
+          "check": "图中能反映「代码审查」或「AI 辅助开发」主题，有代码/AI/检查等视觉元素",
+          "severity": "high"
+        },
+        {
+          "id": "visual-wechat-crop",
+          "type": "human_or_llm",
+          "check": "中央 400×766 区域（缩略图展示区）有主标题或关键视觉，不是空白",
+          "severity": "medium"
+        }
+      ]
+    },
+    {
+      "id": "quality-revision-01",
+      "prompt": "上一张图颜色太暗了，换成浅色风格重新出一版",
+      "expected_platform": "wechat_cover",
+      "expected_style": "minimal_clean",
+      "assertions": [
+        {
+          "id": "rule-new-file",
+          "type": "rule",
+          "check": "生成了新的 SVG 文件（有独立文件路径或覆盖原文件），未产生 _v2/_new 等副本文件名",
+          "severity": "medium"
+        },
+        {
+          "id": "visual-lighter",
+          "type": "human_or_llm",
+          "check": "与「颜色太暗」的前一版相比，背景更浅，整体亮度明显提升",
+          "severity": "high"
+        },
+        {
+          "id": "visual-content-preserved",
+          "type": "human_or_llm",
+          "check": "核心内容（主题文字、主要结构）与前一版一致，不是全新内容",
+          "severity": "medium"
+        }
+      ]
+    }
+  ]
+}

@@ -32,7 +32,7 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "theme": { "type": "string", "enum": ["tech-dark", "apple-light", "minimal-business"] },
+        "theme": { "type": "string", "enum": ["tech_dark", "minimal_clean", "glass_premium", "neubrutalism", "bento_info", "clay_soft"] },
         "platform": { "type": "string" },
         "language": { "type": "string", "enum": ["zh", "en", "mixed"] }
       },

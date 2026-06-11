@@ -1,0 +1,68 @@
+{
+  "skill": "svg-architect",
+  "version": "14.0",
+  "description": "svg-architect skill 的触发与输出质量评估用例",
+
+  "trigger_evals": {
+    "description": "测试 description 字段是否在正确的场景下触发 skill",
+    "threshold": 0.5,
+    "queries": [
+      { "query": "帮我做一张公众号封面，主题是 AI 编程", "should_trigger": true },
+      { "query": "我需要一张微服务架构图配图", "should_trigger": true },
+      { "query": "画一个 RAG 流程的示意图", "should_trigger": true },
+      { "query": "出一张时序图，展示用户登录流程", "should_trigger": true },
+      { "query": "给这篇文章做一张封面图，科技风", "should_trigger": true },
+      { "query": "设计一张概念海报，主题是大模型幻觉", "should_trigger": true },
+      { "query": "画个思维导图，整理一下这几个概念", "should_trigger": true },
+      { "query": "帮我出一张插图，放在文章里用", "should_trigger": true },
+      { "query": "把这段代码帮我重构一下", "should_trigger": false },
+      { "query": "用 Python 写一个爬虫脚本", "should_trigger": false },
+      { "query": "帮我分析一下这个表格的数据趋势", "should_trigger": false },
+      { "query": "把这个 JSON 转成 YAML 格式", "should_trigger": false },
+      { "query": "帮我搜索一下最新的 LLM 论文", "should_trigger": false },
+      { "query": "写一篇关于 MCP 协议的技术文章", "should_trigger": false },
+      { "query": "帮我用 matplotlib 画个折线图", "should_trigger": false },
+      { "query": "把这个 PNG 图片压缩一下", "should_trigger": false }
+    ]
+  },
+
+  "output_quality_evals": {
+    "description": "测试 skill 执行后的输出质量，与不使用 skill 的 baseline 对比",
+    "cases": [
+      {
+        "id": "case-01",
+        "prompt": "帮我做一张公众号封面图，主题是'从 RAG 到 Agent'，科技暗黑风格",
+        "assertions": [
+          { "id": "a1", "check": "SVG 根元素包含正确的 viewBox（0 0 1800 766）", "severity": "high" },
+          { "id": "a2", "check": "主标题字号 >= 72px", "severity": "high" },
+          { "id": "a3", "check": "所有文字元素包含 font-family 且末尾有 sans-serif 回退", "severity": "medium" },
+          { "id": "a4", "check": "文件保存到 workspace/svg-architect/ 目录", "severity": "high" },
+          { "id": "a5", "check": "输出绝对路径", "severity": "medium" }
+        ]
+      },
+      {
+        "id": "case-02",
+        "prompt": "画一张 Kubernetes 部署流程的配图",
+        "assertions": [
+          { "id": "a1", "check": "SVG viewBox 为 0 0 1200 500（配图尺寸）", "severity": "high" },
+          { "id": "a2", "check": "图中有流程箭头或连接线", "severity": "medium" },
+          { "id": "a3", "check": "包含 <title> 和 <desc> 标签", "severity": "medium" },
+          { "id": "a4", "check": "无外部 URL 引用（所有资源内嵌）", "severity": "high" }
+        ]
+      },
+      {
+        "id": "case-03",
+        "prompt": "这张图颜色太暗了，重新生成一版",
+        "assertions": [
+          { "id": "a1", "check": "覆盖原文件路径，未产生 _v2/_new 等副本", "severity": "high" },
+          { "id": "a2", "check": "与上一版相比有 >= 3 项可量化变更", "severity": "high" }
+        ]
+      }
+    ],
+    "grading": {
+      "high_fail": "不通过 → 该 case 判定为 FAIL",
+      "medium_fail": "不通过 → 记录为 WARNING，case 仍可 PASS",
+      "pass_threshold": "所有 high severity 断言通过"
+    }
+  }
+}

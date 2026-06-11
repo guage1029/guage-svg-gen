@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "skill": "svg-architect",
+    "version": "14.0",
+    "description": "近似误触负例。这些 query 包含「图/画/视觉」等关键词，但不属于公众号 SVG 交付场景，不得触发 svg-architect。",
+    "threshold": 0.875,
+    "notes": "误触率应 ≤ 12.5%（16 条中允许至多 2 条误触）"
+  },
+  "queries": [
+    {
+      "id": "neg-matplotlib-01",
+      "query": "帮我用 matplotlib 画一个柱状图，展示各月销售额",
+      "should_trigger": false,
+      "reason": "明确指定 matplotlib，Python 数据可视化，非 SVG 交付"
+    },
+    {
+      "id": "neg-matplotlib-02",
+      "query": "用 seaborn 画一张热力图分析用户行为数据",
+      "should_trigger": false,
+      "reason": "seaborn 数据图表，非公众号设计图"
+    },
+    {
+      "id": "neg-png-01",
+      "query": "把这张 PNG 图片压缩一下，控制在 200KB 以内",
+      "should_trigger": false,
+      "reason": "位图处理，非 SVG 生成"
+    },
+    {
+      "id": "neg-png-02",
+      "query": "帮我裁剪一下这张图片，尺寸改成 16:9",
+      "should_trigger": false,
+      "reason": "图片编辑，非 SVG 生成"
+    },
+    {
+      "id": "neg-webpage-01",
+      "query": "帮我做一个网页 landing page，科技感设计",
+      "should_trigger": false,
+      "reason": "HTML/CSS 网页设计，非公众号 SVG"
+    },
+    {
+      "id": "neg-webpage-02",
+      "query": "用 Tailwind CSS 实现一个响应式的卡片组件",
+      "should_trigger": false,
+      "reason": "前端 UI 组件，非 SVG 视觉交付"
+    },
+    {
+      "id": "neg-svg-fix-01",
+      "query": "帮我修这个 SVG 的 XML 语法错误",
+      "should_trigger": false,
+      "reason": "SVG 修复任务，不是生成公众号视觉"
+    },
+    {
+      "id": "neg-svg-fix-02",
+      "query": "这个 SVG 文件渲染不出来，帮我 debug 一下",
+      "should_trigger": false,
+      "reason": "调试现有 SVG，非新建公众号图"
+    },
+    {
+      "id": "neg-photorealistic-01",
+      "query": "生成一张照片风格的城市夜景图",
+      "should_trigger": false,
+      "reason": "写实摄影风格，svg-architect 明确不支持"
+    },
+    {
+      "id": "neg-photorealistic-02",
+      "query": "帮我用 AI 生成一张人物肖像图",
+      "should_trigger": false,
+      "reason": "位图生成，非 SVG 矢量图"
+    },
+    {
+      "id": "neg-ppt-01",
+      "query": "帮我做一套 PPT 配色方案，主题是科技蓝",
+      "should_trigger": false,
+      "reason": "PPT 配色建议，非 SVG 生成"
+    },
+    {
+      "id": "neg-ppt-02",
+      "query": "帮我优化这个演示文稿的幻灯片布局",
+      "should_trigger": false,
+      "reason": "PPT 编辑，非公众号 SVG"
+    },
+    {
+      "id": "neg-mermaid-01",
+      "query": "写一段 Mermaid 代码描述这个流程图",
+      "should_trigger": false,
+      "reason": "Mermaid 文本流程图，非 SVG 生成"
+    },
+    {
+      "id": "neg-mermaid-02",
+      "query": "用 PlantUML 帮我画个类图",
+      "should_trigger": false,
+      "reason": "PlantUML，非 svg-architect 交付物"
+    },
+    {
+      "id": "neg-canvas-01",
+      "query": "用 HTML canvas 画一个动态粒子动画",
+      "should_trigger": false,
+      "reason": "HTML canvas 动画，非静态 SVG"
+    },
+    {
+      "id": "neg-general-code-01",
+      "query": "帮我把这段 Python 代码的折线图逻辑改成柱状图",
+      "should_trigger": false,
+      "reason": "修改代码逻辑，非 SVG 设计任务"
+    }
+  ]
+}

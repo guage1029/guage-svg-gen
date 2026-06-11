@@ -1,40 +1,24 @@
-# 🎨 SVG Architect (v13.0)
+# SVG Architect (v14.0)
 
-**全自动工业级 SVG 设计交付引擎**
+**公众号专属工业级 SVG 设计引擎**
 
-`svg-architect` 是专为 Gemini CLI 打造的专业级设计扩展。它不仅是一个绘图工具，更是一个遵循严苛美学逻辑的“设计编译器”。它能够生成达到“现代 SaaS 官网”或“Apple 商业发布会”级别的高质量、暗黑风、纯代码渲染的 SVG 技术图表。
-
----
-
-## 🌟 项目亮点与优势
-
-1. **💰 不在图片上额外花钱**：纯代码生成，无需订阅昂贵的设计软件。
-2. **🤖 用 Agent 生成代码绘制图片**：完美适配 AI Agent，通过指令驱动，一键出图。
-3. **🎭 多场景覆盖**：非常适合文章封面、文章插图、PPT 配图等多种应用。
-4. **🧱 复杂概念解释专家**：特别擅长技术类原理解释、技术架构等高度复杂概念的视觉化呈现。
-5. **🕊️ 实现真正的图片创作自由**：摆脱素材库束缚，随心所欲定制您的视觉语言。
-6. **🔌 极速迁移适配**：即使不使用 Gemini CLI，下载后在您的 Agent 中稍作转换（格式转换）即可直接使用。
-7. **⭐ 留下个小星星，不过分吧**：如果您觉得好用，请点击右上角的 Star 给予支持！
+`svg-architect` 是一个遵循 [Agent Skills](https://agentskills.io) 协议的专业级设计 Skill，专为公众号内容创作者打造。通过 AI Agent 驱动，一句话生成封面图、配图、架构图、流程图等高质量 SVG 图像，完美适配手机端阅读体验。
 
 ---
 
-## 🖼️ 设计成品展示 (Showcase)
+## 🖼️ 设计成品展示
 
-以下是通过 `svg-architect` 引擎直接生成的工业级设计稿：
-
-### 1. 架构全景图 (System Architecture)
+### 架构全景图 / 自动化流程图
 ![Agent Context Architecture](docs/showcase/Agent%20Context%20架构全景图.svg)
-
-### 2. 自动化流程图 (Workflow Automation)
 ![Feishu OA Automation Flow](docs/showcase/Feishu_OA_Automation_Flow.svg)
 
-### 3. 公众号封面与运营配图
+### 公众号封面图
 <p align="center">
   <img src="docs/showcase/gemini_cli_v0.38_cover_v2.svg" width="45%" alt="Gemini CLI Cover" />
   <img src="docs/showcase/Wechat_Cover_Feishu_Skill_19.svg" width="45%" alt="Feishu Skill Cover" />
 </p>
 
-### 4. 逻辑模型与思维导图
+### 逻辑模型 / 概念图
 <p align="center">
   <img src="docs/showcase/AI编程的三种模式.svg" width="45%" alt="AI Programming Modes" />
   <img src="docs/showcase/svg生图最终交付清单.svg" width="45%" alt="SVG Delivery Checklist" />
@@ -42,87 +26,135 @@
 
 ---
 
-## 🚀 核心特性
+## 🌟 核心特性
 
-- **工业级交付标准**：生成的 SVG 采用绝对路径（Absolute Paths），无冗余内联样式，确保跨平台渲染一致性。
-- **暗黑美学驱动**：默认采用 `Tech Dark` 模式（纯黑背景 `#000000` + 霓虹发光 `Glow` 滤镜）。
-- **智能场景对齐**：内置公众号封面、文章配图、极简图卡三种标准尺寸规范。
-- **逻辑自愈系统**：内置 Python 脚本（`svg_fixer.py` / `svg_validator.py`）自动修正对比度、视图框（ViewBox）及非法 ID。
-- **指纹对比生成**：支持记录设计变更，确保重生成（Regenerate）时的差异化清晰可见。
-
----
-
-## 📦 安装指南
-
-在您的终端中执行以下命令，直接从 GitHub 仓库安装：
-
-```bash
-gemini extension install https://github.com/zhaodl1983/-svg-architect.git
-```
-
-安装完成后，可以通过以下命令验证：
-
-```bash
-gemini extension list
-```
+- **公众号原生适配**：封面图 1800×766px、配图 1200×500px，自动处理安全区，手机端不裁切
+- **六种专业风格**：Tech Dark / Minimal Clean / Glass Premium / Neubrutalism / Bento Info / Clay Soft
+- **工业级验证**：内置 Python 脚本自动校验 viewBox、对比度、ID 前缀、字体栈、字号下限、安全标签等
+- **QA 预览渲染**：Playwright/Chromium 驱动，自动输出 preview.png + 焦点裁切缩略图 + 渲染质量报告
+- **评测闭环**：64 条 eval 用例（触发/负例/风格覆盖/输出质量），配套 eval_protocol.md 指导评测执行
+- **原位进化**：修改已有图时直接覆盖原文件，不产生冗余副本
+- **纯代码生成**：无需设计软件，SVG 跨平台渲染一致
 
 ---
 
-## ⚙️ 配置要求
+## 🚀 快速安装
 
-### 环境依赖
-本 Skill 使用 Python 脚本进行 SVG 的后处理优化。请确保您的系统已安装：
-- **Python 3.8+**
-- **依赖库**：在 `skills/svg-architect/` 目录下运行 `pip install -r requirements.txt`。
+```bash
+# 克隆仓库
+git clone https://github.com/zhaodl1983/svg-architect.git
+cd svg-architect
 
-### 目录结构
-```text
-.
-├── gemini-extension.json     # 扩展定义文件
-├── docs/                     # 文档与静态资源
-│   └── showcase/             # 设计作品展示
-└── skills/
-    └── svg-architect/        # 核心 Skill 逻辑
-        ├── SKILL.md          # 指令集与设计规范
-        ├── resources/        # 字体白名单、布局 Schema
-        └── scripts/          # SVG 优化与校验脚本
+# 运行安装向导（初始化 workspace + 安装到 Claude Code）
+bash scripts/install.sh
+```
+
+安装向导会完成：
+1. 初始化 SVG 产出物目录（workspace）
+2. 安装 Python 后处理依赖（可选，仅 PNG 导出需要）
+3. 将 skill 安装到你选择的 AI 工具目录
+
+---
+
+## 📦 项目结构
+
+```
+svg-architect/
+├── scripts/
+│   └── install.sh                  # 安装向导（运行此脚本开始）
+├── skills/
+│   └── svg-architect/              # Agent Skills 标准 skill 根
+│       ├── SKILL.md                # 核心指令
+│       ├── references/             # 按需加载的参考文档
+│       │   ├── platform_profiles.md
+│       │   ├── layout_plan.schema.json
+│       │   ├── quality_checklist.md
+│       │   ├── error_codes.md
+│       │   ├── prompt_template.md
+│       │   └── specs/              # 六种风格规格说明
+│       │       ├── tech_dark.md
+│       │       ├── minimal_clean.md
+│       │       ├── glass_premium.md
+│       │       ├── neubrutalism.md
+│       │       ├── bento_info.md
+│       │       └── clay_soft.md
+│       ├── assets/                 # 静态资源
+│       │   ├── fonts_whitelist.json
+│       │   └── templates/
+│       ├── scripts/                # 验证与后处理脚本
+│       │   ├── svg_validator.py    # 规范校验（ID前缀/字体/对比度/尺寸）
+│       │   ├── render_svg_preview.py  # QA 预览渲染（Playwright/cairosvg）
+│       │   ├── svg_fixer.py
+│       │   ├── optimize_and_convert.py
+│       │   ├── run_pipeline.py
+│       │   └── tests/
+│       │       ├── run_smoke_tests.sh  # 17 条冒烟测试
+│       │       └── cases/             # 12 个 SVG 测试用例
+│       └── requirements.txt
+├── evals/                          # 评测体系
+│   ├── eval_protocol.md            # 评测执行协议
+│   ├── trigger_evals.json          # 正例触发用例（24 条）
+│   ├── negative_evals.json         # 负例用例（16 条）
+│   ├── style_coverage_evals.json   # 风格覆盖用例（12 条）
+│   └── output_quality_evals.json   # 输出质量断言（12 条）
+└── docs/
+    └── showcase/                   # 设计成品展示
 ```
 
 ---
 
 ## 🎨 使用方法
 
-### 1. 触发任务
-在 Gemini CLI 交互界面中，直接输入您的设计需求。例如：
-- *“帮我设计一个关于‘分布式系统架构’的公众号封面，要深蓝色调。”*
-- *“生成一个展示‘AI 模型推理流程’的 16:9 配图，使用霓虹绿发光效果。”*
+在支持 Agent Skills 的工具（Claude Code、Cursor 等）中直接输入需求：
 
-### 2. 工作流阶段
-Skill 会引导您经历以下三个阶段：
-- **[Phase 0] 场景对齐**：确认画布尺寸（封面、配图或图卡）。
-- **[Phase 1] 方案发现**：确定配色方案（Palette）与视觉重心。
-- **[Phase 2] 交付输出**：直接输出高保真 SVG 代码，并自动调用校验脚本。
+```
+帮我做一张公众号封面图，主题是"AI 编程的三种模式"
+画一张微服务架构的配图，科技暗黑风格
+出一张 RAG 检索流程的示意图
+```
 
 ---
 
-## 🛠️ 脚本工具说明
+## 🛠️ 脚本工具（手动使用）
 
-如果您需要手动优化现有的 SVG 文件，可以利用扩展内置的脚本：
+```bash
+# 验证 SVG 合规性（自动检测平台）
+python skills/svg-architect/scripts/svg_validator.py --svg input.svg
 
-- **验证 SVG 合规性**：
-  ```bash
-  python skills/svg-architect/scripts/svg_validator.py input.svg
-  ```
-- **自动修复对比度与格式**：
-  ```bash
-  python skills/svg-architect/scripts/svg_fixer.py input.svg output.svg
-  ```
+# 严格模式（WARN 也视为失败，报告 JSON）
+python skills/svg-architect/scripts/svg_validator.py --svg input.svg --strict --json
+
+# 指定平台与 ID 前缀
+python skills/svg-architect/scripts/svg_validator.py \
+  --svg input.svg --platform wechat_cover --id-prefix svga-
+
+# QA 预览渲染（输出 preview.png / thumbnail_crop.png / visual_report.json）
+python skills/svg-architect/scripts/render_svg_preview.py \
+  --svg input.svg --platform wechat_article --out-dir ./preview/
+
+# 自动修复常见错误
+python skills/svg-architect/scripts/svg_fixer.py --svg input.svg
+
+# 导出 PNG
+python skills/svg-architect/scripts/optimize_and_convert.py input.svg --format png
+
+# 完整流水线（验证 + 修复 + 输出）
+python skills/svg-architect/scripts/run_pipeline.py --svg input.svg --slug my-cover
+
+# 运行冒烟测试（17 条）
+bash skills/svg-architect/scripts/tests/run_smoke_tests.sh
+```
 
 ---
 
-## 🤝 贡献与反馈
+## ⚙️ 环境要求
 
-如果您在使用过程中发现 Bug 或有新的美学建议，欢迎提交 Issue 或 Pull Request。
+- Python 3.8+（必须，用于验证脚本）
+- playwright + chromium（推荐，QA 预览渲染主引擎）：`pip install playwright && playwright install chromium`
+- Pillow + numpy（图像分析，随 playwright 一并安装）：`pip install Pillow numpy`
+- cairosvg（可选，渲染备用引擎）：需本机安装 libcairo
+- svgo（可选，SVG 压缩优化）
 
-**作者**：zhaodl1983  
-**许可证**：MIT
+---
+
+**作者**：zhaodl1983 | **许可证**：MIT | **协议**：[Agent Skills](https://agentskills.io)

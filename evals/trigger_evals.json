@@ -1,0 +1,203 @@
+{
+  "meta": {
+    "skill": "svg-architect",
+    "version": "14.0",
+    "description": "正例触发用例（24 条，should_trigger 全部为 true）。负例（should_trigger=false）单独存放于 negative_evals.json，评测脚本应分别加载两个文件。expected_style=null 表示不考核风格选择，只考核触发与平台推断。",
+    "threshold": 0.875,
+    "notes": "threshold 含义：24 条正例命中率 ≥ 87.5%（至少 21 条触发）"
+  },
+  "queries": [
+    {
+      "id": "trigger-cover-01",
+      "query": "帮我做一张公众号封面，主题是 AI Agent 工作流，科技暗黑风",
+      "should_trigger": true,
+      "expected_style": "tech_dark",
+      "expected_platform": "wechat_cover",
+      "notes": "直接命中公众号封面 + 科技暗黑"
+    },
+    {
+      "id": "trigger-cover-02",
+      "query": "出一张微信公众号头图，主题是企业级 RAG 架构，玻璃质感风格",
+      "should_trigger": true,
+      "expected_style": "glass_premium",
+      "expected_platform": "wechat_cover",
+      "notes": "cover + glass_premium"
+    },
+    {
+      "id": "trigger-article-01",
+      "query": "帮我画一张文章配图，展示 Kubernetes 部署流程，极简风格",
+      "should_trigger": true,
+      "expected_style": "minimal_clean",
+      "expected_platform": "wechat_article",
+      "notes": "文章配图 + minimal_clean"
+    },
+    {
+      "id": "trigger-article-02",
+      "query": "这篇文章需要一张插图，内容是 MCP 协议通信时序，bento 信息卡片风",
+      "should_trigger": true,
+      "expected_style": "bento_info",
+      "expected_platform": "wechat_article",
+      "notes": "文章插图 + bento_info"
+    },
+    {
+      "id": "trigger-arch-01",
+      "query": "出一张微服务架构图，展示 API Gateway、Service Mesh 和后端服务层",
+      "should_trigger": true,
+      "expected_style": null,
+      "expected_platform": "wechat_article",
+      "notes": "架构图，未指定风格"
+    },
+    {
+      "id": "trigger-arch-02",
+      "query": "帮我画一个 RAG 系统的技术架构图，放公众号里用",
+      "should_trigger": true,
+      "expected_style": null,
+      "expected_platform": "wechat_article",
+      "notes": "架构图 + 公众号明确"
+    },
+    {
+      "id": "trigger-flow-01",
+      "query": "做一张流程图，描述 LLM 推理时的 token 生成流程",
+      "should_trigger": true,
+      "expected_style": null,
+      "expected_platform": "wechat_article",
+      "notes": "流程图"
+    },
+    {
+      "id": "trigger-flow-02",
+      "query": "出一张示意图，解释 Transformer 的 Attention 机制",
+      "should_trigger": true,
+      "expected_style": null,
+      "expected_platform": "wechat_article",
+      "notes": "示意图"
+    },
+    {
+      "id": "trigger-seq-01",
+      "query": "帮我出一张时序图，展示用户通过 OAuth2.0 登录的完整流程",
+      "should_trigger": true,
+      "expected_style": null,
+      "expected_platform": "wechat_article",
+      "notes": "时序图"
+    },
+    {
+      "id": "trigger-seq-02",
+      "query": "画一个 Agent 调用工具的时序流程图，科技风",
+      "should_trigger": true,
+      "expected_style": "tech_dark",
+      "expected_platform": "wechat_article",
+      "notes": "时序图 + tech_dark"
+    },
+    {
+      "id": "trigger-indirect-01",
+      "query": "这篇文章缺一张头图，主题是 Claude 4 的多模态能力",
+      "should_trigger": true,
+      "expected_style": null,
+      "expected_platform": "wechat_cover",
+      "notes": "间接表达：缺头图"
+    },
+    {
+      "id": "trigger-indirect-02",
+      "query": "帮我做个适合公众号开头的视觉，传达「AI 时代的工程师」这个主题",
+      "should_trigger": true,
+      "expected_style": null,
+      "expected_platform": "wechat_cover",
+      "notes": "间接表达：公众号开头视觉"
+    },
+    {
+      "id": "trigger-indirect-03",
+      "query": "这段内容太枯燥了，需要一张能抓住读者眼球的配图",
+      "should_trigger": true,
+      "expected_style": null,
+      "expected_platform": "wechat_article",
+      "notes": "间接表达：需要配图"
+    },
+    {
+      "id": "trigger-style-minimal-01",
+      "query": "做一张极简白底风格的封面，主题是「代码即文档」",
+      "should_trigger": true,
+      "expected_style": "minimal_clean",
+      "expected_platform": "wechat_cover",
+      "notes": "minimal_clean 关键词：极简白底"
+    },
+    {
+      "id": "trigger-style-minimal-02",
+      "query": "出一张 minimal 风格配图，主要用留白突出标题",
+      "should_trigger": true,
+      "expected_style": "minimal_clean",
+      "expected_platform": "wechat_article",
+      "notes": "minimal_clean 英文关键词"
+    },
+    {
+      "id": "trigger-style-neubrutalism-01",
+      "query": "帮我做一张粗边硬投影风格的公众号封面，主题是开源 LLM 格局",
+      "should_trigger": true,
+      "expected_style": "neubrutalism",
+      "expected_platform": "wechat_cover",
+      "notes": "neubrutalism：粗边、硬投影"
+    },
+    {
+      "id": "trigger-style-neubrutalism-02",
+      "query": "新粗野主义风格配图，主题是独立开发者",
+      "should_trigger": true,
+      "expected_style": "neubrutalism",
+      "expected_platform": "wechat_article",
+      "notes": "neubrutalism 中文风格词"
+    },
+    {
+      "id": "trigger-style-clay-01",
+      "query": "出一张黏土软萌风格的封面，主题是 AI 助手",
+      "should_trigger": true,
+      "expected_style": "clay_soft",
+      "expected_platform": "wechat_cover",
+      "notes": "clay_soft：黏土软萌"
+    },
+    {
+      "id": "trigger-style-clay-02",
+      "query": "帮我做一张奶油色、圆角卡片风格的配图，主题是工具推荐",
+      "should_trigger": true,
+      "expected_style": "clay_soft",
+      "expected_platform": "wechat_article",
+      "notes": "clay_soft：奶油色、圆角"
+    },
+    {
+      "id": "trigger-style-bento-01",
+      "query": "做一张 bento 格栅卡片风格的信息图，展示 5 个 AI 编程工具对比",
+      "should_trigger": true,
+      "expected_style": "bento_info",
+      "expected_platform": "wechat_article",
+      "notes": "bento_info 英文关键词"
+    },
+    {
+      "id": "trigger-style-bento-02",
+      "query": "出一张信息分区卡片封面，主题是 2026 年 AI 工具全景",
+      "should_trigger": true,
+      "expected_style": "bento_info",
+      "expected_platform": "wechat_cover",
+      "notes": "bento_info：信息分区"
+    },
+    {
+      "id": "trigger-style-glass-01",
+      "query": "做一张玻璃感封面，主题是云原生安全平台",
+      "should_trigger": true,
+      "expected_style": "glass_premium",
+      "expected_platform": "wechat_cover",
+      "notes": "glass_premium：玻璃感"
+    },
+    {
+      "id": "trigger-style-glass-02",
+      "query": "帮我出一张磨砂玻璃高级感的配图，内容是 LLM 推理优化",
+      "should_trigger": true,
+      "expected_style": "glass_premium",
+      "expected_platform": "wechat_article",
+      "notes": "glass_premium：磨砂玻璃"
+    },
+    {
+      "id": "trigger-poster-01",
+      "query": "设计一张概念海报，主题是「大模型幻觉」，科技风",
+      "should_trigger": true,
+      "expected_style": "tech_dark",
+      "expected_platform": "wechat_cover",
+      "notes": "海报类请求"
+    }
+  ]
+}
