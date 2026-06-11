@@ -1,4 +1,4 @@
-# SVG Architect (v14.0)
+# SVG Architect (v0.14)
 
 **公众号专属工业级 SVG 设计引擎**
 
@@ -6,7 +6,7 @@
 
 ---
 
-## 🖼️ 设计成品展示
+## 设计成品展示
 
 ### 架构全景图 / 自动化流程图
 ![Agent Context Architecture](docs/showcase/Agent%20Context%20架构全景图.svg)
@@ -26,7 +26,7 @@
 
 ---
 
-## 🌟 核心特性
+## 核心特性
 
 - **公众号原生适配**：封面图 1800×766px、配图 1200×500px，自动处理安全区，手机端不裁切
 - **六种专业风格**：Tech Dark / Minimal Clean / Glass Premium / Neubrutalism / Bento Info / Clay Soft
@@ -38,7 +38,7 @@
 
 ---
 
-## 🚀 快速安装
+## 快速安装
 
 ```bash
 # 克隆仓库
@@ -56,7 +56,7 @@ bash scripts/install.sh
 
 ---
 
-## 📦 项目结构
+## 项目结构
 
 ```
 svg-architect/
@@ -103,7 +103,7 @@ svg-architect/
 
 ---
 
-## 🎨 使用方法
+## 使用方法
 
 在支持 Agent Skills 的工具（Claude Code、Cursor 等）中直接输入需求：
 
@@ -115,7 +115,7 @@ svg-architect/
 
 ---
 
-## 🛠️ 脚本工具（手动使用）
+## 脚本工具（手动使用）
 
 ```bash
 # 验证 SVG 合规性（自动检测平台）
@@ -147,7 +147,7 @@ bash skills/svg-architect/scripts/tests/run_smoke_tests.sh
 
 ---
 
-## ⚙️ 环境要求
+## 环境要求
 
 - Python 3.8+（必须，用于验证脚本）
 - playwright + chromium（推荐，QA 预览渲染主引擎）：`pip install playwright && playwright install chromium`
