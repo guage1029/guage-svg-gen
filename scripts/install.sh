@@ -128,10 +128,7 @@ DEST=""
 
 if [ -n "$OPT_DEST" ]; then
     OPT_DEST="${OPT_DEST/#\~/$HOME}"
-    if [ ! -d "$OPT_DEST" ]; then
-        echo "错误：目标目录不存在：$OPT_DEST"
-        exit 1
-    fi
+    mkdir -p "$OPT_DEST"
     DEST="$OPT_DEST/$SKILL_NAME"
 elif [ "$INTERACTIVE" -eq 1 ]; then
     echo "请选择要安装到哪个工具的 Skills 目录："

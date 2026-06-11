@@ -54,7 +54,7 @@ bash scripts/install.sh --dest ~/.claude/skills --workspace ~/svg-output --yes -
 
 安装向导会完成：
 1. 初始化 SVG 产出物目录（workspace）
-2. 安装 Python 后处理依赖（可选，仅 PNG 导出需要）
+2. 安装 Python 后处理依赖（可选，PNG 导出与 QA 预览渲染需要）
 3. 将 skill 安装到你选择的 AI 工具目录
 
 ---
@@ -85,7 +85,6 @@ svg-architect/
 │       │       ├── neubrutalism.md
 │       │       ├── bento_info.md
 │       │       └── clay_soft.md
-│       ├── assets/                 # 输出使用的静态资源（字体配置已移至 references/）
 │       ├── scripts/                # 验证与后处理脚本
 │       │   ├── svg_validator.py    # 规范校验（ID前缀/字体/对比度/尺寸）
 │       │   ├── render_svg_preview.py  # QA 预览渲染（Playwright/cairosvg）

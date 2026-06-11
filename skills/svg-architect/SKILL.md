@@ -13,7 +13,7 @@ description: >
   asks for an SVG.
 compatibility: "Agent Skills compatible"
 metadata:
-  version: "0.15"
+  version: "0.16"
   author: donglinzhao
 ---
 
