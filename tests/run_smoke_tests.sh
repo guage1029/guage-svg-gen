@@ -6,8 +6,9 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 
-BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-CASES_DIR="$BASE_DIR/scripts/tests/cases"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BASE_DIR="$(cd "$SCRIPT_DIR/../skills/svg-architect" && pwd)"
+CASES_DIR="$SCRIPT_DIR/cases"
 
 PASS_COUNT=0
 FAIL_COUNT=0

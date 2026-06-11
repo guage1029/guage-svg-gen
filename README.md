@@ -1,4 +1,4 @@
-# SVG Architect (v0.15)
+# SVG Architect (v0.16)
 
 **公众号专属工业级 SVG 设计引擎**
 
@@ -45,8 +45,11 @@
 git clone https://github.com/zhaodl1983/svg-architect.git
 cd svg-architect
 
-# 运行安装向导（初始化 workspace + 安装到 Claude Code）
+# 安装（交互模式）
 bash scripts/install.sh
+
+# 或非交互安装（CI / 自动化环境）
+bash scripts/install.sh --dest ~/.claude/skills --workspace ~/svg-output --yes --skip-deps
 ```
 
 安装向导会完成：
@@ -60,12 +63,16 @@ bash scripts/install.sh
 
 ```
 svg-architect/
+├── README.md
+├── .gitignore
 ├── scripts/
-│   └── install.sh                  # 安装向导（运行此脚本开始）
+│   ├── install.sh                  # 安装向导（支持 --dest / --workspace / --yes / --skip-deps）
+│   └── check_release.sh            # 发布自检脚本
 ├── skills/
 │   └── svg-architect/              # Agent Skills 标准 skill 根
-│       ├── SKILL.md                # 核心指令
+│       ├── SKILL.md                # 核心指令（Agent Skills compatible）
 │       ├── references/             # 按需加载的参考文档
+│       │   ├── fonts_whitelist.json
 │       │   ├── platform_profiles.md
 │       │   ├── layout_plan.schema.json
 │       │   ├── quality_checklist.md
@@ -78,24 +85,26 @@ svg-architect/
 │       │       ├── neubrutalism.md
 │       │       ├── bento_info.md
 │       │       └── clay_soft.md
-│       ├── assets/                 # 静态资源
-│       │   └── fonts_whitelist.json
+│       ├── assets/                 # 输出使用的静态资源（字体配置已移至 references/）
 │       ├── scripts/                # 验证与后处理脚本
 │       │   ├── svg_validator.py    # 规范校验（ID前缀/字体/对比度/尺寸）
 │       │   ├── render_svg_preview.py  # QA 预览渲染（Playwright/cairosvg）
 │       │   ├── svg_fixer.py
 │       │   ├── optimize_and_convert.py
-│       │   ├── run_pipeline.py
-│       │   └── tests/
-│       │       ├── run_smoke_tests.sh  # 17 条冒烟测试
-│       │       └── cases/             # 11 个 SVG 测试用例
+│       │   └── run_pipeline.py
 │       └── requirements.txt
+├── tests/                          # 冒烟测试（不随 skill 安装）
+│   ├── run_smoke_tests.sh          # 17 条冒烟测试
+│   └── cases/                      # 11 个 SVG 测试用例
 ├── evals/                          # 评测体系
 │   ├── eval_protocol.md            # 评测执行协议
 │   ├── trigger_evals.json          # 正例触发用例（24 条）
 │   ├── negative_evals.json         # 负例用例（16 条）
 │   ├── style_coverage_evals.json   # 风格覆盖用例（12 条）
 │   └── output_quality_evals.json   # 输出质量断言（12 条）
+├── integrations/
+│   └── gemini/
+│       └── gemini-extension.json   # Gemini CLI 适配（可选）
 └── docs/
     └── showcase/                   # 设计成品展示
 ```
@@ -141,7 +150,10 @@ python skills/svg-architect/scripts/optimize_and_convert.py input.svg --format p
 python skills/svg-architect/scripts/run_pipeline.py --svg input.svg --slug my-cover
 
 # 运行冒烟测试（17 条）
-bash skills/svg-architect/scripts/tests/run_smoke_tests.sh
+bash tests/run_smoke_tests.sh
+
+# 发布前自检
+bash scripts/check_release.sh
 ```
 
 ---

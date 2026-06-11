@@ -11,9 +11,9 @@ description: >
   clay_soft (粘土软萌). Do not use for photorealistic bitmap generation, general
   image editing, UI screens, or non-WeChat deliverables unless the user explicitly
   asks for an SVG.
-compatibility: Designed for Claude Code (or similar agentic coding tools)
+compatibility: "Agent Skills compatible"
 metadata:
-  version: "14.0"
+  version: "0.15"
   author: donglinzhao
 ---
 
@@ -43,7 +43,7 @@ Load only the files needed for the current task:
   - `clay_soft` → `references/specs/clay_soft.md`
 - Read `references/layout_plan.schema.json` when saving a layout plan or running strict geometry checks.
 - Read `references/prompt_template.md` when the layout is complex or the plan shape is unclear.
-- Read `assets/fonts_whitelist.json` before choosing final font stacks.
+- Read `references/fonts_whitelist.json` before choosing final font stacks.
 - Read `references/error_codes.md` only after validator errors.
 - Read `references/quality_checklist.md` before final delivery.
 
@@ -112,7 +112,7 @@ Required SVG properties:
 - Put all core text and essential diagram nodes inside the safe area.
 - Put a full-canvas background `<rect>` first, with a solid fill that reflects the intended background color.
 - Use high-contrast solid fills for core text. Decorative gradients are allowed only when legibility does not depend on them.
-- Use `PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif` as the default Chinese font stack, or the approved stack from `assets/fonts_whitelist.json`. For English-primary titles, prepend `Inter` or `SF Pro Display` before the Chinese fallbacks.
+- Use `PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif` as the default Chinese font stack, or the approved stack from `references/fonts_whitelist.json`. For English-primary titles, prepend `Inter` or `SF Pro Display` before the Chinese fallbacks.
 
 Forbidden content:
 
