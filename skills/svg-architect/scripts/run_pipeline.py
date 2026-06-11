@@ -34,7 +34,7 @@ def main():
     parser.add_argument("--max-retries", type=int, default=3)
     parser.add_argument("--repair-cmd", help="External command to fix errors")
     parser.add_argument("--export-format", default="svg", choices=["svg", "png", "all"])
-    parser.add_argument("--output-dir", default=os.environ.get("SVG_ARCHITECT_WORKSPACE", "/Users/zhaodonglin/Documents/workspace/svg-architect"))
+    parser.add_argument("--output-dir", default=os.environ.get("SVG_ARCHITECT_WORKSPACE", os.path.join(os.path.expanduser("~"), "Documents", "workspace", "svg-architect")))
     args = parser.parse_args()
 
     out_dir = Path(args.output_dir)

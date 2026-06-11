@@ -1,12 +1,12 @@
 {
-  "name": "svg-architect",
-  "description": "专业的 SVG 技术架构图与流程图绘制专家。使用此技能生成达到“现代 SaaS 官网”或“Apple 商业发布会”级别的高质量、暗黑风、无 Emoji、纯代码渲染的 SVG 技术图表（架构图、流程图、原理图等）。包含交互式的场景确认工作流和严谨的美学设计规范。",
-  "version": "1.0.0",
-  "skills": [
+  “name”: “svg-architect”,
+  “description”: “公众号专属 SVG 设计 Skill。生成封面图（1800×766）、配图（1200×500），支持六种风格：tech_dark / minimal_clean / glass_premium / neubrutalism / bento_info / clay_soft。内置规范校验与 QA 预览渲染。”,
+  “version”: “0.14.0”,
+  “skills”: [
     {
-      "name": "svg-architect",
-      "description": "专业的 SVG 技术架构图与流程图绘制专家。使用此技能生成达到“现代 SaaS 官网”或“Apple 商业发布会”级别的高质量、暗黑风、无 Emoji、纯代码渲染的 SVG 技术图表（架构图、流程图、原理图等）。包含交互式的场景确认工作流和严谨的美学设计规范。",
-      "path": "skills/svg-architect/SKILL.md"
+      “name”: “svg-architect”,
+      “description”: “公众号专属 SVG 设计 Skill。生成封面图（1800×766）、配图（1200×500），支持六种风格：tech_dark / minimal_clean / glass_premium / neubrutalism / bento_info / clay_soft。内置规范校验与 QA 预览渲染。”,
+      “path”: “skills/svg-architect/SKILL.md”
     }
   ]
 }

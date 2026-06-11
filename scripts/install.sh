@@ -22,7 +22,7 @@ fi
 
 # ─── 选择安装模式 ────────────────────────────────────────────────────────────
 echo "请选择安装模式："
-echo "  1) 个人本地模式（默认 workspace: /Users/zhaodonglin/Documents/workspace/svg-architect）"
+echo "  1) 个人本地模式（默认 workspace: ${SVG_ARCHITECT_WORKSPACE:-$HOME/Documents/workspace/svg-architect}）"
 echo "  2) 开源通用模式（自定义 workspace 路径）"
 echo ""
 read -r MODE_CHOICE
@@ -45,8 +45,8 @@ case "$MODE_CHOICE" in
         fi
         ;;
     *)
-        WORKSPACE_PATH="/Users/zhaodonglin/Documents/workspace/svg-architect"
-        echo "个人本地模式，workspace 固定为：$WORKSPACE_PATH"
+        WORKSPACE_PATH="${SVG_ARCHITECT_WORKSPACE:-$HOME/Documents/workspace/svg-architect}"
+        echo "个人本地模式，workspace：$WORKSPACE_PATH"
         ;;
 esac
 
@@ -133,6 +133,7 @@ if [ -n "$DEST" ]; then
     rsync -a --delete \
         --exclude='.git/' \
         --exclude='.DS_Store' \
+        --exclude='scripts/tests/' \
         "$SKILL_SRC/" "$DEST/"
     echo "  ✓ Skill 已安装到：$DEST"
 fi

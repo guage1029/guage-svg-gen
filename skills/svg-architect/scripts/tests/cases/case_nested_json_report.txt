@@ -1,4 +1,0 @@
-[DEBUG] Starting validation...
-[INFO] Reading file: /tmp/test.svg
-{"status": "ERROR", "errors": [{"code": "E_VIEWBOX_MISSING", "msg": "Missing viewBox", "details": {"path": "/", "attr": "viewBox"}}, {"code": "E_A11Y_MISSING", "msg": "Missing title/desc"}], "warnings": []}
-[DEBUG] Validation finished.

@@ -178,7 +178,7 @@ python3 scripts/optimize_and_convert.py <svg_path> --format png
 Use this output directory unless the user provides another path:
 
 ```bash
-${SVG_ARCHITECT_WORKSPACE:-/Users/zhaodonglin/Documents/workspace/svg-architect}
+${SVG_ARCHITECT_WORKSPACE:-$HOME/Documents/workspace/svg-architect}
 ```
 
 Final response must include:
