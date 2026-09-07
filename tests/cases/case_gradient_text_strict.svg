@@ -1,0 +1,12 @@
+<svg viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg">
+  <title>Gradient Text Strict</title>
+  <desc>Test case for E_CONTRAST_GRADIENT_TEXT in strict mode</desc>
+  <defs>
+    <linearGradient id="svga-test-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ff6600"/>
+      <stop offset="100%" style="stop-color:#ffcc00"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="500" fill="#0a0a0b"/>
+  <text id="svga-t-1" x="100" y="200" fill="url(#svga-test-grad)" font-family="PingFang SC, sans-serif" font-size="48">Gradient Text</text>
+</svg>

@@ -1,0 +1,167 @@
+{
+  "meta": {
+    "skill": "svg-architect",
+    "version": "14.0",
+    "description": "6 种风格 × 2 平台全覆盖评测，共 12 条。每条明确期望的视觉风格特征，供人工或 LLM judge 核查。",
+    "styles": ["tech_dark", "minimal_clean", "glass_premium", "neubrutalism", "bento_info", "clay_soft"],
+    "platforms": ["wechat_cover", "wechat_article"]
+  },
+  "cases": [
+    {
+      "id": "style-tech-dark-cover",
+      "prompt": "帮我做一张公众号封面，主题是「多智能体系统的崛起」，科技暗黑风格",
+      "expected_style": "tech_dark",
+      "expected_platform": "wechat_cover",
+      "expected_viewbox": "0 0 1800 766",
+      "style_characteristics": [
+        "背景为深色（接近黑色或深灰，#0a0a0b 或同色系）",
+        "强调色为蓝色或紫色（如 #3b82f6、#7c3aed）",
+        "文字有发光效果或高亮描边",
+        "节点或图标使用光晕/glow 效果",
+        "整体科技感强，无圆角或少量锐角圆角"
+      ]
+    },
+    {
+      "id": "style-tech-dark-article",
+      "prompt": "画一张配图，展示 Claude 4 推理能力的技术架构，科技暗黑风",
+      "expected_style": "tech_dark",
+      "expected_platform": "wechat_article",
+      "expected_viewbox": "0 0 1200 500",
+      "style_characteristics": [
+        "深色背景，蓝/紫强调",
+        "连线带箭头，节点有发光轮廓",
+        "字体科技感强，颜色以白色或浅蓝为主"
+      ]
+    },
+    {
+      "id": "style-minimal-clean-cover",
+      "prompt": "做一张极简白底公众号封面，主题是「代码审查的艺术」",
+      "expected_style": "minimal_clean",
+      "expected_platform": "wechat_cover",
+      "expected_viewbox": "0 0 1800 766",
+      "style_characteristics": [
+        "背景接近白色或极浅灰（#f8f8f8 以上）",
+        "大量留白，信息密度低",
+        "强调色单一，通常为蓝色 (#2563eb 左右)",
+        "无阴影或极淡阴影",
+        "字体细腻，间距宽松"
+      ]
+    },
+    {
+      "id": "style-minimal-clean-article",
+      "prompt": "出一张 minimal 风格配图，用留白和线条表达「单一职责原则」",
+      "expected_style": "minimal_clean",
+      "expected_platform": "wechat_article",
+      "expected_viewbox": "0 0 1200 500",
+      "style_characteristics": [
+        "浅色背景，留白占主体",
+        "图形简洁，只用线条和少量几何形",
+        "单色强调，不超过 2 种颜色"
+      ]
+    },
+    {
+      "id": "style-glass-premium-cover",
+      "prompt": "出一张玻璃高级感封面，主题是「企业级 AI 安全平台」",
+      "expected_style": "glass_premium",
+      "expected_platform": "wechat_cover",
+      "expected_viewbox": "0 0 1800 766",
+      "style_characteristics": [
+        "深色背景（深蓝或深紫）",
+        "主要面板有半透明效果（用 opacity 或浅色矩形模拟）",
+        "面板或卡片有光晕/渐变边框",
+        "不得使用真实 backdrop-filter（SVG 不支持），改用色彩层次模拟",
+        "色调高级感：深蓝+青色+白色"
+      ]
+    },
+    {
+      "id": "style-glass-premium-article",
+      "prompt": "画一张玻璃质感配图，展示 Zero Trust 安全架构分层",
+      "expected_style": "glass_premium",
+      "expected_platform": "wechat_article",
+      "expected_viewbox": "0 0 1200 500",
+      "style_characteristics": [
+        "深色底，半透明面板叠加",
+        "边框使用渐变或浅色透明描边",
+        "文字清晰，白色或浅色系"
+      ]
+    },
+    {
+      "id": "style-neubrutalism-cover",
+      "prompt": "做一张新粗野主义风格的公众号封面，主题是「独立开发者生存指南」",
+      "expected_style": "neubrutalism",
+      "expected_platform": "wechat_cover",
+      "expected_viewbox": "0 0 1800 766",
+      "style_characteristics": [
+        "粗黑色描边（stroke-width 4px+）",
+        "硬投影（offset shadow，非模糊）",
+        "高饱和度强调色（红/黄/绿等）",
+        "背景浅色或白色",
+        "字体粗壮，间距紧凑"
+      ]
+    },
+    {
+      "id": "style-neubrutalism-article",
+      "prompt": "出一张粗野主义风格配图，对比传统 DevOps 和 Platform Engineering",
+      "expected_style": "neubrutalism",
+      "expected_platform": "wechat_article",
+      "expected_viewbox": "0 0 1200 500",
+      "style_characteristics": [
+        "硬边框、无圆角或极小圆角",
+        "对比强烈的硬阴影矩形",
+        "高饱和色块分区"
+      ]
+    },
+    {
+      "id": "style-bento-info-cover",
+      "prompt": "做一张 bento 格栅卡片风格封面，主题是「2026 年 AI 工具全景」",
+      "expected_style": "bento_info",
+      "expected_platform": "wechat_cover",
+      "expected_viewbox": "0 0 1800 766",
+      "style_characteristics": [
+        "画布被划分为不同大小的卡片格栅",
+        "每个格栅承载独立信息区块",
+        "卡片间有明确间距",
+        "背景深色或浅色均可，以卡片色彩区分信息层级",
+        "排版结构感强"
+      ]
+    },
+    {
+      "id": "style-bento-info-article",
+      "prompt": "出一张信息格栅风格配图，对比 5 种主流向量数据库特性",
+      "expected_style": "bento_info",
+      "expected_platform": "wechat_article",
+      "expected_viewbox": "0 0 1200 500",
+      "style_characteristics": [
+        "多卡片分区排列",
+        "每卡片有标题 + 内容标注",
+        "不同卡片用颜色或图标区分"
+      ]
+    },
+    {
+      "id": "style-clay-soft-cover",
+      "prompt": "做一张黏土软萌风格的封面，主题是「AI 时代的创意工作者」",
+      "expected_style": "clay_soft",
+      "expected_platform": "wechat_cover",
+      "expected_viewbox": "0 0 1800 766",
+      "style_characteristics": [
+        "背景奶油色或浅暖色（#fef9f0 类）",
+        "元素使用大圆角（rx≥16px）",
+        "软阴影（浅色 drop-shadow，非硬投影）",
+        "配色温柔：粉色、珊瑚色、淡紫、米白",
+        "无锐利边缘，整体圆润可爱"
+      ]
+    },
+    {
+      "id": "style-clay-soft-article",
+      "prompt": "出一张奶油圆角风格的配图，展示提示词工程的三个层次",
+      "expected_style": "clay_soft",
+      "expected_platform": "wechat_article",
+      "expected_viewbox": "0 0 1200 500",
+      "style_characteristics": [
+        "暖白色背景，圆角卡片",
+        "软投影（opacity < 0.2 的阴影）",
+        "配色柔和，无高对比度强调"
+      ]
+    }
+  ]
+}

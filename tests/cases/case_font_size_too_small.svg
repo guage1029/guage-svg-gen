@@ -1,0 +1,6 @@
+<svg viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg">
+  <title>Font Size Too Small</title>
+  <desc>Test case for E_FONT_SIZE_TOO_SMALL (wechat_article min=16)</desc>
+  <rect width="1200" height="500" fill="#0a0a0b"/>
+  <text id="svga-t-1" x="100" y="200" fill="white" font-family="PingFang SC, sans-serif" font-size="12">Too small for wechat_article</text>
+</svg>

@@ -1,0 +1,13 @@
+<svg viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg">
+  <title>ID Prefix Missing</title>
+  <desc>Test case for E_ID_PREFIX_MISSING</desc>
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0066ff"/>
+      <stop offset="100%" style="stop-color:#00ccff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="500" fill="#0a0a0b"/>
+  <rect x="100" y="100" width="400" height="200" fill="url(#grad)"/>
+  <text x="100" y="80" fill="white" font-family="PingFang SC, sans-serif" font-size="32">Test</text>
+</svg>

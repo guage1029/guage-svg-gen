@@ -1,0 +1,9 @@
+<svg viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg">
+  <title>Transparent Background</title>
+  <desc>Test case: no background rect, corners should be transparent when rendered with omit_background=True</desc>
+  <!-- Intentionally no background fill rect -->
+  <text id="svga-t-1" x="600" y="260" text-anchor="middle"
+        fill="#333333" font-family="PingFang SC, sans-serif" font-size="32">
+    Transparent BG Test
+  </text>
+</svg>
