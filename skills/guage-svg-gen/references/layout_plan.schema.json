@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "SVG Layout Plan Schema v5",
+  "title": "SVG Layout Plan Schema v6",
   "description": "放宽约束并增强数值化的 70/30 构图计划",
   "type": "object",
   "additionalProperties": false,
@@ -78,7 +78,127 @@
         "text": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" }
       },
       "required": ["background", "primary", "text"]
+    },
+    "color_system": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "theme": { "type": "string", "enum": ["gemini", "claude", "codex"] },
+        "diagram_type": { "type": "string", "enum": ["architecture", "flowchart", "sequence", "state", "er", "deployment", "swimlane", "timeline", "comparison", "data_visualization", "hierarchy"] },
+        "role_map": { "type": "object", "additionalProperties": { "type": "string" } }
+      },
+      "required": ["theme", "diagram_type", "role_map"]
+    },
+    "layout_constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "orthogonal_edges": { "type": "boolean" },
+        "uniform_node_groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+              "nodes": {
+                "type": "array",
+                "minItems": 2,
+                "items": { "type": "string", "pattern": "^[a-z0-9-]+$" }
+              },
+              "y": { "type": "number" },
+              "height": { "type": "number", "exclusiveMinimum": 0 },
+              "tolerance": { "type": "number", "minimum": 0 }
+            },
+            "required": ["id", "nodes"]
+          }
+        }
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "rect": {
+            "type": "object",
+            "properties": {
+              "x": { "type": "number" },
+              "y": { "type": "number" },
+              "w": { "type": "number", "exclusiveMinimum": 0 },
+              "h": { "type": "number", "exclusiveMinimum": 0 }
+            },
+            "required": ["x", "y", "w", "h"]
+          },
+          "padding": { "type": "number", "minimum": 0 },
+          "ports": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "x": { "type": "number" },
+                "y": { "type": "number" }
+              },
+              "required": ["x", "y"]
+            }
+          }
+        },
+        "required": ["id", "rect", "ports"]
+      }
+    },
+    "text_boxes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "node": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "rect": {
+            "type": "object",
+            "properties": {
+              "x": { "type": "number" },
+              "y": { "type": "number" },
+              "w": { "type": "number", "exclusiveMinimum": 0 },
+              "h": { "type": "number", "exclusiveMinimum": 0 }
+            },
+            "required": ["x", "y", "w", "h"]
+          },
+          "reserved_overlap": { "type": "array" }
+        },
+        "required": ["id", "rect"]
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "from": { "type": "string", "pattern": "^[a-z0-9-]+\\.[a-z0-9-]+$" },
+          "to": { "type": "string", "pattern": "^[a-z0-9-]+\\.[a-z0-9-]+$" },
+          "directed": { "type": "boolean" },
+          "route": { "type": "string", "enum": ["straight", "orthogonal", "bezier"] },
+          "waypoints": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "properties": {
+                "x": { "type": "number" },
+                "y": { "type": "number" }
+              },
+              "required": ["x", "y"]
+            }
+          },
+          "min_clearance": { "type": "number", "minimum": 0 }
+        },
+        "required": ["id", "from", "to", "directed", "route", "waypoints"]
+      }
     }
   },
-  "required": ["canvas", "metadata", "slots", "creative_zone", "palette"]
+  "required": ["canvas", "metadata", "slots", "creative_zone", "palette", "color_system", "nodes", "text_boxes", "edges"]
 }

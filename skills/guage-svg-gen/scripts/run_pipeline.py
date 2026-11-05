@@ -13,6 +13,9 @@ from pathlib import Path
 # Skill Root deduction
 SKILL_ROOT = Path(__file__).resolve().parent.parent
 SCRIPTS_DIR = SKILL_ROOT / "scripts"
+GEOMETRY_SCRIPT = SCRIPTS_DIR / "geometry_validator.py"
+COLOR_SCRIPT = SCRIPTS_DIR / "color_validator.py"
+LANGUAGE_SCRIPT = SCRIPTS_DIR / "text_language_validator.py"
 
 AUTO_FIXABLE = ["E_VIEWBOX_MISSING", "E_VIEWBOX_INVALID", "E_A11Y_MISSING", "E_SECURITY_STYLE_CONTENT"]
 
@@ -64,6 +67,49 @@ def main():
             sys.exit(2)
             
         if report['status'] == 'PASS':
+            if args.plan:
+                language_cmd = [
+                    'python3', str(LANGUAGE_SCRIPT),
+                    '--svg', working_svg,
+                    '--plan', args.plan,
+                    '--strict', '--json',
+                ]
+                language_ret, language_stdout, language_stderr = run_cmd(language_cmd)
+                if language_stdout.strip():
+                    print(language_stdout.strip())
+                if language_ret != 0:
+                    if language_stderr.strip():
+                        print(language_stderr.strip(), file=sys.stderr)
+                    sys.exit(3)
+                print("language_status: PASS")
+                color_cmd = [
+                    'python3', str(COLOR_SCRIPT),
+                    '--svg', working_svg,
+                    '--plan', args.plan,
+                    '--strict', '--json',
+                ]
+                color_ret, color_stdout, color_stderr = run_cmd(color_cmd)
+                if color_stdout.strip():
+                    print(color_stdout.strip())
+                if color_ret != 0:
+                    if color_stderr.strip():
+                        print(color_stderr.strip(), file=sys.stderr)
+                    sys.exit(3)
+                print("color_status: PASS")
+                geometry_cmd = [
+                    'python3', str(GEOMETRY_SCRIPT),
+                    '--svg', working_svg,
+                    '--plan', args.plan,
+                    '--strict', '--json',
+                ]
+                geometry_ret, geometry_stdout, geometry_stderr = run_cmd(geometry_cmd)
+                if geometry_ret != 0:
+                    if geometry_stdout.strip():
+                        print(geometry_stdout.strip())
+                    if geometry_stderr.strip():
+                        print(geometry_stderr.strip(), file=sys.stderr)
+                    sys.exit(3)
+                print("geometry_status: PASS")
             break
             
         errors = [e['code'] for e in report['errors']]

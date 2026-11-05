@@ -1,4 +1,4 @@
-# Guage SVG Gen (v0.17.2)
+# Guage SVG Gen (v0.17.9)
 
 **公众号专属工业级 SVG 设计引擎**
 
@@ -31,6 +31,7 @@
 - **公众号原生适配**：封面图 1800×766px、配图 1200×500px，自动处理安全区，手机端不裁切
 - **六种专业风格**：Tech Dark / Minimal Clean / Glass Premium / Neubrutalism / Bento Info / Clay Soft
 - **工业级验证**：内置 Python 脚本自动校验 viewBox、对比度、ID 前缀、字体栈、字号下限、安全标签等
+- **技术图质量门禁**：布局、中文文案、主题色、连接线与标签遮挡自动校验
 - **QA 预览渲染**：Playwright/Chromium 驱动，自动输出 preview.png + 焦点裁切缩略图 + 渲染质量报告
 - **评测闭环**：64 条 eval 用例（触发/负例/风格覆盖/输出质量），配套 eval_protocol.md 指导评测执行
 - **原位进化**：修改已有图时直接覆盖原文件，不产生冗余副本
@@ -88,6 +89,9 @@ svg-architect/
 │       ├── scripts/                # 验证与后处理脚本
 │       │   ├── svg_validator.py    # 规范校验（ID前缀/字体/对比度/尺寸）
 │       │   ├── render_svg_preview.py  # QA 预览渲染（Playwright/cairosvg）
+│       │   ├── geometry_validator.py  # 节点、连线与标签几何校验
+│       │   ├── color_validator.py     # 主题色校验
+│       │   ├── text_language_validator.py # 中文文案校验
 │       │   ├── svg_fixer.py
 │       │   ├── optimize_and_convert.py
 │       │   └── run_pipeline.py

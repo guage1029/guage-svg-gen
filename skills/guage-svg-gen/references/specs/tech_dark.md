@@ -104,7 +104,7 @@ Use pills instead of loose multi-line small text. Size width to the text, keep h
 - **Glow**: Use `feGaussianBlur` with `stdDeviation="15"` for core nodes.
 - **Grid**: 40x40px, `#1E293B`, opacity 0.3.
 - **Lines**: Smooth Bezier curves with `#3B82F6` stroke and 2px width.
-- **High-impact divider**: For dual-hero layouts, use a 1–2px vertical divider with subtle Primary/Secondary glow. Keep it elegant; it should separate, not dominate.
+- **High-impact divider**: For dual-hero layouts only, use a 1–2px vertical divider with subtle Primary/Secondary glow. Keep it outside node groups; architecture and flow diagrams must not place full-height accent rails on node edges.
 
 ## Negative Constraints
 - No pure black `#000000`.

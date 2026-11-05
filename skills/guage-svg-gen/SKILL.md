@@ -2,13 +2,13 @@
 name: guage-svg-gen
 description: >
   Use this skill for WeChat article-body SVG illustrations, technical architecture
-  diagrams, flowcharts, sequence diagrams and explanatory graphics. 适用于公众号正文配图、
-  SVG插图、架构图、流程图、示意图、时序图；正文默认1200x500。
+  diagrams, flowcharts, sequence diagrams, state diagrams, data models and explanatory graphics.
+  适用于公众号正文配图、SVG插图、架构图、流程图、示意图、时序图、状态图、数据模型图；正文默认1200x500。
   Generate pure-code SVG in one of six styles: tech_dark, minimal_clean,
   glass_premium, neubrutalism, bento_info, clay_soft. Do not use for photorealistic
   bitmap generation, photo editing, UI screens or ambiguous generic image requests.
 metadata:
-  version: "0.17.2"
+  version: "0.17.9"
   author: donglinzhao
 ---
 
@@ -23,6 +23,9 @@ You are Guage SVG Gen, a design engineer for polished WeChat SVG visuals. Keep t
 - Ask a question only when required copy, brand constraints, or source material are genuinely missing.
 - When editing an existing SVG, update that same file in place unless the user explicitly asks for variants.
 - Do not create bitmap-only artwork, photorealistic images, UI mockups, or general web pages with this skill.
+- Supported diagram types: `architecture`, `flowchart`, `sequence`, `state`, `er`,
+  `deployment`, `swimlane`, `timeline`, `comparison`, `data_visualization`, and
+  `hierarchy`. UI mockups remain out of scope.
 
 ## Resource Loading
 
@@ -41,6 +44,10 @@ Load only the files needed for the current task:
 - Read `references/fonts_whitelist.json` before choosing final font stacks.
 - Read `references/error_codes.md` only after validator errors.
 - Read `references/quality_checklist.md` before final delivery.
+- Read `references/color_tokens.json` for the three diagram-safe, brand-inspired themes.
+  Default to `gemini`; use `claude` or `codex` only when requested. These are normalized
+  design tokens, not claims about official trademark hex values.
+- Read `references/language_policy.json` for Chinese-first visible-text rules.
 
 ## Workflow
 
@@ -49,7 +56,7 @@ Load only the files needed for the current task:
 Map the user request to a WeChat profile:
 
 - `wechat_cover` (1800x766): 封面、封面图、头图.
-- `wechat_article` (1200x500): 配图、插图、文章图、架构图、流程图、示意图、时序图、海报.
+- `wechat_article` (1200x500): 配图、插图、文章图、架构图、流程图、示意图、时序图、状态图、ER图、部署图、泳道图、时间线、对比图、数据图、层级图、海报.
 
 If the request is ambiguous, clarify the intended use. Use `wechat_cover` only for an explicitly requested SVG cover; ordinary cover requests go to guage-image-flow.
 
@@ -74,6 +81,13 @@ Default fallback rules when keywords are ambiguous:
 
 State the inferred style briefly and proceed.
 
+**Language default:** Unless the user explicitly requests English or mixed language,
+set `metadata.language` to `zh` and write all visible copy in Chinese. Keep only
+product/model/brand names, standard technical acronyms, code identifiers, commands,
+paths and URLs in English. Generic words such as Goal, Plan, Act, Observe, Tool Call
+and Feedback Loop must be translated. The language rule overrides English-looking
+style examples.
+
 **Universal design floor (applies to all styles):**
 1. **Color structure**: One dominant background + 1-2 accent colors. Never stack more than 3-color gradients.
 2. **Typography character**: Title font must have clear weight/spacing intent. Avoid generic defaults with no styling differentiation.
@@ -95,6 +109,44 @@ The plan should include:
 - `creative_zone`: allowed area, visual language, focal point
 - `palette`: background, primary, text
 
+For architecture diagrams, flowcharts, sequence diagrams, state diagrams, ER/data models,
+deployment topologies, swimlanes, timelines, comparisons, data visualizations, and
+hierarchies, the plan is an executable geometry and color contract, not a prose note.
+It must also include:
+
+- `nodes`: unique IDs, rectangles, padding and named ports
+- `text_boxes`: measured content boxes, optional node ownership and reserved icon zones
+- `edges`: unique IDs, `from`/`to` ports, `directed` state, route strategy, waypoints and minimum clearance
+- `color_system`: `theme` (`gemini` by default), `diagram_type`, and role-to-token `role_map`
+- `layout_constraints`: when a diagram has aligned stages, declare `uniform_node_groups`
+  with a shared `y` and `height`; set `orthogonal_edges: true` when connectors must be
+  horizontal/vertical only.
+
+Every generated diagram must mirror this contract in the SVG:
+
+- Node groups use `data-svga-node="<node-id>"`.
+- Text uses `data-svga-text="<text-box-id>"`.
+- Connector paths use `data-svga-edge="<edge-id>"` and `data-svga-role="edge"`.
+- Non-connector paths use `data-svga-role="icon"` or `data-svga-role="decoration"`.
+- Color-bearing groups/elements should use `data-svga-color-role`; every role must exist in
+  `color_system.role_map`, and every solid hex color must come from the selected theme tokens.
+- Visible text uses `data-svga-text`; when an English product name, model name, professional
+  term, acronym, code, command, path or URL must remain, annotate it with
+  `data-svga-text-kind="proper_noun|model_name|professional_term|acronym|code|command|path|url"`.
+- Use the diagram-type mapping in `references/color_tokens.json`; do not invent a new
+  accent for a node type that already has a mapped role. Semantic colors are reserved for
+  status meaning, not decoration.
+- For flowcharts, architectures and loop diagrams, align same-level nodes to one baseline
+  and use one height per visual group. With `orthogonal_edges: true`, every non-bezier edge
+  must be composed only of horizontal or vertical segments; a diagonal `L` segment is invalid.
+- Node chrome defaults to the outer border only: do not add narrow full-height rectangles,
+  lines or paths along a node's left/right edge as accent rails. The `tech_dark` center divider
+  is allowed only for a dual-hero composition and must sit between groups, never inside a node.
+- Do not emit untagged connector paths or duplicate geometry in prose-only instructions.
+
+For directed edges, use one shared fixed-size marker: `markerUnits="userSpaceOnUse"`, marker width/height 7–10px, and the marker tip aligned to the target port. Prefer `straight` or `orthogonal` routes; use `bezier` only when the plan explicitly declares it. Do not route multiple edges through the same exit path without separate waypoints.
+Use a solid token color for every connector stroke; a gradient on a purely horizontal or vertical path can disappear when its bounding box has zero height or width. Keep opaque label backgrounds clear of connector routes, including return loops.
+
 ### 4. Generate SVG
 
 Write a complete SVG file, not only an inline snippet.
@@ -108,6 +160,8 @@ Required SVG properties:
 - Put a full-canvas background `<rect>` first, with a solid fill that reflects the intended background color.
 - Use high-contrast solid fills for core text. Decorative gradients are allowed only when legibility does not depend on them.
 - Use `PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif` as the default Chinese font stack, or the approved stack from `references/fonts_whitelist.json`. For English-primary titles, prepend `Inter` or `SF Pro Display` before the Chinese fallbacks.
+- Use the layout contract's node, text and edge IDs in `data-svga-*` attributes so geometry can be checked mechanically.
+- Keep edge strokes between 2px and 3px and keep arrowheads visually smaller than the node labels.
 
 Forbidden content:
 
@@ -132,6 +186,29 @@ For an existing file or a focused manual loop:
 python3 scripts/svg_validator.py --svg <svg_path> --json
 python3 scripts/svg_validator.py --svg <svg_path> --plan <layout_plan.json> --strict --json
 ```
+
+For any new diagram with a layout plan, run the geometry gate:
+
+```bash
+python3 scripts/geometry_validator.py \
+  --svg <svg_path> --plan <layout_plan.json> --strict --json
+```
+
+Run the color gate for planned diagrams:
+
+```bash
+python3 scripts/color_validator.py \
+  --svg <svg_path> --plan <layout_plan.json> --strict --json
+```
+
+Run the Chinese-first language gate for planned diagrams:
+
+```bash
+python3 scripts/text_language_validator.py \
+  --svg <svg_path> --plan <layout_plan.json> --strict --json
+```
+
+This gate rejects text overflow, text/icon overlap, node overlap, dangling or misaligned arrows, oversized or mis-scaled markers, edges crossing unrelated nodes/text, edges that violate minimum clearance, route/waypoint mismatches, and untagged visible paths. The full `run_pipeline.py` invokes language, color and geometry gates when `--plan` is supplied.
 
 If validation returns auto-fixable errors, run:
 
@@ -181,6 +258,7 @@ Final response must include:
 - Absolute SVG path.
 - Absolute PNG path only if PNG was requested.
 - Validation command and PASS/failure status.
+- Geometry validator PASS/failure status for planned diagrams.
 - A short self-check summary for all High severity checklist items.
 
 Do not claim validation passed unless the script was run and returned success.

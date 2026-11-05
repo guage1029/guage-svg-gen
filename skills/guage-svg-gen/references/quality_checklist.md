@@ -30,6 +30,8 @@ SVG 交付前必须逐项核查。High severity 项不通过禁止交付，Mediu
 | comp-1 | 关键信息位于 Safe Area 内 | **High** |
 | comp-2 | 视觉焦点明确，无过度拥挤 | Medium |
 | comp-3 | 连线平滑（贝塞尔或圆角），无穿模 | Medium |
+| comp-4 | 节点内部无贴边全高装饰竖条；节点默认仅使用外边框 | **High** |
+| comp-5 | 连线使用实体描边，标签底框不遮挡连线 | **High** |
 
 ## Branding
 
