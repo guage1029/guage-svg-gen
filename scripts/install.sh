@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# scripts/install.sh — svg-architect Skill 安装脚本
-# 只安装 skills/svg-architect/ 目录内容，不复制 docs/、evals/、tests/ 等
+# scripts/install.sh — guage-svg-gen Skill 安装脚本
+# 只安装 skills/guage-svg-gen/ 目录内容，不复制 docs/、evals/、tests/ 等
 
 set -e
 
-SKILL_NAME="svg-architect"
+SKILL_NAME="guage-svg-gen"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SKILL_SRC="$SCRIPT_DIR/../skills/svg-architect"
+SKILL_SRC="$SCRIPT_DIR/../skills/guage-svg-gen"
 
 # ─── 参数解析 ────────────────────────────────────────────────────────────────
 OPT_DEST=""
@@ -45,7 +45,7 @@ INTERACTIVE=0
 [[ -z "$OPT_DEST" && -z "$OPT_WORKSPACE" && "$OPT_YES" -eq 0 && "$OPT_SKIP_DEPS" -eq 0 ]] && INTERACTIVE=1
 
 echo "========================================="
-echo " svg-architect Skill 安装向导"
+echo " guage-svg-gen Skill 安装向导"
 echo "========================================="
 echo ""
 

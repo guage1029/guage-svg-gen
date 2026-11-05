@@ -1,4 +1,4 @@
-# SVG Architect Error & Exit Codes
+# Guage SVG Gen Error & Exit Codes
 
 ## 1. Error Codes (`E_*`)
 

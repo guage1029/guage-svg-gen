@@ -199,7 +199,7 @@ def analyze_image(img_path, crop_x, crop_y, crop_w, crop_h, scale):
 # ── 主流程 ─────────────────────────────────────────────────────────────────────
 
 def main():
-    parser = argparse.ArgumentParser(description="SVG Architect QA Preview Renderer")
+    parser = argparse.ArgumentParser(description="Guage SVG Gen QA Preview Renderer")
     parser.add_argument("--svg", required=True, help="SVG 文件路径（绝对或相对）")
     parser.add_argument(
         "--platform", required=True,

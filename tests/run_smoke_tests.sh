@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# SVG Architect Smoke Tests v4 (Batch 3: ID/Font/Size/Gradient checks)
+# Guage SVG Gen Smoke Tests v4 (Batch 3: ID/Font/Size/Gradient checks)
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-BASE_DIR="$(cd "$SCRIPT_DIR/../skills/svg-architect" && pwd)"
+BASE_DIR="$(cd "$SCRIPT_DIR/../skills/guage-svg-gen" && pwd)"
 CASES_DIR="$SCRIPT_DIR/cases"
 
 PASS_COUNT=0

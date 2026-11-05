@@ -1,6 +1,6 @@
 {
   "meta": {
-    "skill": "svg-architect",
+    "skill": "guage-svg-gen",
     "version": "14.0",
     "description": "6 种风格 × 2 平台全覆盖评测，共 12 条。每条明确期望的视觉风格特征，供人工或 LLM judge 核查。",
     "styles": ["tech_dark", "minimal_clean", "glass_premium", "neubrutalism", "bento_info", "clay_soft"],

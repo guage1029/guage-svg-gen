@@ -1,8 +1,8 @@
 {
   "meta": {
-    "skill": "svg-architect",
+    "skill": "guage-svg-gen",
     "version": "14.0",
-    "description": "近似误触负例。这些 query 包含「图/画/视觉」等关键词，但不属于公众号 SVG 交付场景，不得触发 svg-architect。",
+    "description": "近似误触负例。这些 query 包含「图/画/视觉」等关键词，但不属于公众号 SVG 交付场景，不得触发 guage-svg-gen。",
     "threshold": 0.875,
     "notes": "误触率应 ≤ 12.5%（16 条中允许至多 2 条误触）"
   },
@@ -59,7 +59,7 @@
       "id": "neg-photorealistic-01",
       "query": "生成一张照片风格的城市夜景图",
       "should_trigger": false,
-      "reason": "写实摄影风格，svg-architect 明确不支持"
+      "reason": "写实摄影风格，guage-svg-gen 明确不支持"
     },
     {
       "id": "neg-photorealistic-02",
@@ -89,7 +89,7 @@
       "id": "neg-mermaid-02",
       "query": "用 PlantUML 帮我画个类图",
       "should_trigger": false,
-      "reason": "PlantUML，非 svg-architect 交付物"
+      "reason": "PlantUML，非 guage-svg-gen 交付物"
     },
     {
       "id": "neg-canvas-01",

@@ -1,8 +1,8 @@
-# SVG Architect (v0.16)
+# Guage SVG Gen (v0.17.2)
 
 **公众号专属工业级 SVG 设计引擎**
 
-`svg-architect` 是一个遵循 [Agent Skills](https://agentskills.io) 协议的专业级设计 Skill，专为公众号内容创作者打造。通过 AI Agent 驱动，一句话生成封面图、配图、架构图、流程图等高质量 SVG 图像，完美适配手机端阅读体验。
+`guage-svg-gen` 是一个遵循 [Agent Skills](https://agentskills.io) 协议的专业级设计 Skill，专为公众号内容创作者打造。通过 AI Agent 驱动，一句话生成封面图、配图、架构图、流程图等高质量 SVG 图像，完美适配手机端阅读体验。
 
 ---
 
@@ -42,7 +42,7 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/zhaodl1983/svg-architect.git
+git clone https://github.com/guage1029/svg-architect.git
 cd svg-architect
 
 # 安装（交互模式）
@@ -69,7 +69,7 @@ svg-architect/
 │   ├── install.sh                  # 安装向导（支持 --dest / --workspace / --yes / --skip-deps）
 │   └── check_release.sh            # 发布自检脚本
 ├── skills/
-│   └── svg-architect/              # Agent Skills 标准 skill 根
+│   └── guage-svg-gen/              # Agent Skills 标准 skill 根
 │       ├── SKILL.md                # 核心指令（Agent Skills compatible）
 │       ├── references/             # 按需加载的参考文档
 │       │   ├── fonts_whitelist.json
@@ -126,27 +126,27 @@ svg-architect/
 
 ```bash
 # 验证 SVG 合规性（自动检测平台）
-python skills/svg-architect/scripts/svg_validator.py --svg input.svg
+python skills/guage-svg-gen/scripts/svg_validator.py --svg input.svg
 
 # 严格模式（WARN 也视为失败，报告 JSON）
-python skills/svg-architect/scripts/svg_validator.py --svg input.svg --strict --json
+python skills/guage-svg-gen/scripts/svg_validator.py --svg input.svg --strict --json
 
 # 指定平台与 ID 前缀
-python skills/svg-architect/scripts/svg_validator.py \
+python skills/guage-svg-gen/scripts/svg_validator.py \
   --svg input.svg --platform wechat_cover --id-prefix svga-
 
 # QA 预览渲染（输出 preview.png / thumbnail_crop.png / visual_report.json）
-python skills/svg-architect/scripts/render_svg_preview.py \
+python skills/guage-svg-gen/scripts/render_svg_preview.py \
   --svg input.svg --platform wechat_article --out-dir ./preview/
 
 # 自动修复常见错误
-python skills/svg-architect/scripts/svg_fixer.py --svg input.svg
+python skills/guage-svg-gen/scripts/svg_fixer.py --svg input.svg
 
 # 导出 PNG
-python skills/svg-architect/scripts/optimize_and_convert.py input.svg --format png
+python skills/guage-svg-gen/scripts/optimize_and_convert.py input.svg --format png
 
 # 完整流水线（验证 + 修复 + 输出）
-python skills/svg-architect/scripts/run_pipeline.py --svg input.svg --slug my-cover
+python skills/guage-svg-gen/scripts/run_pipeline.py --svg input.svg --slug my-cover
 
 # 运行冒烟测试（17 条）
 bash tests/run_smoke_tests.sh

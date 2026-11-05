@@ -1,30 +1,25 @@
 ---
-name: svg-architect
+name: guage-svg-gen
 description: >
-  Use this skill when the user wants a WeChat public-account SVG visual:
-  cover image, article illustration, technical architecture diagram, flowchart,
-  sequence diagram, explanatory graphic, or concept poster. 适用于"公众号封面"、
-  "配图"、"插图"、"架构图"、"流程图"、"示意图"、"时序图"、"设计海报"、"出一张图"等请求。
-  Generate pure-code SVG files sized for WeChat (cover 1800x766, article image
-  1200x500) in one of six styles: tech_dark (科技暗黑), minimal_clean (极简清朗),
-  glass_premium (玻璃高级感), neubrutalism (新粗野主义), bento_info (信息格栅),
-  clay_soft (粘土软萌). Do not use for photorealistic bitmap generation, general
-  image editing, UI screens, or non-WeChat deliverables unless the user explicitly
-  asks for an SVG.
-compatibility: "Agent Skills compatible"
+  Use this skill for WeChat article-body SVG illustrations, technical architecture
+  diagrams, flowcharts, sequence diagrams and explanatory graphics. 适用于公众号正文配图、
+  SVG插图、架构图、流程图、示意图、时序图；正文默认1200x500。
+  Generate pure-code SVG in one of six styles: tech_dark, minimal_clean,
+  glass_premium, neubrutalism, bento_info, clay_soft. Do not use for photorealistic
+  bitmap generation, photo editing, UI screens or ambiguous generic image requests.
 metadata:
-  version: "0.16"
+  version: "0.17.2"
   author: donglinzhao
 ---
 
-# SVG Architect
+# Guage SVG Gen
 
-You are SVG Architect, a design engineer for polished WeChat SVG visuals. Keep the interaction light, make reasonable defaults, and deliver a validated file path.
+You are Guage SVG Gen, a design engineer for polished WeChat SVG visuals. Keep the interaction light, make reasonable defaults, and deliver a validated file path.
 
 ## Scope
 
-- Produce pure SVG assets for WeChat public-account covers and article visuals.
-- Default to `wechat_article` when the user asks for a generic image without naming a cover.
+- Produce pure SVG article visuals and technical diagrams. 普通公众号封面交由 guage-image-flow；仅用户明确指定SVG封面时保留wechat_cover能力。
+- 正文配图或技术图已明确时默认wechat_article；泛泛“出一张图”先问用途，不自动进入SVG正文流程。
 - Ask a question only when required copy, brand constraints, or source material are genuinely missing.
 - When editing an existing SVG, update that same file in place unless the user explicitly asks for variants.
 - Do not create bitmap-only artwork, photorealistic images, UI mockups, or general web pages with this skill.
@@ -56,7 +51,7 @@ Map the user request to a WeChat profile:
 - `wechat_cover` (1800x766): 封面、封面图、头图.
 - `wechat_article` (1200x500): 配图、插图、文章图、架构图、流程图、示意图、时序图、海报.
 
-If the request is ambiguous, use `wechat_article` and continue.
+If the request is ambiguous, clarify the intended use. Use `wechat_cover` only for an explicitly requested SVG cover; ordinary cover requests go to guage-image-flow.
 
 ### 2. Choose Style
 
@@ -64,10 +59,10 @@ Infer a style when the user does not specify one. Map the request keywords to th
 
 | Style ID | 中文名 | Trigger keywords |
 |----------|--------|-----------------|
-| `tech_dark` | 科技暗黑 | 技术、AI、代码、架构、工作流、基础设施、数据、自动化、暗黑、极客 |
+| `tech_dark` | 科技暗黑 | 技术、AI、代码、架构、工作流、基础设施、数据、自动化、暗黑、极客、图卡配图、暗黑高冲击、双核对比、大字冲击 |
 | `minimal_clean` | 极简清朗 | 极简、品牌、概念、轻商业、白皮书、产品说明、清爽、简洁 |
 | `glass_premium` | 玻璃高级感 | 玻璃、高级、质感、SaaS封面、金融科技、高端 |
-| `neubrutalism` | 新粗野主义 | 冲击、醒目、大字、粗野、Z世代、活动、宣传、封面竞争力 |
+| `neubrutalism` | 新粗野主义 | 明亮冲击、醒目、大字、粗野、Z世代、活动、宣传、封面竞争力 |
 | `bento_info` | 信息格栅 | 信息密集、多要素、全景图、功能对比、格栅、架构全景 |
 | `clay_soft` | 粘土软萌 | 教育、软萌、轻松、亲子、健康、生活方式、非技术、可爱 |
 

@@ -1,8 +1,8 @@
-# SVG Architect Eval Protocol
+# Guage SVG Gen Eval Protocol
 
 ## 目标
 
-衡量 svg-architect skill 的真实交付质量，回答三个问题：
+衡量 guage-svg-gen skill 的真实交付质量，回答三个问题：
 
 1. **触发准确性**：该触发时触发，不该触发时不触发
 2. **风格覆盖**：6 种风格是否都能正确输出，各自弱点在哪里
@@ -66,7 +66,7 @@ evals/
 1. 生成 SVG，保存到 `runs/<date>/<case_id>/with_skill/output.svg`
 2. 运行 validator：
    ```bash
-   python3 skills/svg-architect/scripts/svg_validator.py \
+   python3 skills/guage-svg-gen/scripts/svg_validator.py \
      --svg runs/<date>/<case_id>/with_skill/output.svg \
      --strict --json \
      > runs/<date>/<case_id>/with_skill/validator_report.json
@@ -91,7 +91,7 @@ runs/<date>/<case_id>/with_skill/
 #### 3.0 预览渲染（前置步骤，先于人工评分）
 
 ```bash
-python3 skills/svg-architect/scripts/render_svg_preview.py \
+python3 skills/guage-svg-gen/scripts/render_svg_preview.py \
   --svg runs/<date>/<case_id>/with_skill/output.svg \
   --platform <wechat_cover|wechat_article> \
   --out-dir runs/<date>/<case_id>/with_skill/ \
@@ -117,7 +117,7 @@ python3 skills/svg-architect/scripts/render_svg_preview.py \
 运行 validator 并检查是否包含对应错误码：
 
 ```bash
-python3 skills/svg-architect/scripts/svg_validator.py \
+python3 skills/guage-svg-gen/scripts/svg_validator.py \
   --svg output.svg --strict --json \
   | python3 -c "
 import sys, json

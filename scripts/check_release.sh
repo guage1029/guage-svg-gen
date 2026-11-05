@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# scripts/check_release.sh — svg-architect 发布自检
+# scripts/check_release.sh — guage-svg-gen 发布自检
 # 在每次 release commit 前运行，确保仓库符合公开发布标准
 
 set -e
@@ -18,7 +18,7 @@ fail() { echo -e "  ${RED}FAIL${NC}  $1"; FAIL=$((FAIL+1)); }
 warn() { echo -e "  ${YELLOW}WARN${NC}  $1"; }
 
 echo "========================================="
-echo " svg-architect Release Check"
+echo " guage-svg-gen Release Check"
 echo "========================================="
 echo ""
 
@@ -86,11 +86,11 @@ echo ""
 echo "[4] 关键文件存在"
 
 REQUIRED=(
-    "skills/svg-architect/SKILL.md"
-    "skills/svg-architect/references/fonts_whitelist.json"
-    "skills/svg-architect/references/quality_checklist.md"
-    "skills/svg-architect/scripts/svg_validator.py"
-    "skills/svg-architect/scripts/render_svg_preview.py"
+    "skills/guage-svg-gen/SKILL.md"
+    "skills/guage-svg-gen/references/fonts_whitelist.json"
+    "skills/guage-svg-gen/references/quality_checklist.md"
+    "skills/guage-svg-gen/scripts/svg_validator.py"
+    "skills/guage-svg-gen/scripts/render_svg_preview.py"
     "tests/run_smoke_tests.sh"
     "integrations/gemini/gemini-extension.json"
     "evals/eval_protocol.md"

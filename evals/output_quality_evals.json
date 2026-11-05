@@ -1,6 +1,6 @@
 {
   "meta": {
-    "skill": "svg-architect",
+    "skill": "guage-svg-gen",
     "version": "14.0",
     "description": "输出质量评测，共 12 个 case。每个 case 含机械断言（script 自动验证）、平台断言（规则验证）和视觉断言（human/LLM judge）。",
     "assertion_types": {

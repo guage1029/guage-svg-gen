@@ -27,7 +27,7 @@ def fix_svg(svg_path, error_codes, plan_path=None):
         if code == "E_A11Y_MISSING":
             if not any(c.tag.split('}')[-1] == 'title' for c in root):
                 title = ET.Element('{http://www.w3.org/2000/svg}title')
-                title.text = plan.get('metadata', {}).get('platform', 'SVG Architect')
+                title.text = plan.get('metadata', {}).get('platform', 'Guage SVG Gen')
                 root.insert(0, title)
             if not any(c.tag.split('}')[-1] == 'desc' for c in root):
                 desc = ET.Element('{http://www.w3.org/2000/svg}desc')

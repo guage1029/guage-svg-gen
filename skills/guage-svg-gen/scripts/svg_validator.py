@@ -409,7 +409,7 @@ def validate_svg(svg_file, layout_plan_file=None, strict=False, id_prefix='svga-
 
 
 def main():
-    parser = argparse.ArgumentParser(description="SVG Architect Validator")
+    parser = argparse.ArgumentParser(description="Guage SVG Gen Validator")
     parser.add_argument("--svg", required=True, help="SVG 文件路径")
     parser.add_argument("--plan", help="layout_plan.json 路径")
     parser.add_argument("--strict", action="store_true", help="strict 模式（对比度/渐变文字等升为 error）")
