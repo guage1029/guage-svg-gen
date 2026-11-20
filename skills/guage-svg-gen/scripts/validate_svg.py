@@ -33,6 +33,8 @@ ERR_CODES = {
     "E_ID_PREFIX_MISSING": "id 属性未使用规定前缀",
     "E_FONT_FAMILY_MISSING": "文本元素缺少 font-family（含祖先继承）",
     "E_FONT_FALLBACK_MISSING": "font-family 缺少 sans-serif 或 monospace fallback",
+    "E_FONT_FAMILY_QUOTED": "font-family 含单引号或双引号（cairosvg 跨平台解析易失效，须去引号）",
+    "E_FONT_SYSTEM_UI": "font-family 含 system-ui/-apple-system（禁止使用，请使用明确系统字体栈）",
     "E_FONT_EXTERNAL": "检测到 @font-face 或外部字体 url",
     "E_FONT_SIZE_TOO_SMALL": "文字字号低于平台 Caption 下限",
     "E_XML_PARSE_FAIL": "XML 解析失败",
@@ -231,13 +233,66 @@ def _resolve_attr(elem, attr, ancestors):
             return val
     return None
 
+_GENERIC_FONT_FAMILIES = frozenset({'sans-serif', 'serif', 'monospace', 'cursive', 'fantasy'})
+_BANNED_SYSTEM_FONTS = frozenset({'system-ui', '-apple-system', 'blinkmacsystemfont'})
+_FONT_WHITELIST_CACHE = None
+
+
+def _load_whitelisted_fonts():
+    """从 assets/fonts-whitelist.json 加载允许字体家族列表（小写集合）。"""
+    global _FONT_WHITELIST_CACHE
+    if _FONT_WHITELIST_CACHE is not None:
+        return _FONT_WHITELIST_CACHE
+    wl_path = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "assets",
+        "fonts-whitelist.json",
+    )
+    fonts = set()
+    try:
+        with open(wl_path, "r", encoding="utf-8") as fh:
+            data = json.load(fh)
+        if isinstance(data, list):
+            for entry in data:
+                fam = (entry.get("family") or "").strip().lower()
+                if fam:
+                    fonts.add(fam)
+    except Exception:
+        fonts = set()
+    _FONT_WHITELIST_CACHE = fonts
+    return fonts
+
+
 def _has_generic_fallback(font_family_str):
     """检查 font-family 末尾是否包含 sans-serif 或 monospace。"""
     families = [f.strip().strip('"\'').lower() for f in font_family_str.split(',')]
     if not families:
         return False
     last = families[-1]
-    return last in ('sans-serif', 'monospace', 'serif', 'cursive', 'fantasy')
+    return last in _GENERIC_FONT_FAMILIES
+
+
+def _inspect_font_family(font_family_str, whitelisted_fonts):
+    """返回 (quoted, banned_system, unlisted) 列表，校验去引号、禁 system-ui 与字体白名单。"""
+    quoted = []
+    banned_system = []
+    unlisted = []
+    for raw in font_family_str.split(','):
+        part = raw.strip()
+        if not part:
+            continue
+        if "'" in part or '"' in part:
+            quoted.append(part)
+        cleaned = part.strip('"\'').strip().lower()
+        if not cleaned:
+            continue
+        if cleaned in _BANNED_SYSTEM_FONTS:
+            banned_system.append(cleaned)
+        elif cleaned in _GENERIC_FONT_FAMILIES:
+            continue
+        elif whitelisted_fonts and cleaned not in whitelisted_fonts:
+            unlisted.append(part.strip('"\''))
+    return quoted, banned_system, unlisted
 
 def _is_gradient_fill(fill_str):
     """检查 fill 是否指向渐变/pattern（url(#...)）。"""
@@ -569,6 +624,8 @@ def validate_svg(svg_file, layout_plan_file=None, strict=False, id_prefix='svga-
 
         # ── 6. 字体检查 ───────────────────────────────────────────────────────
         text_tags = (f'{{{SVG_NS}}}text', f'{{{SVG_NS}}}tspan')
+        whitelisted_fonts = _load_whitelisted_fonts()
+        seen_font_issues = set()
         for elem in root.iter():
             if elem.tag not in text_tags:
                 continue
@@ -581,12 +638,41 @@ def validate_svg(svg_file, layout_plan_file=None, strict=False, id_prefix='svga-
                     "msg": f"{ERR_CODES['E_FONT_FAMILY_MISSING']} (text={t_id!r})",
                     "text_id": t_id,
                 })
-            elif not _has_generic_fallback(ff):
+                continue
+            if not _has_generic_fallback(ff):
                 report["errors"].append({
                     "code": "E_FONT_FALLBACK_MISSING",
                     "msg": f"font-family=\"{ff}\" 缺少 sans-serif/monospace fallback (text={t_id!r})",
                     "text_id": t_id,
                 })
+            has_own_ff = bool(
+                elem.attrib.get('font-family')
+                or _get_style_prop(elem.attrib.get('style', ''), 'font-family')
+            )
+            if elem.tag == f'{{{SVG_NS}}}text' or has_own_ff:
+                quoted, banned_sys, unlisted = _inspect_font_family(ff, whitelisted_fonts)
+                level = "errors" if strict else "warnings"
+                if quoted and ("E_FONT_FAMILY_QUOTED", t_id) not in seen_font_issues:
+                    seen_font_issues.add(("E_FONT_FAMILY_QUOTED", t_id))
+                    report[level].append({
+                        "code": "E_FONT_FAMILY_QUOTED",
+                        "msg": f"font-family 含引号 {', '.join(quoted)}，cairosvg 易失败 (text={t_id!r})",
+                        "text_id": t_id,
+                    })
+                if banned_sys and ("E_FONT_SYSTEM_UI", t_id) not in seen_font_issues:
+                    seen_font_issues.add(("E_FONT_SYSTEM_UI", t_id))
+                    report[level].append({
+                        "code": "E_FONT_SYSTEM_UI",
+                        "msg": f"font-family 含禁用的 {', '.join(banned_sys)}，请改用明确字体栈 (text={t_id!r})",
+                        "text_id": t_id,
+                    })
+                if unlisted and ("W_FONT_UNLISTED", t_id) not in seen_font_issues:
+                    seen_font_issues.add(("W_FONT_UNLISTED", t_id))
+                    report["warnings"].append({
+                        "code": "W_FONT_UNLISTED",
+                        "msg": f"字体不在 fonts-whitelist.json 中: {', '.join(unlisted)} (text={t_id!r})",
+                        "text_id": t_id,
+                    })
 
         # ── 7. 字号检查 ───────────────────────────────────────────────────────
         if min_font_size is not None:

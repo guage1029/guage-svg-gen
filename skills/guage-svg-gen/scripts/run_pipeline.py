@@ -104,7 +104,7 @@ def validate_layout_plan_schema(plan_path):
 
     meta = plan.get("metadata")
     if isinstance(meta, dict):
-        for k in set(meta.keys()) - {"theme", "platform", "language"}:
+        for k in set(meta.keys()) - {"theme", "platform", "language", "background_style"}:
             errors.append(f"Unexpected metadata field: {k}")
         if meta.get("theme") not in {"bg_dark", "bg_light"}:
             errors.append(f"Invalid metadata.theme: {meta.get('theme')}")
@@ -112,6 +112,8 @@ def validate_layout_plan_schema(plan_path):
             errors.append("metadata.platform must be a string")
         if "language" in meta and meta["language"] not in {"zh", "en", "mixed"}:
             errors.append(f"Invalid metadata.language: {meta['language']}")
+        if "background_style" in meta and meta["background_style"] not in {"dot", "line", "solid"}:
+            errors.append(f"Invalid metadata.background_style: {meta['background_style']}")
 
     palette = plan.get("palette")
     if isinstance(palette, dict):

@@ -2,27 +2,47 @@
   {
     "family": "PingFang SC",
     "weight": ["400", "500", "600", "700", "800"],
-    "usage": "Chinese primary — macOS/iOS only, always pair unquoted with cross-platform fallbacks (bg_dark, bg_light)"
+    "usage": "Chinese primary on macOS/iOS — always pair unquoted with Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, and sans-serif"
+  },
+  {
+    "family": "Hiragino Sans GB",
+    "weight": ["400", "700"],
+    "usage": "macOS system Chinese sans fallback (relied on cleanly by fontconfig/cairosvg)"
   },
   {
     "family": "Noto Sans SC",
     "weight": ["400", "500", "700"],
-    "usage": "Chinese cross-platform fallback — covers Windows/Linux/Android"
+    "usage": "Cross-platform CJK fallback — covers Linux/Windows/Android"
   },
   {
     "family": "Microsoft YaHei",
     "weight": ["400", "700"],
-    "usage": "Chinese Windows fallback"
+    "usage": "Windows Chinese fallback (note: only 400 and 700 weights are guaranteed)"
   },
   {
     "family": "Inter",
-    "weight": ["400", "500", "600", "700", "800"],
+    "weight": ["400", "600", "700", "800"],
     "usage": "Unified English/Latin display text across bg_dark and bg_light"
   },
   {
     "family": "JetBrains Mono",
     "weight": ["400", "600", "700"],
     "usage": "Code snippets, file paths, parameter tokens, and monospace labels"
+  },
+  {
+    "family": "SF Mono",
+    "weight": ["400", "600", "700"],
+    "usage": "macOS monospace fallback before Menlo"
+  },
+  {
+    "family": "Menlo",
+    "weight": ["400", "700"],
+    "usage": "macOS built-in monospace font indexed directly by fontconfig"
+  },
+  {
+    "family": "Consolas",
+    "weight": ["400", "700"],
+    "usage": "Windows monospace fallback before generic monospace"
   },
   {
     "family": "Roboto",

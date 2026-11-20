@@ -52,6 +52,8 @@
 | `E_ID_PREFIX_MISSING` | 有 `id` 属性但未使用允许前缀（默认 `svga-`）；修复：重命名 id 并同步所有 `url(#id)`、`href="#id"`、`xlink:href="#id"` 引用 | Manual |
 | `E_FONT_FAMILY_MISSING` | 文本元素缺少 `font-family`，且祖先也未提供可继承字体栈 | Manual |
 | `E_FONT_FALLBACK_MISSING` | `font-family` 缺少最终 fallback：`sans-serif` 或 `monospace` | Manual |
+| `E_FONT_FAMILY_QUOTED` | `font-family` 包含单引号或双引号（`cairosvg` 下易导致字体匹配失败） | Manual |
+| `E_FONT_SYSTEM_UI` | `font-family` 包含 `system-ui`/`-apple-system`（跨系统字体漂移，请改用明确字体栈） | Manual |
 | `E_FONT_EXTERNAL` | 检测到 `@font-face` 或外部字体 `url(...)` | Manual |
 | `E_FONT_SIZE_TOO_SMALL` | 文本字号低于当前平台 Caption 下限（`wechat_cover` < 18px，`wechat_article` < 16px） | Manual |
 | `E_CONTRAST_GRADIENT_TEXT` | strict 模式下关键文字使用 `url(#...)` 渐变/pattern fill，对比度无法计算；需改为 solid fill 或人工确认 | Manual |

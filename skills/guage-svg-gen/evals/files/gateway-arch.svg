@@ -3,33 +3,33 @@
   <desc id="svga-gateway-arch-desc">API 网关到鉴权与下游服务的调用链路</desc>
   <defs id="svga-gateway-arch-defs">
     <marker id="svga-gateway-arch-arrow" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" refX="9" refY="5" orient="auto">
-      <path d="M 0 1 L 8 5 L 0 9 z" fill="#60A5FA" data-svga-color-role="edge_flow" data-svga-role="decoration"/>
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#8FA1D9" data-svga-color-role="edge_flow" data-svga-role="decoration"/>
     </marker>
   </defs>
 
   <rect id="svga-gateway-arch-bg" x="0" y="0" width="1200" height="500" fill="#050506" data-svga-color-role="background"/>
 
-  <text id="svga-gateway-arch-main-title" data-svga-text="main-title" x="600" y="84" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif" font-size="28" font-weight="700" fill="#FAFAFA" data-svga-color-role="text_primary">微服务网关调用架构</text>
-  <text id="svga-gateway-arch-sub-title" data-svga-text="sub-title" x="600" y="116" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif" font-size="16" fill="#A1A1AA" data-svga-color-role="text_secondary">统一接入层、身份鉴权与核心业务链路</text>
+  <text id="svga-gateway-arch-main-title" data-svga-text="main-title" x="600" y="84" text-anchor="middle" font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="28" font-weight="700" fill="#FAFAFA" data-svga-color-role="text_primary">微服务网关调用架构</text>
+  <text id="svga-gateway-arch-sub-title" data-svga-text="sub-title" x="600" y="116" text-anchor="middle" font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="16" fill="#D4D4D8" data-svga-color-role="text_secondary">统一接入层、身份鉴权与核心业务链路</text>
 
   <g id="svga-gateway-arch-node-gw" data-svga-node="gateway">
-    <rect id="svga-gateway-arch-rect-gw" x="120" y="180" width="260" height="150" rx="10" fill="#111114" stroke="#3B82F6" stroke-width="2" data-svga-color-role="node"/>
-    <text id="svga-gateway-arch-gw-title" data-svga-text="gw-title" x="144" y="236" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif" font-size="20" font-weight="700" fill="#FAFAFA" data-svga-color-role="text_primary">API 网关</text>
-    <text id="svga-gateway-arch-gw-desc" data-svga-text="gw-desc" x="144" y="274" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif" font-size="16" fill="#A1A1AA" data-svga-color-role="text_secondary">路由分发与协议转换</text>
+    <rect id="svga-gateway-arch-rect-gw" x="120" y="180" width="260" height="150" rx="10" fill="#111114" stroke="#6979B0" stroke-width="2" data-svga-color-role="node"/>
+    <text id="svga-gateway-arch-gw-title" data-svga-text="gw-title" x="144" y="236" font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="20" font-weight="700" fill="#FAFAFA" data-svga-color-role="text_primary">API 网关</text>
+    <text id="svga-gateway-arch-gw-desc" data-svga-text="gw-desc" x="144" y="274" font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="16" fill="#D4D4D8" data-svga-color-role="text_secondary">路由分发与协议转换</text>
   </g>
 
   <g id="svga-gateway-arch-node-auth" data-svga-node="auth-svc">
-    <rect id="svga-gateway-arch-rect-auth" x="470" y="180" width="260" height="150" rx="10" fill="#111114" stroke="#27272A" stroke-width="2" data-svga-color-role="node"/>
-    <text id="svga-gateway-arch-auth-title" data-svga-text="auth-title" x="494" y="236" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif" font-size="20" font-weight="700" fill="#FAFAFA" data-svga-color-role="text_primary">统一鉴权中心</text>
-    <text id="svga-gateway-arch-auth-desc" data-svga-text="auth-desc" x="494" y="274" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif" font-size="16" fill="#A1A1AA" data-svga-color-role="text_secondary">令牌校验与权限判定</text>
+    <rect id="svga-gateway-arch-rect-auth" x="470" y="180" width="260" height="150" rx="10" fill="#111114" stroke="#52525B" stroke-width="2" data-svga-color-role="node"/>
+    <text id="svga-gateway-arch-auth-title" data-svga-text="auth-title" x="494" y="236" font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="20" font-weight="700" fill="#FAFAFA" data-svga-color-role="text_primary">统一鉴权中心</text>
+    <text id="svga-gateway-arch-auth-desc" data-svga-text="auth-desc" x="494" y="274" font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="16" fill="#D4D4D8" data-svga-color-role="text_secondary">令牌校验与权限判定</text>
   </g>
 
   <g id="svga-gateway-arch-node-order" data-svga-node="order-svc">
-    <rect id="svga-gateway-arch-rect-order" x="820" y="180" width="260" height="150" rx="10" fill="#111114" stroke="#27272A" stroke-width="2" data-svga-color-role="node"/>
-    <text id="svga-gateway-arch-order-title" data-svga-text="order-title" x="844" y="236" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif" font-size="20" font-weight="700" fill="#FAFAFA" data-svga-color-role="text_primary"><tspan data-svga-text-kind="proper_noun">Order Service</tspan></text>
-    <text id="svga-gateway-arch-order-desc" data-svga-text="order-desc" x="844" y="274" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif" font-size="16" fill="#A1A1AA" data-svga-color-role="text_secondary">下游订单履约处理</text>
+    <rect id="svga-gateway-arch-rect-order" x="820" y="180" width="260" height="150" rx="10" fill="#111114" stroke="#52525B" stroke-width="2" data-svga-color-role="node"/>
+    <text id="svga-gateway-arch-order-title" data-svga-text="order-title" x="844" y="236" font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="20" font-weight="700" fill="#FAFAFA" data-svga-color-role="text_primary"><tspan data-svga-text-kind="proper_noun">Order Service</tspan></text>
+    <text id="svga-gateway-arch-order-desc" data-svga-text="order-desc" x="844" y="274" font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="16" fill="#D4D4D8" data-svga-color-role="text_secondary">下游订单履约处理</text>
   </g>
 
-  <path id="svga-gateway-arch-edge-1" data-svga-edge="edge-gw-auth" data-svga-role="edge" d="M 380 255 L 470 255" stroke="#60A5FA" stroke-width="2.5" fill="none" marker-end="url(#svga-gateway-arch-arrow)" data-svga-color-role="edge_flow"/>
-  <path id="svga-gateway-arch-edge-2" data-svga-edge="edge-auth-order" data-svga-role="edge" d="M 730 255 L 820 255" stroke="#60A5FA" stroke-width="2.5" fill="none" marker-end="url(#svga-gateway-arch-arrow)" data-svga-color-role="edge_flow"/>
+  <path id="svga-gateway-arch-edge-1" data-svga-edge="edge-gw-auth" data-svga-role="edge" d="M 380 255 L 470 255" stroke="#8FA1D9" stroke-width="2.5" fill="none" marker-end="url(#svga-gateway-arch-arrow)" data-svga-color-role="edge_flow"/>
+  <path id="svga-gateway-arch-edge-2" data-svga-edge="edge-auth-order" data-svga-role="edge" d="M 730 255 L 820 255" stroke="#8FA1D9" stroke-width="2.5" fill="none" marker-end="url(#svga-gateway-arch-arrow)" data-svga-color-role="edge_flow"/>
 </svg>

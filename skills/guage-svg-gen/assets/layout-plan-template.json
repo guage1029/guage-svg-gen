@@ -12,22 +12,23 @@
   "metadata": {
     "theme": "bg_dark",
     "platform": "wechat_article",
-    "language": "zh"
+    "language": "zh",
+    "background_style": "dot"
   },
   "slots": [
     {
       "slot_id": "background",
       "rect": { "x": 0, "y": 0, "w": 1200, "h": 675 },
-      "content_type": "dark_flat_25px_gray_grid_with_1px_border"
+      "content_type": "dark_flat_25px_dot_grid_with_1px_border"
     },
     {
       "slot_id": "title_area",
-      "rect": { "x": 80, "y": 52, "w": 1040, "h": 74 },
+      "rect": { "x": 80, "y": 52, "w": 1040, "h": 80 },
       "content_type": "diagram_header"
     },
     {
       "slot_id": "info_area",
-      "rect": { "x": 96, "y": 148, "w": 1008, "h": 400 },
+      "rect": { "x": 96, "y": 150, "w": 1008, "h": 400 },
       "content_type": "zones_primary_and_secondary_nodes"
     },
     {
@@ -37,13 +38,13 @@
     }
   ],
   "creative_zone": {
-    "allowed_area": "x: 96-1104, y: 148-548",
-    "visual_language": "charcoal cards with 4-tier corner radius hierarchy, dashed zone container, crisp 25px pixel-snapped gray grid, and 1px edge-clipped outer border on 16:9 default canvas",
+    "allowed_area": "x: 96-1104, y: 150-540",
+    "visual_language": "charcoal cards with 5-tier typography scale, 4-tier corner radius hierarchy, dashed zone container, 25px micro-dot grid with label cutout halos, and 1px outer border on 16:9 canvas",
     "focal_point": "aligned primary stage cards inside dashed core zone"
   },
   "palette": {
     "background": "#050506",
-    "primary": "#3B82F6",
+    "primary": "#6979B0",
     "text": "#FAFAFA"
   },
   "color_system": {
@@ -51,7 +52,7 @@
     "diagram_type": "architecture",
     "role_map": {
       "background": "background",
-      "grid": "surface_grid",
+      "grid": "surface_grid_dot",
       "zone_border": "border_zone",
       "zone_fill": "surface_alt",
       "node": "surface",
@@ -61,13 +62,14 @@
       "border_mid": "border_mid",
       "border_primary": "border_primary",
       "badge_blue": "blue_chip",
-      "badge_neutral": "border",
+      "badge_neutral": "surface_alt",
       "text_primary": "text_primary",
       "text_secondary": "text_secondary",
       "text_muted": "text_muted",
       "text_blue": "text_blue_bright",
       "text_blue_soft": "text_blue_soft",
       "text_purple": "text_purple_bright",
+      "edge_neutral": "edge_neutral",
       "edge_flow": "edge",
       "edge_data": "edge_secondary"
     }
@@ -78,15 +80,15 @@
       {
         "id": "primary-stages",
         "nodes": ["stage-1", "stage-2"],
-        "y": 194,
-        "height": 142,
+        "y": 198,
+        "height": 140,
         "tolerance": 1
       },
       {
         "id": "secondary-cards",
         "nodes": ["sub-1", "sub-2"],
-        "y": 444,
-        "height": 96,
+        "y": 442,
+        "height": 98,
         "tolerance": 1
       }
     ]
@@ -94,7 +96,7 @@
   "zones": [
     {
       "id": "zone-core",
-      "rect": { "x": 96, "y": 148, "w": 1008, "h": 212 },
+      "rect": { "x": 96, "y": 150, "w": 1008, "h": 212 },
       "nodes": ["stage-1", "stage-2"],
       "label": "zone-core-label",
       "padding": 12
@@ -103,138 +105,138 @@
   "nodes": [
     {
       "id": "stage-1",
-      "rect": { "x": 120, "y": 194, "w": 420, "h": 142 },
+      "rect": { "x": 120, "y": 198, "w": 420, "h": 140 },
       "padding": 12,
       "ports": {
-        "right": { "x": 540, "y": 265 }
+        "right": { "x": 540, "y": 268 }
       }
     },
     {
       "id": "stage-2",
-      "rect": { "x": 660, "y": 194, "w": 420, "h": 142 },
+      "rect": { "x": 660, "y": 198, "w": 420, "h": 140 },
       "padding": 12,
       "ports": {
-        "left": { "x": 660, "y": 265 },
-        "bottom": { "x": 870, "y": 336 }
+        "left": { "x": 660, "y": 268 },
+        "bottom": { "x": 870, "y": 338 }
       }
     },
     {
       "id": "sub-1",
-      "rect": { "x": 120, "y": 444, "w": 420, "h": 96 },
+      "rect": { "x": 120, "y": 442, "w": 420, "h": 98 },
       "padding": 10,
       "ports": {}
     },
     {
       "id": "sub-2",
-      "rect": { "x": 660, "y": 444, "w": 420, "h": 96 },
+      "rect": { "x": 660, "y": 442, "w": 420, "h": 98 },
       "padding": 10,
       "ports": {
-        "top": { "x": 870, "y": 444 }
+        "top": { "x": 870, "y": 442 }
       }
     }
   ],
   "text_boxes": [
     {
       "id": "main-title",
-      "rect": { "x": 400, "y": 54, "w": 400, "h": 48 }
+      "rect": { "x": 400, "y": 55, "w": 400, "h": 46 }
     },
     {
       "id": "sub-title",
-      "rect": { "x": 280, "y": 104, "w": 640, "h": 24 }
+      "rect": { "x": 260, "y": 104, "w": 680, "h": 27 }
     },
     {
       "id": "zone-core-label",
       "zone": "zone-core",
       "role": "zone_label",
-      "rect": { "x": 112, "y": 157, "w": 300, "h": 24 }
+      "rect": { "x": 112, "y": 162, "w": 320, "h": 25 }
     },
     {
       "id": "s1-title",
       "node": "stage-1",
-      "rect": { "x": 136, "y": 209, "w": 260, "h": 26 }
+      "rect": { "x": 136, "y": 212, "w": 260, "h": 28 }
     },
     {
       "id": "s1-badge",
       "node": "stage-1",
-      "rect": { "x": 434, "y": 211, "w": 84, "h": 24 }
+      "rect": { "x": 433, "y": 214, "w": 84, "h": 24 }
     },
     {
       "id": "s1-desc-1",
       "node": "stage-1",
-      "rect": { "x": 136, "y": 253, "w": 384, "h": 24 }
+      "rect": { "x": 136, "y": 256, "w": 384, "h": 25 }
     },
     {
       "id": "s1-desc-2",
       "node": "stage-1",
-      "rect": { "x": 136, "y": 289, "w": 384, "h": 24 }
+      "rect": { "x": 136, "y": 292, "w": 384, "h": 25 }
     },
     {
       "id": "s2-title",
       "node": "stage-2",
-      "rect": { "x": 676, "y": 209, "w": 260, "h": 26 }
+      "rect": { "x": 676, "y": 212, "w": 260, "h": 28 }
     },
     {
       "id": "s2-badge",
       "node": "stage-2",
-      "rect": { "x": 974, "y": 211, "w": 84, "h": 24 }
+      "rect": { "x": 973, "y": 214, "w": 84, "h": 24 }
     },
     {
       "id": "s2-desc-1",
       "node": "stage-2",
-      "rect": { "x": 676, "y": 253, "w": 384, "h": 24 }
+      "rect": { "x": 676, "y": 256, "w": 384, "h": 25 }
     },
     {
       "id": "s2-desc-2",
       "node": "stage-2",
-      "rect": { "x": 676, "y": 289, "w": 384, "h": 24 }
+      "rect": { "x": 676, "y": 292, "w": 384, "h": 25 }
     },
     {
       "id": "sub1-title",
       "node": "sub-1",
-      "rect": { "x": 136, "y": 461, "w": 384, "h": 24 }
+      "rect": { "x": 136, "y": 460, "w": 384, "h": 28 }
     },
     {
       "id": "sub1-desc",
       "node": "sub-1",
-      "rect": { "x": 136, "y": 496, "w": 384, "h": 24 }
+      "rect": { "x": 136, "y": 498, "w": 384, "h": 25 }
     },
     {
       "id": "sub2-title",
       "node": "sub-2",
-      "rect": { "x": 676, "y": 461, "w": 384, "h": 24 }
+      "rect": { "x": 676, "y": 460, "w": 384, "h": 28 }
     },
     {
       "id": "sub2-desc",
       "node": "sub-2",
-      "rect": { "x": 676, "y": 496, "w": 384, "h": 24 }
+      "rect": { "x": 676, "y": 498, "w": 384, "h": 25 }
     },
     {
       "id": "edge-label-12",
-      "rect": { "x": 560, "y": 229, "w": 80, "h": 22 }
+      "rect": { "x": 556, "y": 230, "w": 88, "h": 26 }
     },
     {
       "id": "edge-label-async",
-      "rect": { "x": 884, "y": 391, "w": 88, "h": 23 }
+      "rect": { "x": 884, "y": 391, "w": 88, "h": 24 }
     },
     {
       "id": "legend-flow",
       "role": "legend",
-      "rect": { "x": 192, "y": 591, "w": 100, "h": 24 }
+      "rect": { "x": 192, "y": 590, "w": 100, "h": 24 }
     },
     {
       "id": "legend-async",
       "role": "legend",
-      "rect": { "x": 362, "y": 591, "w": 132, "h": 24 }
+      "rect": { "x": 362, "y": 590, "w": 132, "h": 24 }
     },
     {
       "id": "legend-zone",
       "role": "legend",
-      "rect": { "x": 548, "y": 591, "w": 136, "h": 24 }
+      "rect": { "x": 548, "y": 590, "w": 136, "h": 24 }
     },
     {
       "id": "legend-radius",
       "role": "legend",
-      "rect": { "x": 712, "y": 591, "w": 270, "h": 24 }
+      "rect": { "x": 712, "y": 590, "w": 270, "h": 24 }
     }
   ],
   "edges": [
@@ -245,8 +247,8 @@
       "directed": true,
       "route": "straight",
       "waypoints": [
-        { "x": 540, "y": 265 },
-        { "x": 660, "y": 265 }
+        { "x": 540, "y": 268 },
+        { "x": 660, "y": 268 }
       ],
       "min_clearance": 10
     },
@@ -257,8 +259,8 @@
       "directed": true,
       "route": "straight",
       "waypoints": [
-        { "x": 870, "y": 336 },
-        { "x": 870, "y": 444 }
+        { "x": 870, "y": 338 },
+        { "x": 870, "y": 442 }
       ],
       "min_clearance": 10
     }

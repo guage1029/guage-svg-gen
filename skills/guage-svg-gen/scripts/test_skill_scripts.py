@@ -37,7 +37,7 @@ BASE_PLAN = {
         {"slot_id": "info_area", "rect": {"x": 90, "y": 140, "w": 1020, "h": 300}, "content_type": "main_diagram_nodes_and_edges"},
     ],
     "creative_zone": {"allowed_area": "x: 90-1110, y: 140-440", "visual_language": "charcoal cards", "focal_point": "stages"},
-    "palette": {"background": "#050506", "primary": "#3B82F6", "text": "#FAFAFA"},
+    "palette": {"background": "#050506", "primary": "#6979B0", "text": "#FAFAFA"},
     "color_system": {
         "theme": "bg_dark",
         "diagram_type": "architecture",
@@ -51,6 +51,7 @@ BASE_PLAN = {
             "text_secondary": "text_secondary",
             "text_muted": "text_muted",
             "text_blue_soft": "text_blue_soft",
+            "edge_neutral": "edge_neutral",
             "edge_flow": "edge",
             "edge_data": "edge_secondary",
         },
@@ -91,32 +92,32 @@ BASE_SVG = """<svg xmlns="http://www.w3.org/2000/svg"
   <defs>
     <marker id="svga-test-arrow" viewBox="0 0 10 10" refX="9" refY="5"
             markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
-      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#60A5FA" data-svga-role="decoration" data-svga-color-role="edge_flow"/>
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#8FA1D9" data-svga-role="decoration" data-svga-color-role="edge_flow"/>
     </marker>
   </defs>
   <rect x="0" y="0" width="1200" height="500" fill="#050506" data-svga-color-role="background"/>
   <text x="600" y="84" text-anchor="middle" font-size="34" font-weight="800"
-        font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
         fill="#FAFAFA" data-svga-color-role="text_primary" data-svga-text="main-title">渐进式加载测试</text>
   <text x="600" y="114" text-anchor="middle" font-size="17" font-weight="500"
-        font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
-        fill="#A1A1AA" data-svga-color-role="text_secondary" data-svga-text="sub-title">副标题说明文本</text>
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#D4D4D8" data-svga-color-role="text_secondary" data-svga-text="sub-title">副标题说明文本</text>
   <g id="svga-test-stage-1" data-svga-node="stage-1">
-    <rect x="140" y="160" width="380" height="180" rx="10" fill="#111114" stroke="#27272A" data-svga-color-role="node"/>
+    <rect x="140" y="160" width="380" height="180" rx="10" fill="#111114" stroke="#52525B" data-svga-color-role="node"/>
     <g transform="translate(164, 168)" data-svga-role="icon">
-      <rect x="0" y="0" width="16" height="16" rx="3" fill="none" stroke="#60A5FA" data-svga-role="icon" data-svga-color-role="edge_flow"/>
+      <rect x="0" y="0" width="16" height="16" rx="3" fill="none" stroke="#8FA1D9" data-svga-role="icon" data-svga-color-role="edge_flow"/>
     </g>
     <text x="164" y="212" font-size="22" font-weight="700"
-          font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
           fill="#FAFAFA" data-svga-color-role="text_primary" data-svga-text="s1-title"><tspan>读取 </tspan><tspan font-family="JetBrains Mono, monospace" data-svga-text-kind="path">SKILL.md</tspan></text>
   </g>
   <g id="svga-test-stage-2" data-svga-node="stage-2">
-    <rect x="680" y="160" width="380" height="180" rx="10" fill="#18181B" stroke="#3B82F6" data-svga-color-role="node_secondary"/>
+    <rect x="680" y="160" width="380" height="180" rx="10" fill="#18181B" stroke="#6979B0" data-svga-color-role="node_secondary"/>
     <text x="704" y="212" font-size="22" font-weight="700"
-          font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
           fill="#FAFAFA" data-svga-color-role="text_primary" data-svga-text="s2-title">按需加载资源</text>
   </g>
-  <path d="M 520 250 L 680 250" fill="none" stroke="#60A5FA" stroke-width="2.5"
+  <path d="M 520 250 L 680 250" fill="none" stroke="#8FA1D9" stroke-width="2.5"
         marker-end="url(#svga-test-arrow)" data-svga-edge="edge-1-2" data-svga-role="edge" data-svga-color-role="edge_flow"/>
 </svg>
 """
@@ -351,9 +352,9 @@ class TestGuageSvgGenSkill(unittest.TestCase):
             })
             zone_svg = BASE_SVG.replace(
                 '<g id="svga-test-stage-1"',
-                '<g data-svga-zone="cluster-a"><rect x="110" y="135" width="980" height="230" rx="12" fill="#18181B" fill-opacity="0.22" stroke="#3F3F46" stroke-dasharray="8,4"/>'
-                '<text x="124" y="154" font-size="16" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif" fill="#93C5FD" data-svga-text="zone-label">集群边界</text></g>'
-                '<text x="120" y="418" font-size="16" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif" fill="#D4D4D8" data-svga-text="legend-item">图例：主链路</text>'
+                '<g data-svga-zone="cluster-a"><rect x="110" y="135" width="980" height="230" rx="12" fill="#18181B" fill-opacity="0.22" stroke="#71717A" stroke-dasharray="8,4"/>'
+                '<text x="124" y="154" font-size="16" font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif" fill="#8FA1D9" data-svga-text="zone-label">集群边界</text></g>'
+                '<text x="120" y="418" font-size="16" font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif" fill="#D4D4D8" data-svga-text="legend-item">图例：主链路</text>'
                 '<g id="svga-test-stage-1"',
             )
             plan_p.write_text(json.dumps(zone_plan), encoding="utf-8")
@@ -402,11 +403,11 @@ class TestGuageSvgGenSkill(unittest.TestCase):
                 "service_border": "border_service",
             })
             sem_svg = BASE_SVG.replace(
-                'fill="#111114" stroke="#27272A" data-svga-color-role="node"',
-                'fill="#26141C" stroke="#FB7185" data-svga-color-role="gateway"',
+                'fill="#111114" stroke="#52525B" data-svga-color-role="node"',
+                'fill="#2A171A" stroke="#CC6E78" data-svga-color-role="gateway"',
             ).replace(
-                'fill="#18181B" stroke="#3B82F6" data-svga-color-role="node_secondary"',
-                'fill="#0F221C" stroke="#34D399" data-svga-color-role="service"',
+                'fill="#18181B" stroke="#6979B0" data-svga-color-role="node_secondary"',
+                'fill="#0F221C" stroke="#5EB88A" data-svga-color-role="service"',
             )
             plan_p.write_text(json.dumps(sem_plan), encoding="utf-8")
             svg_p.write_text(sem_svg, encoding="utf-8")
@@ -463,6 +464,198 @@ class TestGuageSvgGenSkill(unittest.TestCase):
             self.assertFalse(rep_bad["dimensions_match"])
             self.assertIn("dimensions_mismatch", rep_bad["blocking_issues"])
             run_script("render_preview.py", ["--cleanup-dir", rep_bad["preview_dir"], "--json"])
+
+    def test_typography_hierarchy_stacks_and_text_token_ordering(self):
+        tokens_json = json.loads((ASSETS_DIR / "color-tokens.json").read_text(encoding="utf-8"))["themes"]
+        # Ensure text_secondary has strictly higher contrast/clarity intent than text_muted in both themes
+        self.assertEqual(tokens_json["bg_dark"]["tokens"]["text_secondary"].upper(), "#D4D4D8")
+        self.assertEqual(tokens_json["bg_dark"]["tokens"]["text_muted"].upper(), "#A1A1AA")
+        self.assertEqual(tokens_json["bg_light"]["tokens"]["text_secondary"].upper(), "#3F3F46")
+        self.assertEqual(tokens_json["bg_light"]["tokens"]["text_muted"].upper(), "#52525B")
+
+        import xml.etree.ElementTree as ET
+        expected_sizes = {
+            "main-title": "32",
+            "sub-title": "18",
+            "s1-title": "20",
+            "s2-title": "20",
+            "sub1-title": "18",
+            "sub2-title": "18",
+            "zone-core-label": "17",
+            "edge-label-12": "17",
+            "s1-desc-1": "16",
+            "legend-flow": "16",
+        }
+        for svg_name in ("svg-starter-template.svg", "svg-starter-light-template.svg"):
+            svg_txt = (ASSETS_DIR / svg_name).read_text(encoding="utf-8")
+            self.assertNotIn("system-ui", svg_txt)
+            self.assertIn("Hiragino Sans GB", svg_txt)
+            self.assertIn("SF Mono, Menlo, Consolas, monospace", svg_txt)
+            root = ET.fromstring(svg_txt)
+            found_sizes = {}
+            for el in root.iter("{http://www.w3.org/2000/svg}text"):
+                tid = el.attrib.get("data-svga-text")
+                if tid:
+                    found_sizes[tid] = el.attrib.get("font-size")
+            for k, v in expected_sizes.items():
+                self.assertEqual(found_sizes.get(k), v, f"{svg_name} text {k}")
+
+    def test_scheme3_palette_and_border_hierarchy(self):
+        raw_tokens = json.loads((ASSETS_DIR / "color-tokens.json").read_text(encoding="utf-8"))
+        self.assertEqual(raw_tokens["schema_version"], "2.1.0")
+        themes = raw_tokens["themes"]
+        dark_t = themes["bg_dark"]["tokens"]
+        light_t = themes["bg_light"]["tokens"]
+
+        expected_dark = {
+            "edge_neutral": "#71717A",
+            "border": "#3F3F46",
+            "border_mid": "#52525B",
+            "border_zone": "#71717A",
+            "border_primary": "#6979B0",
+            "border_green": "#5EB88A",
+            "border_amber": "#D9A25F",
+            "border_danger": "#CC6E78",
+            "edge": "#8FA1D9",
+            "edge_green": "#7DD3A8",
+            "edge_amber": "#E8B878",
+            "edge_danger": "#E38B94",
+        }
+        expected_light = {
+            "edge_neutral": "#78716C",
+            "border": "#CCC7BD",
+            "border_mid": "#A8A29E",
+            "border_zone": "#9C958D",
+            "border_primary": "#4D5E9E",
+            "border_green": "#387D64",
+            "border_amber": "#9C6B30",
+            "border_danger": "#B2565E",
+            "edge": "#4D5E9E",
+            "edge_green": "#387D64",
+            "edge_amber": "#9C6B30",
+            "edge_danger": "#B2565E",
+        }
+        for k, v in expected_dark.items():
+            self.assertEqual(dark_t.get(k, "").upper(), v, f"bg_dark token {k}")
+        for k, v in expected_light.items():
+            self.assertEqual(light_t.get(k, "").upper(), v, f"bg_light token {k}")
+
+        import xml.etree.ElementTree as ET
+        starter_pairs = [
+            ("svg-starter-template.svg", "layout-plan-template.json"),
+            ("svg-starter-light-template.svg", "layout-plan-light-template.json"),
+        ]
+        for svg_name, plan_name in starter_pairs:
+            svg_p = ASSETS_DIR / svg_name
+            plan_p = ASSETS_DIR / plan_name
+            root = ET.fromstring(svg_p.read_text(encoding="utf-8"))
+            edges = {
+                el.attrib.get("data-svga-edge"): el
+                for el in root.iter("{http://www.w3.org/2000/svg}path")
+                if el.attrib.get("data-svga-edge")
+            }
+            self.assertEqual(edges["edge-1-2"].attrib.get("data-svga-color-role"), "edge_neutral", svg_name)
+            self.assertEqual(edges["edge-async-2"].attrib.get("data-svga-color-role"), "edge_flow", svg_name)
+            self.assertIn("stroke-dasharray", edges["edge-async-2"].attrib, svg_name)
+
+            outer_borders = [
+                el for el in root.iter("{http://www.w3.org/2000/svg}rect")
+                if el.attrib.get("data-svga-color-role") == "border" and el.attrib.get("stroke-width") == "2"
+            ]
+            self.assertEqual(len(outer_borders), 1, f"{svg_name} outer border")
+
+            r_col = run_script("validate_color.py", ["--svg", str(svg_p), "--plan", str(plan_p), "--strict", "--json"])
+            self.assertEqual(r_col.returncode, 0, r_col.stdout)
+            r_svg = run_script("validate_svg.py", ["--svg", str(svg_p), "--plan", str(plan_p), "--strict", "--json"])
+            self.assertEqual(r_svg.returncode, 0, r_svg.stdout)
+
+    def test_background_texture_styles_and_dot_defaults(self):
+        schema_data = json.loads((ASSETS_DIR / "layout-plan.schema.json").read_text(encoding="utf-8"))
+        bg_prop = schema_data["properties"]["metadata"]["properties"].get("background_style", {})
+        self.assertEqual(bg_prop.get("enum"), ["dot", "line", "solid"])
+
+        raw_tokens = json.loads((ASSETS_DIR / "color-tokens.json").read_text(encoding="utf-8"))["themes"]
+        self.assertEqual(raw_tokens["bg_dark"]["tokens"]["surface_grid_dot"].upper(), "#3F3F46")
+        self.assertEqual(raw_tokens["bg_light"]["tokens"]["surface_grid_dot"].upper(), "#A8A29E")
+
+        import xml.etree.ElementTree as ET
+        starter_pairs = [
+            ("svg-starter-template.svg", "layout-plan-template.json", "svga-starter-label-halos"),
+            ("svg-starter-light-template.svg", "layout-plan-light-template.json", "svga-starter-light-label-halos"),
+        ]
+        for svg_name, plan_name, halos_id in starter_pairs:
+            plan_data = json.loads((ASSETS_DIR / plan_name).read_text(encoding="utf-8"))
+            self.assertEqual(plan_data["metadata"].get("background_style"), "dot", plan_name)
+            self.assertEqual(plan_data["color_system"]["role_map"].get("grid"), "surface_grid_dot", plan_name)
+
+            svg_txt = (ASSETS_DIR / svg_name).read_text(encoding="utf-8")
+            root = ET.fromstring(svg_txt)
+            circles = [el for el in root.iter("{http://www.w3.org/2000/svg}circle") if el.attrib.get("data-svga-color-role") == "grid"]
+            self.assertEqual(len(circles), 1, f"{svg_name} dot grid circle")
+            self.assertEqual(circles[0].attrib.get("r"), "1.15", svg_name)
+
+            order_ids = [el.attrib.get("id") or el.attrib.get("data-svga-edge") for el in root.iter()]
+            self.assertIn(halos_id, order_ids, svg_name)
+            self.assertLess(order_ids.index(halos_id), order_ids.index("edge-1-2"), f"{svg_name} halo before edge")
+
+        # Validate run_pipeline schema gating for dot / line / solid vs invalid background_style
+        with tempfile.TemporaryDirectory() as td:
+            td_p = pathlib.Path(td)
+            svg_p = td_p / "tex.svg"
+            plan_p = td_p / "tex.layout.json"
+            svg_p.write_text(BASE_SVG, encoding="utf-8")
+            for style_val in ("dot", "line", "solid"):
+                plan = copy.deepcopy(BASE_PLAN)
+                plan["metadata"]["background_style"] = style_val
+                plan_p.write_text(json.dumps(plan), encoding="utf-8")
+                r_ok = run_script("run_pipeline.py", [
+                    "--svg", str(svg_p), "--plan", str(plan_p), "--output-svg", str(td_p / f"out-{style_val}.svg"), "--strict", "--json",
+                ])
+                self.assertEqual(r_ok.returncode, 0, r_ok.stdout + r_ok.stderr)
+
+            bad_plan = copy.deepcopy(BASE_PLAN)
+            bad_plan["metadata"]["background_style"] = "mosaic"
+            plan_p.write_text(json.dumps(bad_plan), encoding="utf-8")
+            r_bad = run_script("run_pipeline.py", [
+                "--svg", str(svg_p), "--plan", str(plan_p), "--output-svg", str(td_p / "out-bad.svg"), "--strict", "--json",
+            ])
+            self.assertNotEqual(r_bad.returncode, 0)
+            self.assertIn("Invalid metadata.background_style", r_bad.stdout + r_bad.stderr)
+
+    def test_font_whitelist_quotes_and_system_ui_validation(self):
+        with tempfile.TemporaryDirectory() as td:
+            svg_p = pathlib.Path(td) / "font.svg"
+
+            # 1. Valid whitelisted unquoted stacks produce zero font errors/warnings
+            svg_p.write_text(BASE_SVG, encoding="utf-8")
+            r_ok = run_script("validate_svg.py", ["--svg", str(svg_p), "--strict", "--json"])
+            rep_ok = json.loads(r_ok.stdout)
+            self.assertEqual(rep_ok["status"], "PASS", rep_ok)
+            self.assertEqual(rep_ok["warnings"], [], rep_ok)
+
+            # 2. system-ui fails strict with E_FONT_SYSTEM_UI
+            sys_svg = BASE_SVG.replace("Hiragino Sans GB, ", "system-ui, ")
+            svg_p.write_text(sys_svg, encoding="utf-8")
+            r_sys = run_script("validate_svg.py", ["--svg", str(svg_p), "--strict", "--json"])
+            rep_sys = json.loads(r_sys.stdout)
+            self.assertEqual(rep_sys["status"], "ERROR")
+            self.assertIn("E_FONT_SYSTEM_UI", [e["code"] for e in rep_sys["errors"]])
+
+            # 3. Quoted font-family fails strict with E_FONT_FAMILY_QUOTED
+            quoted_svg = BASE_SVG.replace("PingFang SC, Hiragino Sans GB", "'PingFang SC', Hiragino Sans GB")
+            svg_p.write_text(quoted_svg, encoding="utf-8")
+            r_q = run_script("validate_svg.py", ["--svg", str(svg_p), "--strict", "--json"])
+            rep_q = json.loads(r_q.stdout)
+            self.assertEqual(rep_q["status"], "ERROR")
+            self.assertIn("E_FONT_FAMILY_QUOTED", [e["code"] for e in rep_q["errors"]])
+
+            # 4. Non-whitelisted font emits W_FONT_UNLISTED warning without failing strict PASS
+            unlisted_svg = BASE_SVG.replace("Hiragino Sans GB, ", "CustomDisplaySans, ")
+            svg_p.write_text(unlisted_svg, encoding="utf-8")
+            r_u = run_script("validate_svg.py", ["--svg", str(svg_p), "--strict", "--json"])
+            rep_u = json.loads(r_u.stdout)
+            self.assertEqual(rep_u["status"], "PASS", rep_u)
+            self.assertIn("W_FONT_UNLISTED", [w["code"] for w in rep_u["warnings"]])
 
 
 if __name__ == "__main__":

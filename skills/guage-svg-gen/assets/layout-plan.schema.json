@@ -34,7 +34,12 @@
       "properties": {
         "theme": { "type": "string", "enum": ["bg_dark", "bg_light"] },
         "platform": { "type": "string" },
-        "language": { "type": "string", "enum": ["zh", "en", "mixed"] }
+        "language": { "type": "string", "enum": ["zh", "en", "mixed"] },
+        "background_style": {
+          "type": "string",
+          "enum": ["dot", "line", "solid"],
+          "description": "可选背景纹理档位：dot=25px工程微圆点阵（默认主力，配同底标签遮罩）；line=40px极淡疏朗线网（时间轴/轻量矩阵，配同底标签遮罩）；solid=纯色无网格底板（时序/泳道/数据图表/对比卡/封面或高密度图）"
+        }
       },
       "required": ["theme", "platform"]
     },

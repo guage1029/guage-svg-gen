@@ -37,7 +37,7 @@
   },
   "palette": {
     "background": "#050506",
-    "primary": "#3B82F6",
+    "primary": "#6979B0",
     "text": "#FAFAFA"
   },
   "color_system": {
@@ -58,6 +58,7 @@
       "text_blue_soft": "text_blue_soft",
       "text_purple": "text_purple_bright",
       "text_purple_soft": "text_purple",
+      "edge_neutral": "edge_neutral",
       "edge_flow": "edge",
       "edge_data": "edge_secondary"
     }

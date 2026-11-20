@@ -6,18 +6,30 @@
      role="img"
      aria-labelledby="svga-starter-title svga-starter-desc">
   <title id="svga-starter-title">系统核心架构模板（黑底 16:9）</title>
-  <desc id="svga-starter-desc">展示默认 16:9 画幅、黑底中性深炭灰卡片、25 像素对齐灰网格、四级圆角、虚线区、正交连线与单像素贴边外框的起手模版。</desc>
+  <desc id="svga-starter-desc">展示默认 16:9 画幅、五级字体阶梯、黑底中性深炭灰卡片、25 像素微圆点阵、同底标签遮罩、四级圆角、虚线区、正交连线与单像素外框的起手模版。</desc>
 
   <defs>
     <pattern id="svga-starter-grid" width="25" height="25" patternUnits="userSpaceOnUse">
-      <path d="M 24.5 0 L 24.5 25 M 0 24.5 L 25 24.5"
-            fill="none"
-            stroke="#27272A"
-            stroke-width="1"
-            stroke-opacity="0.75"
-            data-svga-role="decoration"
-            data-svga-color-role="grid"/>
+      <circle cx="12.5" cy="12.5" r="1.15"
+              fill="#3F3F46"
+              fill-opacity="0.65"
+              data-svga-role="decoration"
+              data-svga-color-role="grid"/>
     </pattern>
+
+    <marker id="svga-starter-arrow-neutral"
+            viewBox="0 0 10 10"
+            refX="9"
+            refY="5"
+            markerWidth="8"
+            markerHeight="8"
+            markerUnits="userSpaceOnUse"
+            orient="auto">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z"
+            fill="#71717A"
+            data-svga-role="decoration"
+            data-svga-color-role="edge_neutral"/>
+    </marker>
 
     <marker id="svga-starter-arrow-blue"
             viewBox="0 0 10 10"
@@ -28,27 +40,13 @@
             markerUnits="userSpaceOnUse"
             orient="auto">
       <path d="M 0 1.5 L 9 5 L 0 8.5 z"
-            fill="#60A5FA"
+            fill="#8FA1D9"
             data-svga-role="decoration"
             data-svga-color-role="edge_flow"/>
     </marker>
-
-    <marker id="svga-starter-arrow-purple"
-            viewBox="0 0 10 10"
-            refX="9"
-            refY="5"
-            markerWidth="8"
-            markerHeight="8"
-            markerUnits="userSpaceOnUse"
-            orient="auto">
-      <path d="M 0 1.5 L 9 5 L 0 8.5 z"
-            fill="#A78BFA"
-            data-svga-role="decoration"
-            data-svga-color-role="edge_data"/>
-    </marker>
   </defs>
 
-  <!-- 1. Flat Background, Pixel-Snapped 25px Neutral Gray Grid, and 1px Clipped Outer Border -->
+  <!-- 1. Flat Background, 25px Micro-Dot Grid, and 1px Clipped Outer Border -->
   <rect x="0" y="0" width="1200" height="675"
         fill="#050506"
         data-svga-color-role="background"/>
@@ -60,195 +58,205 @@
         stroke="#3F3F46"
         stroke-width="2"
         data-svga-role="decoration"
-        data-svga-color-role="border_mid"/>
+        data-svga-color-role="border"/>
 
-  <!-- 2. Header -->
+  <!-- 2. Label Cutout Halos (Placed before Zones & Edges to keep dots off text without occluding edges) -->
+  <g id="svga-starter-label-halos" data-svga-role="decoration">
+    <rect x="462" y="54" width="276" height="40" rx="6" fill="#050506" data-svga-color-role="background"/>
+    <rect x="372" y="102" width="456" height="28" rx="6" fill="#050506" data-svga-color-role="background"/>
+    <rect x="108" y="158" width="232" height="28" rx="4" fill="#050506" data-svga-color-role="background"/>
+    <rect x="558" y="226" width="84" height="28" rx="4" fill="#050506" data-svga-color-role="background"/>
+    <rect x="879" y="388" width="78" height="26" rx="4" fill="#050506" data-svga-color-role="background"/>
+    <rect x="136" y="584" width="836" height="32" rx="6" fill="#050506" data-svga-color-role="background"/>
+  </g>
+
+  <!-- 2. Header (H1 32/800 + Sub 18/400 text_secondary) -->
   <g id="svga-starter-header">
-    <text x="600" y="88"
+    <text x="600" y="86"
           text-anchor="middle"
-          font-size="34"
+          font-size="32"
           font-weight="800"
-          font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
           fill="#FAFAFA"
           data-svga-color-role="text_primary"
           data-svga-text="main-title">系统核心架构模板</text>
 
-    <text x="600" y="120"
+    <text x="600" y="122"
           text-anchor="middle"
-          font-size="16"
-          font-weight="500"
-          font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
-          fill="#A1A1AA"
+          font-size="18"
+          font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#D4D4D8"
           data-svga-color-role="text_secondary"
-          data-svga-text="sub-title">默认 16:9 画幅 · 25 像素细线网格 · 四级圆角 · 单像素收口</text>
+          data-svga-text="sub-title">默认 16:9 画幅 · 中性灰常规线与同源连线 · 四级圆角</text>
   </g>
 
-  <!-- 3. External Legend (Outside all zones, >= 20px clear) -->
+  <!-- 3. External Legend (Outside all zones, 16/400 text_muted) -->
   <g id="svga-starter-legend">
-    <line x1="150" y1="602" x2="186" y2="602"
-          stroke="#60A5FA" stroke-width="2.5"
+    <line x1="150" y1="600" x2="186" y2="600"
+          stroke="#71717A" stroke-width="2.5"
+          data-svga-role="decoration" data-svga-color-role="edge_neutral"/>
+    <text x="194" y="606" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#A1A1AA" data-svga-color-role="text_muted"
+          data-svga-text="legend-flow">中性常规线</text>
+
+    <line x1="320" y1="600" x2="356" y2="600"
+          stroke="#8FA1D9" stroke-width="2" stroke-dasharray="5,5"
           data-svga-role="decoration" data-svga-color-role="edge_flow"/>
-    <text x="194" y="608" font-size="16" font-weight="400"
-          font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
-          fill="#A1A1AA" data-svga-color-role="text_secondary"
-          data-svga-text="legend-flow">主链路实线</text>
+    <text x="364" y="606" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#A1A1AA" data-svga-color-role="text_muted"
+          data-svga-text="legend-async">靛蓝同源 (5,5)</text>
 
-    <line x1="320" y1="602" x2="356" y2="602"
-          stroke="#A78BFA" stroke-width="2" stroke-dasharray="5,5"
-          data-svga-role="decoration" data-svga-color-role="edge_data"/>
-    <text x="364" y="608" font-size="16" font-weight="400"
-          font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
-          fill="#A1A1AA" data-svga-color-role="text_secondary"
-          data-svga-text="legend-async">异步虚线 (5,5)</text>
-
-    <rect x="520" y="594" width="22" height="16" rx="4"
-          fill="none" stroke="#52525B" stroke-width="1.5" stroke-dasharray="4,3"
+    <rect x="520" y="592" width="22" height="16" rx="4"
+          fill="none" stroke="#71717A" stroke-width="1.5" stroke-dasharray="4,3"
           data-svga-role="decoration" data-svga-color-role="zone_border"/>
-    <text x="550" y="608" font-size="16" font-weight="400" text-anchor="start"
-          font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
-          fill="#A1A1AA" data-svga-color-role="text_secondary"
-          data-svga-text="legend-zone"><tspan>虚线域 </tspan><tspan font-family="JetBrains Mono, monospace" data-svga-text-kind="code">rx=12</tspan></text>
+    <text x="550" y="606" font-size="16" font-weight="400" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#A1A1AA" data-svga-color-role="text_muted"
+          data-svga-text="legend-zone"><tspan>虚线域 </tspan><tspan font-family="JetBrains Mono, SF Mono, Menlo, Consolas, monospace" data-svga-text-kind="code">rx=12</tspan></text>
 
-    <text x="714" y="608" font-size="16" font-weight="500" text-anchor="start"
-          font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
-          fill="#D4D4D8" data-svga-color-role="text_muted"
+    <text x="714" y="606" font-size="16" font-weight="400" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#A1A1AA" data-svga-color-role="text_muted"
           data-svga-text="legend-radius">圆角层级：12 / 10 / 8 / 全圆角</text>
   </g>
 
-  <!-- 4. Dashed Zone Container (Drawn before edges & nodes; rx=12, fill=none keeps grid uniform) -->
+  <!-- 4. Dashed Zone Container (rx=12, fill=none, zone label 17/700) -->
   <g id="svga-starter-zone-core" data-svga-zone="zone-core">
-    <rect x="96" y="148" width="1008" height="212" rx="12"
+    <rect x="96" y="150" width="1008" height="212" rx="12"
           fill="none"
-          stroke="#52525B" stroke-width="1.5" stroke-dasharray="8,4"
+          stroke="#71717A" stroke-width="1.5" stroke-dasharray="8,4"
           data-svga-color-role="zone_border"/>
-    <text x="116" y="175" font-size="16" font-weight="600" text-anchor="start"
-          font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
-          fill="#D4D4D8" data-svga-color-role="text_muted"
-          data-svga-text="zone-core-label"><tspan>核心处理域（虚线区 </tspan><tspan font-family="JetBrains Mono, monospace" data-svga-text-kind="code">rx=12</tspan><tspan>）</tspan></text>
+    <text x="116" y="178" font-size="17" font-weight="700" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#D4D4D8" data-svga-color-role="text_secondary"
+          data-svga-text="zone-core-label"><tspan>核心处理域（虚线区 </tspan><tspan font-family="JetBrains Mono, SF Mono, Menlo, Consolas, monospace" data-svga-text-kind="code">rx=12</tspan><tspan>）</tspan></text>
   </g>
 
-  <!-- 5. Connectors Layer -->
-  <path d="M 540 265 L 660 265"
+  <!-- 5. Connectors Layer (Neutral source -> neutral edge; Indigo source -> indigo dashed edge) -->
+  <path d="M 540 268 L 660 268"
         fill="none"
-        stroke="#60A5FA"
+        stroke="#71717A"
         stroke-width="2.5"
-        marker-end="url(#svga-starter-arrow-blue)"
+        marker-end="url(#svga-starter-arrow-neutral)"
         data-svga-edge="edge-1-2"
         data-svga-role="edge"
-        data-svga-color-role="edge_flow"/>
-  <text x="600" y="246" text-anchor="middle" font-size="16" font-weight="600"
-        font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
-        fill="#DBEAFE" data-svga-color-role="text_blue"
+        data-svga-color-role="edge_neutral"/>
+  <text x="600" y="248" text-anchor="middle" font-size="17" font-weight="600"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#D4D4D8" data-svga-color-role="text_secondary"
         data-svga-text="edge-label-12">同步调用</text>
 
-  <path d="M 870 336 L 870 444"
+  <path d="M 870 338 L 870 442"
         fill="none"
-        stroke="#A78BFA"
+        stroke="#8FA1D9"
         stroke-width="2"
         stroke-dasharray="5,5"
-        marker-end="url(#svga-starter-arrow-purple)"
+        marker-end="url(#svga-starter-arrow-blue)"
         data-svga-edge="edge-async-2"
         data-svga-role="edge"
-        data-svga-color-role="edge_data"/>
-  <text x="886" y="408" text-anchor="start" font-size="16" font-weight="500"
-        font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
-        fill="#EDE9FE" data-svga-color-role="text_purple"
+        data-svga-color-role="edge_flow"/>
+  <text x="886" y="408" text-anchor="start" font-size="16" font-weight="400"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#8FA1D9" data-svga-color-role="text_blue_soft"
         data-svga-text="edge-label-async">异步事件</text>
 
-  <!-- 6. Foreground Primary Cards (rx=10, opaque #111114 charcoal backing) + Pills (rx=13) -->
+  <!-- 6. Foreground Primary Cards (rx=10, title 20/700, body 16/400 text_secondary) + 28px Pills (rx=14) -->
   <g id="svga-starter-stage-1" data-svga-node="stage-1">
-    <rect x="120" y="194" width="420" height="142" rx="10"
+    <rect x="120" y="198" width="420" height="140" rx="10"
           fill="#111114"
-          stroke="#3F3F46"
+          stroke="#52525B"
           stroke-width="1.5"
           data-svga-color-role="node"/>
-    <text x="140" y="229"
+    <text x="140" y="232"
           font-size="20"
           font-weight="700"
-          font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
           fill="#FAFAFA"
           data-svga-color-role="text_primary"
-          data-svga-text="s1-title"><tspan>接入层（</tspan><tspan font-family="JetBrains Mono, monospace" data-svga-text-kind="professional_term">Gateway</tspan><tspan>）</tspan></text>
-    <rect x="432" y="210" width="88" height="26" rx="13"
-          fill="#27272A" stroke="#3F3F46" stroke-width="1"
+          data-svga-text="s1-title"><tspan>接入层（</tspan><tspan font-family="JetBrains Mono, SF Mono, Menlo, Consolas, monospace" data-svga-text-kind="professional_term">Gateway</tspan><tspan>）</tspan></text>
+    <rect x="430" y="211" width="90" height="28" rx="14"
+          fill="#18181B" stroke="#52525B" stroke-width="1"
           data-svga-color-role="badge_neutral"/>
-    <text x="476" y="228" text-anchor="middle" font-size="16" font-weight="600"
-          font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
-          fill="#D4D4D8" data-svga-color-role="text_muted"
+    <text x="475" y="230" text-anchor="middle" font-size="16" font-weight="600"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#D4D4D8" data-svga-color-role="text_secondary"
           data-svga-text="s1-badge">入口网关</text>
-    <text x="140" y="270" font-size="16" font-weight="400" text-anchor="start"
-          font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
-          fill="#D4D4D8" data-svga-color-role="text_muted"
-          data-svga-text="s1-desc-1"><tspan>主卡片圆角 </tspan><tspan font-family="JetBrains Mono, monospace" data-svga-text-kind="code" fill="#93C5FD">rx=10</tspan><tspan> · 实体底托防穿线</tspan></text>
-    <text x="140" y="306" font-size="16" font-weight="400"
-          font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
-          fill="#A1A1AA" data-svga-color-role="text_secondary"
-          data-svga-text="s1-desc-2">中性深炭灰底面与清晰灰边框层次</text>
+    <text x="140" y="273" font-size="16" font-weight="400" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#D4D4D8" data-svga-color-role="text_secondary"
+          data-svga-text="s1-desc-1"><tspan>主卡片圆角 </tspan><tspan font-family="JetBrains Mono, SF Mono, Menlo, Consolas, monospace" data-svga-text-kind="code" fill="#8FA1D9">rx=10</tspan><tspan> · 实体底托防穿线</tspan></text>
+    <text x="140" y="309" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#D4D4D8" data-svga-color-role="text_secondary"
+          data-svga-text="s1-desc-2">中性深炭灰底面与清晰四级框线层次</text>
   </g>
 
   <g id="svga-starter-stage-2" data-svga-node="stage-2">
-    <rect x="660" y="194" width="420" height="142" rx="10"
+    <rect x="660" y="198" width="420" height="140" rx="10"
           fill="#111114"
           data-svga-color-role="node"/>
-    <rect x="660" y="194" width="420" height="142" rx="10"
-          fill="#1F1F26"
-          stroke="#3B82F6"
+    <rect x="660" y="198" width="420" height="140" rx="10"
+          fill="#1A1B24"
+          stroke="#6979B0"
           stroke-width="1.5"
           data-svga-color-role="node_focus"/>
-    <text x="680" y="229"
+    <text x="680" y="232"
           font-size="20"
           font-weight="700"
-          font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
           fill="#FAFAFA"
           data-svga-color-role="text_primary"
           data-svga-text="s2-title">核心服务引擎</text>
-    <rect x="972" y="210" width="88" height="26" rx="13"
-          fill="#1E3A8A" stroke="#3B82F6" stroke-width="1"
+    <rect x="970" y="211" width="90" height="28" rx="14"
+          fill="#1C2238" stroke="#6979B0" stroke-width="1"
           data-svga-color-role="badge_blue"/>
-    <text x="1016" y="228" text-anchor="middle" font-size="16" font-weight="600"
-          font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
-          fill="#DBEAFE" data-svga-color-role="text_blue"
+    <text x="1015" y="230" text-anchor="middle" font-size="16" font-weight="600"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#C7D2FE" data-svga-color-role="text_blue"
           data-svga-text="s2-badge">核心服务</text>
-    <text x="680" y="270" font-size="16" font-weight="400"
-          font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
-          fill="#D4D4D8" data-svga-color-role="text_muted"
-          data-svga-text="s2-desc-1">焦点卡片使用高对比强调边框</text>
-    <text x="680" y="306" font-size="16" font-weight="400" text-anchor="start"
-          font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
-          fill="#A1A1AA" data-svga-color-role="text_secondary"
-          data-svga-text="s2-desc-2"><tspan>右上角徽章采用半高全圆角 </tspan><tspan font-family="JetBrains Mono, monospace" data-svga-text-kind="code" fill="#93C5FD">rx=13</tspan></text>
+    <text x="680" y="273" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#D4D4D8" data-svga-color-role="text_secondary"
+          data-svga-text="s2-desc-1">靛蓝强调卡：出线自动继承同源色调</text>
+    <text x="680" y="309" font-size="16" font-weight="400" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#D4D4D8" data-svga-color-role="text_secondary"
+          data-svga-text="s2-desc-2"><tspan>右上角徽章采用半高全圆角 </tspan><tspan font-family="JetBrains Mono, SF Mono, Menlo, Consolas, monospace" data-svga-text-kind="code" fill="#8FA1D9">rx=14</tspan></text>
   </g>
 
-  <!-- 7. Secondary Layer Cards (Outside zone, rx=8) -->
+  <!-- 7. Secondary Layer Cards (rx=8, title 18/700 text_primary, body 16/400 text_secondary) -->
   <g id="svga-starter-sub-1" data-svga-node="sub-1">
-    <rect x="120" y="444" width="420" height="96" rx="8"
+    <rect x="120" y="442" width="420" height="98" rx="8"
           fill="#18181B"
-          stroke="#27272A"
+          stroke="#3F3F46"
           stroke-width="1.2"
           data-svga-color-role="node_secondary"/>
-    <text x="140" y="479" font-size="16" font-weight="600" text-anchor="start"
-          font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
+    <text x="140" y="479" font-size="18" font-weight="700" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
           fill="#FAFAFA" data-svga-color-role="text_primary"
-          data-svga-text="sub1-title"><tspan>配置与缓存（次级卡 </tspan><tspan font-family="JetBrains Mono, monospace" data-svga-text-kind="code" fill="#93C5FD">rx=8</tspan><tspan>）</tspan></text>
-    <text x="140" y="514" font-size="16" font-weight="400"
-          font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
-          fill="#A1A1AA" data-svga-color-role="text_secondary"
+          data-svga-text="sub1-title"><tspan>配置与缓存（次级卡 </tspan><tspan font-family="JetBrains Mono, SF Mono, Menlo, Consolas, monospace" data-svga-text-kind="code" fill="#8FA1D9">rx=8</tspan><tspan>）</tspan></text>
+    <text x="140" y="515" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#D4D4D8" data-svga-color-role="text_secondary"
           data-svga-text="sub1-desc">用于附属模块、底层存储或独立清单卡</text>
   </g>
 
   <g id="svga-starter-sub-2" data-svga-node="sub-2">
-    <rect x="660" y="444" width="420" height="96" rx="8"
+    <rect x="660" y="442" width="420" height="98" rx="8"
           fill="#18181B"
-          stroke="#27272A"
+          stroke="#3F3F46"
           stroke-width="1.2"
           data-svga-color-role="node_secondary"/>
-    <text x="680" y="479" font-size="16" font-weight="600" text-anchor="start"
-          font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
+    <text x="680" y="479" font-size="18" font-weight="700" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
           fill="#FAFAFA" data-svga-color-role="text_primary"
-          data-svga-text="sub2-title"><tspan>异步审计与日志（虚线 </tspan><tspan font-family="JetBrains Mono, monospace" data-svga-text-kind="code" fill="#EDE9FE">5,5</tspan><tspan>）</tspan></text>
-    <text x="680" y="514" font-size="16" font-weight="400"
-          font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, system-ui, sans-serif"
-          fill="#A1A1AA" data-svga-color-role="text_secondary"
+          data-svga-text="sub2-title"><tspan>异步审计与日志（虚线 </tspan><tspan font-family="JetBrains Mono, SF Mono, Menlo, Consolas, monospace" data-svga-text-kind="code" fill="#8FA1D9">5,5</tspan><tspan>）</tspan></text>
+    <text x="680" y="515" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#D4D4D8" data-svga-color-role="text_secondary"
           data-svga-text="sub2-desc">沿正交端口回传事件与审计记录</text>
   </g>
 </svg>

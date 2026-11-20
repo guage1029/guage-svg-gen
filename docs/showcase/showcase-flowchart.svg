@@ -1,0 +1,167 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1200"
+     height="675"
+     viewBox="0 0 1200 675"
+     preserveAspectRatio="xMidYMid meet"
+     role="img"
+     aria-labelledby="svga-showcase-flowchart-title svga-showcase-flowchart-desc">
+  <title id="svga-showcase-flowchart-title">代码生成核验与自动纠偏流程</title>
+  <desc id="svga-showcase-flowchart-desc">纸白底微圆点阵配合三段均衡构图与同底遮罩展示意图定位、沙箱门控判定与达标交付、失败自愈分流。</desc>
+
+  <defs>
+    <pattern id="svga-showcase-flowchart-grid" width="25" height="25" patternUnits="userSpaceOnUse">
+      <circle cx="12.5" cy="12.5" r="1.15" fill="#A8A29E" fill-opacity="0.58" data-svga-role="decoration" data-svga-color-role="grid"/>
+    </pattern>
+    <marker id="svga-showcase-flowchart-arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#78716C" data-svga-role="decoration" data-svga-color-role="edge_neutral"/>
+    </marker>
+    <marker id="svga-showcase-flowchart-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#387D64" data-svga-role="decoration" data-svga-color-role="edge_green"/>
+    </marker>
+    <marker id="svga-showcase-flowchart-arrow-danger" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#B2565E" data-svga-role="decoration" data-svga-color-role="edge_danger"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="675" fill="#F7F5F0" data-svga-color-role="background"/>
+  <rect x="0" y="0" width="1200" height="675" fill="url(#svga-showcase-flowchart-grid)" data-svga-role="decoration"/>
+  <rect x="0" y="0" width="1200" height="675" fill="none" stroke="#CCC7BD" stroke-width="2" data-svga-role="decoration" data-svga-color-role="border"/>
+
+  <!-- Pre-Edge Label Halos -->
+  <g id="svga-showcase-flowchart-halos" data-svga-role="decoration">
+    <rect x="330" y="52" width="540" height="44" rx="6" fill="#F7F5F0" data-svga-color-role="background"/>
+    <rect x="270" y="100" width="660" height="28" rx="6" fill="#F7F5F0" data-svga-color-role="background"/>
+    <rect x="350" y="300" width="60" height="26" rx="4" fill="#F7F5F0" data-svga-color-role="background"/>
+    <rect x="686" y="198" width="82" height="26" rx="4" fill="#F7F5F0" data-svga-color-role="background"/>
+    <rect x="686" y="454" width="82" height="26" rx="4" fill="#F7F5F0" data-svga-color-role="background"/>
+    <rect x="136" y="582" width="932" height="34" rx="6" fill="#F7F5F0" data-svga-color-role="background"/>
+  </g>
+
+  <g id="svga-showcase-flowchart-header">
+    <text x="600" y="84" text-anchor="middle" font-size="32" font-weight="800"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="main-title">代码生成核验与自动纠偏流程</text>
+    <text x="600" y="120" text-anchor="middle" font-size="18" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="sub-title">基于沙箱门控判定，实现构建通过放行与报错根因自愈闭环</text>
+  </g>
+
+  <!-- Orthogonal Connectors -->
+  <path d="M 346 346 L 414 346" fill="none" stroke="#78716C" stroke-width="2.5"
+        marker-end="url(#svga-showcase-flowchart-arrow-neutral)"
+        data-svga-edge="e-1" data-svga-role="edge" data-svga-color-role="edge_neutral"/>
+  <text x="380" y="320" text-anchor="middle" font-size="17" font-weight="600"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="e1-lbl">送检</text>
+
+  <path d="M 684 316 L 726 316 L 726 244 L 774 244" fill="none" stroke="#387D64" stroke-width="2.5"
+        marker-end="url(#svga-showcase-flowchart-arrow-green)"
+        data-svga-edge="e-pass" data-svga-role="edge" data-svga-color-role="edge_green"/>
+  <text x="727" y="218" text-anchor="middle" font-size="16" font-weight="600"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#2A634E" data-svga-color-role="text_green" data-svga-text="e-pass-lbl">测试全绿</text>
+
+  <path d="M 684 376 L 726 376 L 726 448 L 774 448" fill="none" stroke="#B2565E" stroke-width="2" stroke-dasharray="5,5"
+        marker-end="url(#svga-showcase-flowchart-arrow-danger)"
+        data-svga-edge="e-fail" data-svga-role="edge" data-svga-color-role="edge_danger"/>
+  <text x="727" y="474" text-anchor="middle" font-size="16" font-weight="600"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#964148" data-svga-color-role="text_danger" data-svga-text="e-fail-lbl">失败回炉</text>
+
+  <!-- Balanced 3-Column Nodes -->
+  <g id="svga-showcase-flowchart-plan" data-svga-node="step-plan">
+    <rect x="96" y="248" width="250" height="196" rx="10" fill="#FFFFFF" stroke="#A8A29E" stroke-width="1.5" data-svga-color-role="node"/>
+    <rect x="112" y="264" width="90" height="28" rx="14" fill="#EFECE4" stroke="#A8A29E" stroke-width="1" data-svga-color-role="badge_neutral"/>
+    <text x="157" y="283" text-anchor="middle" font-size="16" font-weight="600"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="p-badge">步骤 01</text>
+    <text x="112" y="324" text-anchor="start" font-size="20" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="p-title">意图解析与定位</text>
+    <text x="112" y="362" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="p-b1">· 检索目标目录与符号</text>
+    <text x="112" y="392" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="p-b2">· 提取变更边界与契约</text>
+    <text x="112" y="422" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="p-b3">· 拟定最小化修改补丁</text>
+  </g>
+
+  <g id="svga-showcase-flowchart-judge" data-svga-node="step-judge">
+    <rect x="414" y="248" width="270" height="196" rx="10" fill="#FFFFFF" stroke="#4D5E9E" stroke-width="1.5" data-svga-color-role="node"/>
+    <rect x="430" y="264" width="96" height="28" rx="14" fill="#EEF1FA" stroke="#4D5E9E" stroke-width="1" data-svga-color-role="badge_blue"/>
+    <text x="478" y="283" text-anchor="middle" font-size="16" font-weight="600"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3D4C87" data-svga-color-role="text_blue" data-svga-text="j-badge">门控判定</text>
+    <text x="430" y="324" text-anchor="start" font-size="20" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="j-title">沙箱构建与校验</text>
+    <text x="430" y="362" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="j-b1">· 隔离沙箱跑构建与单测</text>
+    <text x="430" y="392" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="j-b2">· 核验规范与契约覆盖度</text>
+    <text x="430" y="422" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="j-b3">· 判定退出码与回归状态</text>
+  </g>
+
+  <g id="svga-showcase-flowchart-answer" data-svga-node="step-answer">
+    <rect x="774" y="172" width="330" height="144" rx="10" fill="#FFFFFF" stroke="#387D64" stroke-width="1.5" data-svga-color-role="node"/>
+    <text x="790" y="210" text-anchor="start" font-size="20" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="a-title">交付验收报告</text>
+    <rect x="996" y="188" width="92" height="28" rx="14" fill="#E9F5EF" stroke="#387D64" stroke-width="1" data-svga-color-role="badge_green"/>
+    <text x="1042" y="207" text-anchor="middle" font-size="16" font-weight="600"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#2A634E" data-svga-color-role="text_green" data-svga-text="a-badge">校验通过</text>
+    <text x="790" y="254" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="a-b1">· 附带真实验证命令日志与改动</text>
+    <text x="790" y="290" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="a-b2">· 自动清理草稿并保持目录整洁</text>
+  </g>
+
+  <g id="svga-showcase-flowchart-fallback" data-svga-node="step-fallback">
+    <rect x="774" y="376" width="330" height="144" rx="10" fill="#FFFFFF" stroke="#B2565E" stroke-width="1.5" data-svga-color-role="node"/>
+    <text x="790" y="414" text-anchor="start" font-size="20" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="f-title">失败退避与自愈</text>
+    <rect x="996" y="392" width="92" height="28" rx="14" fill="#FAF0F1" stroke="#B2565E" stroke-width="1" data-svga-color-role="badge_danger"/>
+    <text x="1042" y="411" text-anchor="middle" font-size="16" font-weight="600"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#964148" data-svga-color-role="text_danger" data-svga-text="f-badge">拦截纠偏</text>
+    <text x="790" y="458" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="f-b1">· 解析报错堆栈并定位真正根因</text>
+    <text x="790" y="494" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="f-b2">· 定向修复后重试，不盲目重跑</text>
+  </g>
+
+  <!-- External Legend -->
+  <g id="svga-showcase-flowchart-legend">
+    <line x1="148" y1="598" x2="184" y2="598" stroke="#78716C" stroke-width="2.5" data-svga-role="decoration" data-svga-color-role="edge_neutral"/>
+    <text x="192" y="604" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#52525B" data-svga-color-role="text_muted" data-svga-text="legend-1">常规流程线</text>
+
+    <line x1="358" y1="598" x2="394" y2="598" stroke="#387D64" stroke-width="2.5" data-svga-role="decoration" data-svga-color-role="edge_green"/>
+    <text x="402" y="604" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#52525B" data-svga-color-role="text_muted" data-svga-text="legend-2">验证通过放行</text>
+
+    <line x1="608" y1="598" x2="644" y2="598" stroke="#B2565E" stroke-width="2" stroke-dasharray="5,5" data-svga-role="decoration" data-svga-color-role="edge_danger"/>
+    <text x="652" y="604" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#52525B" data-svga-color-role="text_muted" data-svga-text="legend-3">失败拦截自愈（5,5）</text>
+
+    <text x="880" y="604" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#52525B" data-svga-color-role="text_muted" data-svga-text="legend-4">纸白底 + 25 像素点阵</text>
+  </g>
+</svg>

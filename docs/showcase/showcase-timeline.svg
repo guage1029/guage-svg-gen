@@ -1,0 +1,190 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1200"
+     height="675"
+     viewBox="0 0 1200 675"
+     preserveAspectRatio="xMidYMid meet"
+     role="img"
+     aria-labelledby="svga-showcase-timeline-title svga-showcase-timeline-desc">
+  <title id="svga-showcase-timeline-title">编程智能体工程演进（2022–2026）</title>
+  <desc id="svga-showcase-timeline-desc">纸白底配合 40 像素淡暖灰线网与同底遮罩展示编程智能体从行级补全到契约驱动自治交付的四阶段跨越。</desc>
+
+  <defs>
+    <pattern id="svga-showcase-timeline-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 39.5 0 L 39.5 40 M 0 39.5 L 40 39.5" fill="none" stroke="#D6D2C9" stroke-width="1" stroke-opacity="0.48" data-svga-role="decoration" data-svga-color-role="grid"/>
+    </pattern>
+    <marker id="svga-showcase-timeline-arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#78716C" data-svga-role="decoration" data-svga-color-role="edge_neutral"/>
+    </marker>
+    <marker id="svga-showcase-timeline-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#4D5E9E" data-svga-role="decoration" data-svga-color-role="edge_flow"/>
+    </marker>
+    <marker id="svga-showcase-timeline-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#387D64" data-svga-role="decoration" data-svga-color-role="edge_green"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="675" fill="#F7F5F0" data-svga-color-role="background"/>
+  <rect x="0" y="0" width="1200" height="675" fill="url(#svga-showcase-timeline-grid)" data-svga-role="decoration"/>
+  <rect x="0" y="0" width="1200" height="675" fill="none" stroke="#CCC7BD" stroke-width="2" data-svga-role="decoration" data-svga-color-role="border"/>
+
+  <!-- Pre-Edge Label Halos -->
+  <g id="svga-showcase-timeline-halos" data-svga-role="decoration">
+    <rect x="330" y="50" width="540" height="44" rx="6" fill="#F7F5F0" data-svga-color-role="background"/>
+    <rect x="300" y="100" width="600" height="28" rx="6" fill="#F7F5F0" data-svga-color-role="background"/>
+    <rect x="166" y="172" width="88" height="30" rx="6" fill="#F7F5F0" data-svga-color-role="background"/>
+    <rect x="426" y="172" width="88" height="30" rx="6" fill="#F7F5F0" data-svga-color-role="background"/>
+    <rect x="686" y="172" width="88" height="30" rx="6" fill="#F7F5F0" data-svga-color-role="background"/>
+    <rect x="946" y="172" width="88" height="30" rx="6" fill="#F7F5F0" data-svga-color-role="background"/>
+    <rect x="128" y="582" width="944" height="34" rx="6" fill="#F7F5F0" data-svga-color-role="background"/>
+    <line x1="96" y1="188" x2="1104" y2="188" stroke="#CCC7BD" stroke-width="1" stroke-dasharray="4,4" data-svga-color-role="border"/>
+  </g>
+
+  <g id="svga-showcase-timeline-header">
+    <text x="600" y="84" text-anchor="middle" font-size="32" font-weight="800"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="main-title">编程智能体工程演进（2022–2026）</text>
+    <text x="600" y="120" text-anchor="middle" font-size="18" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="sub-title">从行级片段补全助手向自主沙箱验证交付系统的四阶段跨越</text>
+  </g>
+
+  <text x="210" y="194" text-anchor="middle" font-size="17" font-weight="700"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="stage-1-lbl">阶段 01</text>
+  <text x="470" y="194" text-anchor="middle" font-size="17" font-weight="700"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#3D4C87" data-svga-color-role="text_blue" data-svga-text="stage-2-lbl">阶段 02</text>
+  <text x="730" y="194" text-anchor="middle" font-size="17" font-weight="700"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#2A634E" data-svga-color-role="text_green" data-svga-text="stage-3-lbl">阶段 03</text>
+  <text x="990" y="194" text-anchor="middle" font-size="17" font-weight="700"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#7F5420" data-svga-color-role="text_amber" data-svga-text="stage-4-lbl">阶段 04</text>
+
+  <path d="M 324 372 L 356 372" fill="none" stroke="#78716C" stroke-width="2.5"
+        marker-end="url(#svga-showcase-timeline-arrow-neutral)"
+        data-svga-edge="edge-1-2" data-svga-role="edge" data-svga-color-role="edge_neutral"/>
+  <path d="M 584 372 L 616 372" fill="none" stroke="#4D5E9E" stroke-width="2.5"
+        marker-end="url(#svga-showcase-timeline-arrow-blue)"
+        data-svga-edge="edge-2-3" data-svga-role="edge" data-svga-color-role="edge_flow"/>
+  <path d="M 844 372 L 876 372" fill="none" stroke="#387D64" stroke-width="2.5"
+        marker-end="url(#svga-showcase-timeline-arrow-green)"
+        data-svga-edge="edge-3-4" data-svga-role="edge" data-svga-color-role="edge_green"/>
+
+  <g id="svga-showcase-timeline-m1" data-svga-node="m-1">
+    <rect x="96" y="218" width="228" height="308" rx="10" fill="#FFFFFF" stroke="#A8A29E" stroke-width="1.5" data-svga-color-role="node"/>
+    <rect x="110" y="234" width="136" height="28" rx="14" fill="#EFECE4" stroke="#A8A29E" stroke-width="1" data-svga-color-role="badge_neutral"/>
+    <text x="178" y="253" text-anchor="middle" font-size="16" font-weight="600"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="m1-badge">2022 · 补全期</text>
+    <text x="110" y="298" font-size="20" font-weight="700" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="m1-title">行级代码自动补全</text>
+    <text x="110" y="332" font-size="17" font-weight="600" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#52525B" data-svga-color-role="text_muted" data-svga-text="m1-sub">编辑器内联预测辅助</text>
+    <line x1="110" y1="344" x2="310" y2="344" stroke="#CCC7BD" stroke-width="1" data-svga-color-role="border"/>
+    <text x="110" y="376" font-size="16" font-weight="400" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="m1-b1">· 基于光标上下文续写</text>
+    <text x="110" y="418" font-size="16" font-weight="400" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="m1-b2">· 局限于单文件短窗口</text>
+    <text x="110" y="460" font-size="16" font-weight="400" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="m1-b3">· 需人工粘贴并运行测试</text>
+  </g>
+
+  <g id="svga-showcase-timeline-m2" data-svga-node="m-2">
+    <rect x="356" y="218" width="228" height="308" rx="10" fill="#FFFFFF" stroke="#4D5E9E" stroke-width="1.5" data-svga-color-role="node"/>
+    <rect x="370" y="234" width="136" height="28" rx="14" fill="#EEF1FA" stroke="#4D5E9E" stroke-width="1" data-svga-color-role="badge_blue"/>
+    <text x="438" y="253" text-anchor="middle" font-size="16" font-weight="600"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3D4C87" data-svga-color-role="text_blue" data-svga-text="m2-badge">2023 · 对话期</text>
+    <text x="370" y="298" font-size="20" font-weight="700" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="m2-title">多文件对话协作</text>
+    <text x="370" y="332" font-size="17" font-weight="600" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3D4C87" data-svga-color-role="text_blue" data-svga-text="m2-sub">仓库检索与差异生成</text>
+    <line x1="370" y1="344" x2="570" y2="344" stroke="#CCC7BD" stroke-width="1" data-svga-color-role="border"/>
+    <text x="370" y="376" font-size="16" font-weight="400" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="m2-b1">· 跨文件引用问答与重构</text>
+    <text x="370" y="418" font-size="16" font-weight="400" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="m2-b2">· 代码索引召回相关模块</text>
+    <text x="370" y="460" font-size="16" font-weight="400" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="m2-b3">· 人工把关构建与回滚</text>
+  </g>
+
+  <g id="svga-showcase-timeline-m3" data-svga-node="m-3">
+    <rect x="616" y="218" width="228" height="308" rx="10" fill="#FFFFFF" stroke="#387D64" stroke-width="1.5" data-svga-color-role="node"/>
+    <rect x="630" y="234" width="136" height="28" rx="14" fill="#E9F5EF" stroke="#387D64" stroke-width="1" data-svga-color-role="badge_green"/>
+    <text x="698" y="253" text-anchor="middle" font-size="16" font-weight="600"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#2A634E" data-svga-color-role="text_green" data-svga-text="m3-badge">2024 · 工具期</text>
+    <text x="630" y="298" font-size="20" font-weight="700" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="m3-title">自主编排与命令</text>
+    <text x="630" y="332" font-size="17" font-weight="600" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#2A634E" data-svga-color-role="text_green" data-svga-text="m3-sub">读写文件加终端自测闭环</text>
+    <line x1="630" y1="344" x2="830" y2="344" stroke="#CCC7BD" stroke-width="1" data-svga-color-role="border"/>
+    <text x="630" y="376" font-size="16" font-weight="400" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="m3-b1">· 自主检索、改写与单测</text>
+    <text x="630" y="418" font-size="16" font-weight="400" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="m3-b2">· 依据终端报错自动纠偏</text>
+    <text x="630" y="460" font-size="16" font-weight="400" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="m3-b3">· 工具协议生态快速收敛</text>
+  </g>
+
+  <g id="svga-showcase-timeline-m4" data-svga-node="m-4">
+    <rect x="876" y="218" width="228" height="308" rx="10" fill="#FFFFFF" stroke="#9C6B30" stroke-width="1.5" data-svga-color-role="node"/>
+    <rect x="890" y="234" width="136" height="28" rx="14" fill="#FBF4E9" stroke="#9C6B30" stroke-width="1" data-svga-color-role="badge_amber"/>
+    <text x="958" y="253" text-anchor="middle" font-size="16" font-weight="600"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#7F5420" data-svga-color-role="text_amber" data-svga-text="m4-badge">2026 · 契约期</text>
+    <text x="890" y="298" font-size="20" font-weight="700" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="m4-title">规范驱动长程交付</text>
+    <text x="890" y="332" font-size="17" font-weight="600" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#7F5420" data-svga-color-role="text_amber" data-svga-text="m4-sub">技能沉淀与沙箱严格门禁</text>
+    <line x1="890" y1="344" x2="1090" y2="344" stroke="#CCC7BD" stroke-width="1" data-svga-color-role="border"/>
+    <text x="890" y="376" font-size="16" font-weight="400" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="m4-b1">· 模块化技能按需动态装载</text>
+    <text x="890" y="418" font-size="16" font-weight="400" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="m4-b2">· 布局与校验脚本零幻觉</text>
+    <text x="890" y="460" font-size="16" font-weight="400" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="m4-b3">· 跨会话可验证生产交付</text>
+  </g>
+
+  <g id="svga-showcase-timeline-legend">
+    <line x1="146" y1="598" x2="182" y2="598" stroke="#78716C" stroke-width="2.5" data-svga-role="decoration" data-svga-color-role="edge_neutral"/>
+    <text x="190" y="604" font-size="16" font-weight="400" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#52525B" data-svga-color-role="text_muted" data-svga-text="legend-1">补全演进链</text>
+
+    <line x1="366" y1="598" x2="402" y2="598" stroke="#4D5E9E" stroke-width="2.5" data-svga-role="decoration" data-svga-color-role="edge_flow"/>
+    <text x="410" y="604" font-size="16" font-weight="400" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#52525B" data-svga-color-role="text_muted" data-svga-text="legend-2">协作跃迁推演</text>
+
+    <line x1="606" y1="598" x2="642" y2="598" stroke="#387D64" stroke-width="2.5" data-svga-role="decoration" data-svga-color-role="edge_green"/>
+    <text x="650" y="604" font-size="16" font-weight="400" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#52525B" data-svga-color-role="text_muted" data-svga-text="legend-3">工具赋能落地</text>
+
+    <text x="860" y="604" font-size="16" font-weight="400" text-anchor="start"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#52525B" data-svga-color-role="text_muted" data-svga-text="legend-4">蓝图网格：40 像素淡线</text>
+  </g>
+</svg>

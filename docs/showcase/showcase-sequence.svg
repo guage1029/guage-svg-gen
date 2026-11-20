@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1200"
+     height="675"
+     viewBox="0 0 1200 675"
+     preserveAspectRatio="xMidYMid meet"
+     role="img"
+     aria-labelledby="svga-showcase-sequence-title svga-showcase-sequence-desc">
+  <title id="svga-showcase-sequence-title">编程智能体工具调用与熔断时序</title>
+  <desc id="svga-showcase-sequence-desc">纯平黑底无纹理背景下的四角色时序图，展示开发者终端、智能体引擎、权限沙箱网关与受限代码仓库间的只读放行及高危熔断分支。</desc>
+
+  <defs>
+    <marker id="svga-showcase-sequence-arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#71717A" data-svga-role="decoration" data-svga-color-role="edge_neutral"/>
+    </marker>
+    <marker id="svga-showcase-sequence-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#8FA1D9" data-svga-role="decoration" data-svga-color-role="edge_flow"/>
+    </marker>
+    <marker id="svga-showcase-sequence-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#7DD3A8" data-svga-role="decoration" data-svga-color-role="edge_green"/>
+    </marker>
+    <marker id="svga-showcase-sequence-arrow-danger" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#E38B94" data-svga-role="decoration" data-svga-color-role="edge_danger"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="675" fill="#050506" data-svga-color-role="background"/>
+  <rect x="0" y="0" width="1200" height="675" fill="none" stroke="#3F3F46" stroke-width="2" data-svga-role="decoration" data-svga-color-role="border"/>
+
+  <g id="svga-showcase-sequence-header">
+    <text x="600" y="84" text-anchor="middle" font-size="32" font-weight="800"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#FAFAFA" data-svga-color-role="text_primary" data-svga-text="main-title">编程智能体工具调用与熔断时序</text>
+    <text x="600" y="120" text-anchor="middle" font-size="18" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#D4D4D8" data-svga-color-role="text_secondary" data-svga-text="sub-title">纯平零纹理消除生命线干扰 · 只读放行与高危拦截双分支</text>
+  </g>
+
+  <g id="svga-showcase-sequence-lifelines" data-svga-role="decoration">
+    <path d="M 200 226 L 200 564" fill="none" stroke="#3F3F46" stroke-width="1.5" stroke-dasharray="6,4" data-svga-role="decoration" data-svga-color-role="border"/>
+    <path d="M 466 226 L 466 564" fill="none" stroke="#3F3F46" stroke-width="1.5" stroke-dasharray="6,4" data-svga-role="decoration" data-svga-color-role="border"/>
+    <path d="M 734 226 L 734 564" fill="none" stroke="#3F3F46" stroke-width="1.5" stroke-dasharray="6,4" data-svga-role="decoration" data-svga-color-role="border"/>
+    <path d="M 1000 226 L 1000 564" fill="none" stroke="#3F3F46" stroke-width="1.5" stroke-dasharray="6,4" data-svga-role="decoration" data-svga-color-role="border"/>
+
+    <rect x="194" y="258" width="12" height="32" rx="3" fill="#111114" stroke="#52525B" stroke-width="1.2" data-svga-color-role="border_mid"/>
+    <rect x="194" y="476" width="12" height="82" rx="3" fill="#111114" stroke="#52525B" stroke-width="1.2" data-svga-color-role="border_mid"/>
+
+    <rect x="460" y="260" width="12" height="84" rx="3" fill="#1A1B24" stroke="#6979B0" stroke-width="1.2" data-svga-color-role="border_primary"/>
+    <rect x="460" y="422" width="12" height="28" rx="3" fill="#1A1B24" stroke="#6979B0" stroke-width="1.2" data-svga-color-role="border_primary"/>
+    <rect x="460" y="528" width="12" height="30" rx="3" fill="#1A1B24" stroke="#6979B0" stroke-width="1.2" data-svga-color-role="border_primary"/>
+
+    <rect x="728" y="314" width="12" height="84" rx="3" fill="#261E12" stroke="#D9A25F" stroke-width="1.2" data-svga-color-role="border_amber"/>
+    <rect x="728" y="476" width="12" height="28" rx="3" fill="#261E12" stroke="#D9A25F" stroke-width="1.2" data-svga-color-role="border_amber"/>
+
+    <rect x="994" y="368" width="12" height="82" rx="3" fill="#0F221C" stroke="#5EB88A" stroke-width="1.2" data-svga-color-role="border_green"/>
+  </g>
+
+  <g id="svga-showcase-sequence-p-dev" data-svga-node="p-dev">
+    <rect x="100" y="154" width="200" height="72" rx="10" fill="#111114" stroke="#52525B" stroke-width="1.5" data-svga-color-role="node"/>
+    <text x="200" y="186" text-anchor="middle" font-size="20" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#FAFAFA" data-svga-color-role="text_primary" data-svga-text="p1-title">开发者终端</text>
+    <text x="200" y="212" text-anchor="middle" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#A1A1AA" data-svga-color-role="text_muted" data-svga-text="p1-role">本地任务入口</text>
+  </g>
+
+  <g id="svga-showcase-sequence-p-agent" data-svga-node="p-agent">
+    <rect x="366" y="154" width="200" height="72" rx="10" fill="#111114" data-svga-color-role="node"/>
+    <rect x="366" y="154" width="200" height="72" rx="10" fill="#1A1B24" stroke="#6979B0" stroke-width="1.5" data-svga-color-role="node_focus"/>
+    <text x="466" y="186" text-anchor="middle" font-size="20" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#FAFAFA" data-svga-color-role="text_primary" data-svga-text="p2-title">智能体引擎</text>
+    <text x="466" y="212" text-anchor="middle" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#8FA1D9" data-svga-color-role="text_blue" data-svga-text="p2-role">规划与工具调度</text>
+  </g>
+
+  <g id="svga-showcase-sequence-p-gateway" data-svga-node="p-gateway">
+    <rect x="634" y="154" width="200" height="72" rx="10" fill="#111114" data-svga-color-role="node"/>
+    <rect x="634" y="154" width="200" height="72" rx="10" fill="#261E12" stroke="#D9A25F" stroke-width="1.5" data-svga-color-role="node_amber"/>
+    <text x="734" y="186" text-anchor="middle" font-size="20" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#FAFAFA" data-svga-color-role="text_primary" data-svga-text="p3-title">权限沙箱网关</text>
+    <text x="734" y="212" text-anchor="middle" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#E8B878" data-svga-color-role="text_amber" data-svga-text="p3-role">规则校验与拦截</text>
+  </g>
+
+  <g id="svga-showcase-sequence-p-repo" data-svga-node="p-repo">
+    <rect x="900" y="154" width="200" height="72" rx="10" fill="#111114" data-svga-color-role="node"/>
+    <rect x="900" y="154" width="200" height="72" rx="10" fill="#0F221C" stroke="#5EB88A" stroke-width="1.5" data-svga-color-role="node_green"/>
+    <text x="1000" y="186" text-anchor="middle" font-size="20" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#FAFAFA" data-svga-color-role="text_primary" data-svga-text="p4-title">受限代码仓库</text>
+    <text x="1000" y="212" text-anchor="middle" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#7DD3A8" data-svga-color-role="text_green" data-svga-text="p4-role">只读索引与工作区</text>
+  </g>
+
+  <path d="M 206 274 L 460 274" fill="none" stroke="#71717A" stroke-width="2.5"
+        marker-end="url(#svga-showcase-sequence-arrow-neutral)"
+        data-svga-edge="m-1" data-svga-role="edge" data-svga-color-role="edge_neutral"/>
+  <text x="333" y="260" text-anchor="middle" font-size="16" font-weight="600"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#D4D4D8" data-svga-color-role="text_secondary" data-svga-text="m1-lbl">发起重构与验收任务</text>
+
+  <path d="M 472 328 L 728 328" fill="none" stroke="#8FA1D9" stroke-width="2.5"
+        marker-end="url(#svga-showcase-sequence-arrow-blue)"
+        data-svga-edge="m-2" data-svga-role="edge" data-svga-color-role="edge_flow"/>
+  <text x="600" y="314" text-anchor="middle" font-size="16" font-weight="600"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#8FA1D9" data-svga-color-role="text_blue" data-svga-text="m2-lbl">申请代码检索与写操作</text>
+
+  <path d="M 740 382 L 994 382" fill="none" stroke="#7DD3A8" stroke-width="2.5"
+        marker-end="url(#svga-showcase-sequence-arrow-green)"
+        data-svga-edge="m-3" data-svga-role="edge" data-svga-color-role="edge_green"/>
+  <text x="867" y="368" text-anchor="middle" font-size="16" font-weight="600"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#7DD3A8" data-svga-color-role="text_green" data-svga-text="m3-lbl">放行只读检索白名单</text>
+
+  <path d="M 994 436 L 472 436" fill="none" stroke="#7DD3A8" stroke-width="2" stroke-dasharray="5,5"
+        marker-end="url(#svga-showcase-sequence-arrow-green)"
+        data-svga-edge="m-4" data-svga-role="edge" data-svga-color-role="edge_green"/>
+  <text x="867" y="422" text-anchor="middle" font-size="16" font-weight="600"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#7DD3A8" data-svga-color-role="text_green" data-svga-text="m4-lbl">回传只读片段与符号树</text>
+
+  <path d="M 728 490 L 206 490" fill="none" stroke="#E38B94" stroke-width="2" stroke-dasharray="5,5"
+        marker-end="url(#svga-showcase-sequence-arrow-danger)"
+        data-svga-edge="m-5" data-svga-role="edge" data-svga-color-role="edge_danger"/>
+  <text x="600" y="476" text-anchor="middle" font-size="16" font-weight="600"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#E38B94" data-svga-color-role="text_danger" data-svga-text="m5-lbl">高危越界操作触发熔断</text>
+
+  <path d="M 460 544 L 206 544" fill="none" stroke="#8FA1D9" stroke-width="2" stroke-dasharray="5,5"
+        marker-end="url(#svga-showcase-sequence-arrow-blue)"
+        data-svga-edge="m-6" data-svga-role="edge" data-svga-color-role="edge_flow"/>
+  <text x="333" y="530" text-anchor="middle" font-size="16" font-weight="600"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#8FA1D9" data-svga-color-role="text_blue" data-svga-text="m6-lbl">流式交付验证后补丁</text>
+
+  <g id="svga-showcase-sequence-legend">
+    <line x1="148" y1="600" x2="184" y2="600" stroke="#8FA1D9" stroke-width="2.5" data-svga-role="decoration" data-svga-color-role="edge_flow"/>
+    <text x="192" y="606" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#A1A1AA" data-svga-color-role="text_muted" data-svga-text="legend-1">主控调度与交付</text>
+
+    <line x1="344" y1="600" x2="380" y2="600" stroke="#7DD3A8" stroke-width="2.5" stroke-dasharray="5,5" data-svga-role="decoration" data-svga-color-role="edge_green"/>
+    <text x="388" y="606" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#A1A1AA" data-svga-color-role="text_muted" data-svga-text="legend-2">安全放行与结果回传</text>
+
+    <line x1="562" y1="600" x2="598" y2="600" stroke="#E38B94" stroke-width="2.5" stroke-dasharray="5,5" data-svga-role="decoration" data-svga-color-role="edge_danger"/>
+    <text x="606" y="606" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#A1A1AA" data-svga-color-role="text_muted" data-svga-text="legend-3">高危越界熔断拦截</text>
+
+    <rect x="794" y="592" width="22" height="16" rx="4" fill="#050506" stroke="#52525B" stroke-width="1.2" data-svga-role="decoration" data-svga-color-role="border_mid"/>
+    <text x="824" y="606" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#A1A1AA" data-svga-color-role="text_muted" data-svga-text="legend-4">纯平暗底消除生命线干扰</text>
+  </g>
+</svg>

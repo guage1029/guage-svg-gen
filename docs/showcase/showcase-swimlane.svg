@@ -1,0 +1,218 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1200"
+     height="675"
+     viewBox="0 0 1200 675"
+     preserveAspectRatio="xMidYMid meet"
+     role="img"
+     aria-labelledby="svga-showcase-swimlane-title svga-showcase-swimlane-desc">
+  <title id="svga-showcase-swimlane-title">编程智能体多角色协作泳道流程</title>
+  <desc id="svga-showcase-swimlane-desc">暖纸纯平底板上的三角色横向泳道流程图，展示研发工程师、编程智能体与隔离沙箱之间从规约输入、编码改写、报错自愈到门禁放行验收的跨泳道流转。</desc>
+
+  <defs>
+    <marker id="svga-showcase-swimlane-arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#78716C" data-svga-role="decoration" data-svga-color-role="edge_neutral"/>
+    </marker>
+    <marker id="svga-showcase-swimlane-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#4D5E9E" data-svga-role="decoration" data-svga-color-role="edge_flow"/>
+    </marker>
+    <marker id="svga-showcase-swimlane-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#387D64" data-svga-role="decoration" data-svga-color-role="edge_green"/>
+    </marker>
+    <marker id="svga-showcase-swimlane-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#B2565E" data-svga-role="decoration" data-svga-color-role="edge_danger"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="675" fill="#F7F5F0" data-svga-color-role="background"/>
+  <rect x="0" y="0" width="1200" height="675" fill="none" stroke="#CCC7BD" stroke-width="2" data-svga-role="decoration" data-svga-color-role="border"/>
+
+  <g id="svga-showcase-swimlane-header">
+    <text x="600" y="72" text-anchor="middle" font-size="30" font-weight="800"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="main-title">编程智能体多角色协作泳道流程</text>
+    <text x="600" y="106" text-anchor="middle" font-size="17" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="sub-title">三角色横向泳道划分职责边界 · 规划、沙箱执行与失败自愈闭环流转</text>
+  </g>
+
+  <!-- 3 Horizontal Swimlane Zones (h=126 with 30px open routing channels between lanes) -->
+  <g id="svga-showcase-swimlane-lane1" data-svga-zone="lane-dev">
+    <path d="M 167 135 L 74 135 A 9 9 0 0 0 65 144 L 65 250 A 9 9 0 0 0 74 259 L 167 259 Z" fill="#EFECE4" data-svga-role="decoration" data-svga-color-role="lane_neutral"/>
+    <rect x="64" y="134" width="1072" height="126" rx="10" fill="none" stroke="#A8A29E" stroke-width="1.5" stroke-dasharray="6,3" data-svga-color-role="border_mid"/>
+    <line x1="167" y1="134" x2="167" y2="260" stroke="#CCC7BD" stroke-width="1.2" data-svga-role="decoration" data-svga-color-role="border"/>
+    <text x="116" y="188" text-anchor="middle" font-size="17" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="lane1-t">研发人员</text>
+    <text x="116" y="216" text-anchor="middle" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#52525B" data-svga-color-role="text_muted" data-svga-text="lane1-s">规约终审</text>
+  </g>
+
+  <g id="svga-showcase-swimlane-lane2" data-svga-zone="lane-agent">
+    <path d="M 167 291 L 74 291 A 9 9 0 0 0 65 300 L 65 406 A 9 9 0 0 0 74 415 L 167 415 Z" fill="#EEF1FA" data-svga-role="decoration" data-svga-color-role="lane_blue"/>
+    <rect x="64" y="290" width="1072" height="126" rx="10" fill="none" stroke="#4D5E9E" stroke-width="1.5" stroke-dasharray="6,3" data-svga-color-role="border_primary"/>
+    <line x1="167" y1="290" x2="167" y2="416" stroke="#4D5E9E" stroke-width="1.2" data-svga-role="decoration" data-svga-color-role="border_primary"/>
+    <text x="116" y="344" text-anchor="middle" font-size="17" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3D4C87" data-svga-color-role="text_blue" data-svga-text="lane2-t">智能体层</text>
+    <text x="116" y="372" text-anchor="middle" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3D4C87" data-svga-color-role="text_blue" data-svga-text="lane2-s">推理编码</text>
+  </g>
+
+  <g id="svga-showcase-swimlane-lane3" data-svga-zone="lane-sandbox">
+    <path d="M 167 447 L 74 447 A 9 9 0 0 0 65 456 L 65 562 A 9 9 0 0 0 74 571 L 167 571 Z" fill="#E9F5EF" data-svga-role="decoration" data-svga-color-role="lane_green"/>
+    <rect x="64" y="446" width="1072" height="126" rx="10" fill="none" stroke="#387D64" stroke-width="1.5" stroke-dasharray="6,3" data-svga-color-role="border_green"/>
+    <line x1="167" y1="446" x2="167" y2="572" stroke="#387D64" stroke-width="1.2" data-svga-role="decoration" data-svga-color-role="border_green"/>
+    <text x="116" y="500" text-anchor="middle" font-size="17" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#2A634E" data-svga-color-role="text_green" data-svga-text="lane3-t">隔离沙箱</text>
+    <text x="116" y="528" text-anchor="middle" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#2A634E" data-svga-color-role="text_green" data-svga-text="lane3-s">门禁测试</text>
+  </g>
+
+  <!-- Cross-Lane Orthogonal Flow Edges (inter-lane labels sit cleanly in the 30px open channels!) -->
+  <path d="M 284 242 L 284 308" fill="none" stroke="#78716C" stroke-width="2.5"
+        marker-end="url(#svga-showcase-swimlane-arrow-neutral)"
+        data-svga-edge="e-prompt-plan" data-svga-role="edge" data-svga-color-role="edge_neutral"/>
+  <text x="296" y="281" text-anchor="start" font-size="16" font-weight="600"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="e1-lbl">下发规约</text>
+
+  <path d="M 376 353 L 432 353" fill="none" stroke="#4D5E9E" stroke-width="2.5"
+        marker-end="url(#svga-showcase-swimlane-arrow-blue)"
+        data-svga-edge="e-plan-edit" data-svga-role="edge" data-svga-color-role="edge_flow"/>
+  <text x="404" y="340" text-anchor="middle" font-size="16" font-weight="600"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#3D4C87" data-svga-color-role="text_blue" data-svga-text="e2-lbl">调度</text>
+
+  <path d="M 524 398 L 524 464" fill="none" stroke="#4D5E9E" stroke-width="2.5"
+        marker-end="url(#svga-showcase-swimlane-arrow-blue)"
+        data-svga-edge="e-edit-exec" data-svga-role="edge" data-svga-color-role="edge_flow"/>
+  <text x="536" y="437" text-anchor="start" font-size="16" font-weight="600"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#3D4C87" data-svga-color-role="text_blue" data-svga-text="e3-lbl">送检补丁</text>
+
+  <path d="M 616 509 L 672 509" fill="none" stroke="#387D64" stroke-width="2.5"
+        marker-end="url(#svga-showcase-swimlane-arrow-green)"
+        data-svga-edge="e-exec-gate" data-svga-role="edge" data-svga-color-role="edge_green"/>
+  <text x="644" y="496" text-anchor="middle" font-size="16" font-weight="600"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#2A634E" data-svga-color-role="text_green" data-svga-text="e4-lbl">日志</text>
+
+  <path d="M 764 464 L 764 398" fill="none" stroke="#B2565E" stroke-width="2.2" stroke-dasharray="5,5"
+        marker-end="url(#svga-showcase-swimlane-arrow-red)"
+        data-svga-edge="e-gate-heal" data-svga-role="edge" data-svga-color-role="edge_danger"/>
+  <text x="776" y="437" text-anchor="start" font-size="16" font-weight="600"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#964148" data-svga-color-role="text_danger" data-svga-text="e5-lbl">失败回炉</text>
+
+  <path d="M 672 353 L 616 353" fill="none" stroke="#B2565E" stroke-width="2.2" stroke-dasharray="5,5"
+        marker-end="url(#svga-showcase-swimlane-arrow-red)"
+        data-svga-edge="e-heal-edit" data-svga-role="edge" data-svga-color-role="edge_danger"/>
+  <text x="644" y="340" text-anchor="middle" font-size="16" font-weight="600"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#964148" data-svga-color-role="text_danger" data-svga-text="e6-lbl">纠偏</text>
+
+  <path d="M 856 509 L 1004 509 L 1004 242" fill="none" stroke="#387D64" stroke-width="2.5"
+        marker-end="url(#svga-showcase-swimlane-arrow-green)"
+        data-svga-edge="e-gate-accept" data-svga-role="edge" data-svga-color-role="edge_green"/>
+  <text x="992" y="358" text-anchor="end" font-size="16" font-weight="700"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#2A634E" data-svga-color-role="text_green" data-svga-text="e7-lbl">全绿放行</text>
+
+  <!-- 7 Action Nodes across the 3 Swimlanes -->
+  <g id="svga-showcase-swimlane-n1" data-svga-node="n-prompt">
+    <rect x="192" y="152" width="184" height="90" rx="10" fill="#FFFFFF" stroke="#A8A29E" stroke-width="1.5" data-svga-color-role="node"/>
+    <text x="284" y="185" text-anchor="middle" font-size="18" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="n1-t">1 · 发起需求</text>
+    <text x="284" y="218" text-anchor="middle" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#52525B" data-svga-color-role="text_muted" data-svga-text="n1-s">定义范围与基线</text>
+  </g>
+
+  <g id="svga-showcase-swimlane-n2" data-svga-node="n-plan">
+    <rect x="192" y="308" width="184" height="90" rx="10" fill="#FFFFFF" stroke="#4D5E9E" stroke-width="1.5" data-svga-color-role="node"/>
+    <text x="284" y="341" text-anchor="middle" font-size="18" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="n2-t">2 · 检索策划</text>
+    <text x="284" y="374" text-anchor="middle" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3D4C87" data-svga-color-role="text_blue" data-svga-text="n2-s">定位调用与依赖</text>
+  </g>
+
+  <g id="svga-showcase-swimlane-n3" data-svga-node="n-edit">
+    <rect x="432" y="308" width="184" height="90" rx="10" fill="#FFFFFF" stroke="#4D5E9E" stroke-width="1.5" data-svga-color-role="node"/>
+    <text x="524" y="341" text-anchor="middle" font-size="18" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="n3-t">3 · 定向改写</text>
+    <text x="524" y="374" text-anchor="middle" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3D4C87" data-svga-color-role="text_blue" data-svga-text="n3-s">局部最小化修改</text>
+  </g>
+
+  <g id="svga-showcase-swimlane-n4" data-svga-node="n-exec">
+    <rect x="432" y="464" width="184" height="90" rx="10" fill="#FFFFFF" stroke="#387D64" stroke-width="1.5" data-svga-color-role="node"/>
+    <text x="524" y="497" text-anchor="middle" font-size="18" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="n4-t">4 · 沙箱实跑</text>
+    <text x="524" y="530" text-anchor="middle" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#2A634E" data-svga-color-role="text_green" data-svga-text="n4-s">隔离执行构建单测</text>
+  </g>
+
+  <g id="svga-showcase-swimlane-n5" data-svga-node="n-gate">
+    <rect x="672" y="464" width="184" height="90" rx="10" fill="#FFFFFF" stroke="#387D64" stroke-width="1.5" data-svga-color-role="node"/>
+    <text x="764" y="497" text-anchor="middle" font-size="18" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="n5-t">5 · 门禁判定</text>
+    <text x="764" y="530" text-anchor="middle" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#2A634E" data-svga-color-role="text_green" data-svga-text="n5-s">核验退出码全零</text>
+  </g>
+
+  <g id="svga-showcase-swimlane-n6" data-svga-node="n-heal">
+    <rect x="672" y="308" width="184" height="90" rx="10" fill="#FFFFFF" stroke="#B2565E" stroke-width="1.5" data-svga-color-role="node"/>
+    <text x="764" y="341" text-anchor="middle" font-size="18" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#964148" data-svga-color-role="text_danger" data-svga-text="n6-t">报错归因自愈</text>
+    <text x="764" y="374" text-anchor="middle" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="n6-s">解析栈并定位根因</text>
+  </g>
+
+  <g id="svga-showcase-swimlane-n7" data-svga-node="n-accept">
+    <rect x="912" y="152" width="184" height="90" rx="10" fill="#FFFFFF" stroke="#387D64" stroke-width="1.5" data-svga-color-role="node"/>
+    <text x="1004" y="185" text-anchor="middle" font-size="18" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="n7-t">6 · 验收合入</text>
+    <text x="1004" y="218" text-anchor="middle" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#2A634E" data-svga-color-role="text_green" data-svga-text="n7-s">审阅差异与自检</text>
+  </g>
+
+  <!-- External Legend -->
+  <g id="svga-showcase-swimlane-legend">
+    <line x1="116" y1="614" x2="152" y2="614" stroke="#4D5E9E" stroke-width="2.5" data-svga-role="decoration" data-svga-color-role="edge_flow"/>
+    <text x="160" y="620" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#52525B" data-svga-color-role="text_muted" data-svga-text="legend-1">智能体正向流转</text>
+
+    <line x1="336" y1="614" x2="372" y2="614" stroke="#387D64" stroke-width="2.5" data-svga-role="decoration" data-svga-color-role="edge_green"/>
+    <text x="380" y="620" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#52525B" data-svga-color-role="text_muted" data-svga-text="legend-2">门禁通过并跨道交付</text>
+
+    <line x1="566" y1="614" x2="602" y2="614" stroke="#B2565E" stroke-width="2.2" stroke-dasharray="5,5" data-svga-role="decoration" data-svga-color-role="edge_danger"/>
+    <text x="610" y="620" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#52525B" data-svga-color-role="text_muted" data-svga-text="legend-3">失败拦截并自愈回炉</text>
+
+    <rect x="810" y="606" width="24" height="16" rx="4" fill="#F7F5F0" stroke="#A8A29E" stroke-width="1.2" stroke-dasharray="4,2" data-svga-role="decoration" data-svga-color-role="border_mid"/>
+    <text x="844" y="620" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#52525B" data-svga-color-role="text_muted" data-svga-text="legend-4">三角色泳道 · 纯平暖纸底</text>
+  </g>
+</svg>

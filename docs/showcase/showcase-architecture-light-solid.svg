@@ -1,0 +1,179 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1200"
+     height="675"
+     viewBox="0 0 1200 675"
+     preserveAspectRatio="xMidYMid meet"
+     role="img"
+     aria-labelledby="svga-showcase-architecture-light-solid-title svga-showcase-architecture-light-solid-desc">
+  <title id="svga-showcase-architecture-light-solid-title">编程智能体运行时与沙箱架构（纸白版）</title>
+  <desc id="svga-showcase-architecture-light-solid-desc">纸白底微圆点阵配合同底遮罩展示编程智能体规划、策略路由、隔离沙箱与规范检索审计的分层工程架构。</desc>
+
+  <defs>
+    <marker id="svga-showcase-architecture-light-solid-arrow-neutral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#78716C" data-svga-role="decoration" data-svga-color-role="edge_neutral"/>
+    </marker>
+    <marker id="svga-showcase-architecture-light-solid-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#4D5E9E" data-svga-role="decoration" data-svga-color-role="edge_flow"/>
+    </marker>
+    <marker id="svga-showcase-architecture-light-solid-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#387D64" data-svga-role="decoration" data-svga-color-role="edge_green"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="675" fill="#F7F5F0" data-svga-color-role="background"/>
+  <rect x="0" y="0" width="1200" height="675" fill="none" stroke="#CCC7BD" stroke-width="2" data-svga-role="decoration" data-svga-color-role="border"/>
+
+  <!-- Pre-Edge Label Halos -->
+  <g id="svga-showcase-architecture-light-solid-halos" data-svga-role="decoration">
+    <rect x="330" y="52" width="540" height="44" rx="6" fill="#F7F5F0" data-svga-color-role="background"/>
+    <rect x="270" y="100" width="660" height="28" rx="6" fill="#F7F5F0" data-svga-color-role="background"/>
+    <rect x="108" y="156" width="372" height="28" rx="4" fill="#F7F5F0" data-svga-color-role="background"/>
+    <rect x="404" y="236" width="50" height="24" rx="4" fill="#F7F5F0" data-svga-color-role="background"/>
+    <rect x="746" y="236" width="50" height="24" rx="4" fill="#F7F5F0" data-svga-color-role="background"/>
+    <rect x="266" y="394" width="96" height="24" rx="4" fill="#F7F5F0" data-svga-color-role="background"/>
+    <rect x="836" y="394" width="96" height="24" rx="4" fill="#F7F5F0" data-svga-color-role="background"/>
+    <rect x="136" y="582" width="932" height="34" rx="6" fill="#F7F5F0" data-svga-color-role="background"/>
+  </g>
+
+  <g id="svga-showcase-architecture-light-solid-header">
+    <text x="600" y="84" text-anchor="middle" font-size="32" font-weight="800"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="main-title">编程智能体运行时与沙箱架构</text>
+    <text x="600" y="120" text-anchor="middle" font-size="18" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="sub-title">聚焦代码上下文隔离、网关权限拦截与沙箱测试可验证交付</text>
+  </g>
+
+  <g id="svga-showcase-architecture-light-solid-zone" data-svga-zone="zone-runtime">
+    <rect x="96" y="148" width="1008" height="234" rx="12" fill="none" stroke="#9C958D" stroke-width="1.5" stroke-dasharray="8,4" data-svga-color-role="zone_border"/>
+    <text x="114" y="176" text-anchor="start" font-size="17" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="zone-runtime-lbl">智能体核心执行域（权限隔离边界）</text>
+  </g>
+
+  <!-- Edges -->
+  <path d="M 396 276 L 462 276" fill="none" stroke="#4D5E9E" stroke-width="2.5"
+        marker-end="url(#svga-showcase-architecture-light-solid-arrow-blue)"
+        data-svga-edge="e-plan-route" data-svga-role="edge" data-svga-color-role="edge_flow"/>
+  <text x="429" y="254" text-anchor="middle" font-size="17" font-weight="600"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#3D4C87" data-svga-color-role="text_blue" data-svga-text="e1-lbl">调度</text>
+
+  <path d="M 738 276 L 804 276" fill="none" stroke="#78716C" stroke-width="2.5"
+        marker-end="url(#svga-showcase-architecture-light-solid-arrow-neutral)"
+        data-svga-edge="e-route-exec" data-svga-role="edge" data-svga-color-role="edge_neutral"/>
+  <text x="771" y="254" text-anchor="middle" font-size="17" font-weight="600"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="e2-lbl">放行</text>
+
+  <path d="M 258 354 L 258 446" fill="none" stroke="#4D5E9E" stroke-width="2" stroke-dasharray="5,5"
+        marker-end="url(#svga-showcase-architecture-light-solid-arrow-blue)"
+        data-svga-edge="e-plan-mem" data-svga-role="edge" data-svga-color-role="edge_flow"/>
+  <text x="272" y="411" text-anchor="start" font-size="16" font-weight="400"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#3D4C87" data-svga-color-role="text_blue" data-svga-text="e3-lbl">加载规范</text>
+
+  <path d="M 942 354 L 942 446" fill="none" stroke="#387D64" stroke-width="2" stroke-dasharray="5,5"
+        marker-end="url(#svga-showcase-architecture-light-solid-arrow-green)"
+        data-svga-edge="e-exec-audit" data-svga-role="edge" data-svga-color-role="edge_green"/>
+  <text x="928" y="411" text-anchor="end" font-size="16" font-weight="400"
+        font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+        fill="#2A634E" data-svga-color-role="text_green" data-svga-text="e4-lbl">上报轨迹</text>
+
+  <!-- Primary Cards inside Zone -->
+  <g id="svga-showcase-architecture-light-solid-planner" data-svga-node="node-planner">
+    <rect x="120" y="198" width="276" height="156" rx="10" fill="#FFFFFF" stroke="#4D5E9E" stroke-width="1.5" data-svga-color-role="node"/>
+    <text x="134" y="235" text-anchor="start" font-size="20" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="n1-title">智能体规划器</text>
+    <rect x="298" y="214" width="84" height="28" rx="14" fill="#EEF1FA" stroke="#4D5E9E" stroke-width="1" data-svga-color-role="badge_blue"/>
+    <text x="340" y="233" text-anchor="middle" font-size="16" font-weight="600"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3D4C87" data-svga-color-role="text_blue" data-svga-text="n1-badge">主控</text>
+    <text x="134" y="282" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="n1-b1">· 拆解编码目标与变更域</text>
+    <text x="134" y="320" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="n1-b2">· 检索符号减少窗口噪声</text>
+  </g>
+
+  <g id="svga-showcase-architecture-light-solid-router" data-svga-node="node-router">
+    <rect x="462" y="198" width="276" height="156" rx="10" fill="#FFFFFF" stroke="#A8A29E" stroke-width="1.5" data-svga-color-role="node"/>
+    <text x="476" y="235" text-anchor="start" font-size="20" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="n2-title">策略与工具网关</text>
+    <rect x="640" y="214" width="84" height="28" rx="14" fill="#EFECE4" stroke="#A8A29E" stroke-width="1" data-svga-color-role="badge_neutral"/>
+    <text x="682" y="233" text-anchor="middle" font-size="16" font-weight="600"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="n2-badge">网关</text>
+    <text x="476" y="282" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="n2-b1">· 校验参数并隔离高危写</text>
+    <text x="476" y="320" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="n2-b2">· 拦截越界路径与外发</text>
+  </g>
+
+  <g id="svga-showcase-architecture-light-solid-sandbox" data-svga-node="node-sandbox">
+    <rect x="804" y="198" width="276" height="156" rx="10" fill="#FFFFFF" stroke="#387D64" stroke-width="1.5" data-svga-color-role="node"/>
+    <text x="818" y="235" text-anchor="start" font-size="20" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="n3-title">隔离沙箱执行</text>
+    <rect x="982" y="214" width="84" height="28" rx="14" fill="#E9F5EF" stroke="#387D64" stroke-width="1" data-svga-color-role="badge_green"/>
+    <text x="1024" y="233" text-anchor="middle" font-size="16" font-weight="600"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#2A634E" data-svga-color-role="text_green" data-svga-text="n3-badge">沙箱</text>
+    <text x="818" y="282" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="n3-b1">· 运行构建与回归单测</text>
+    <text x="818" y="320" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="n3-b2">· 采集命令日志与失败栈</text>
+  </g>
+
+  <!-- Secondary Cards -->
+  <g id="svga-showcase-architecture-light-solid-mem" data-svga-node="sub-memory">
+    <rect x="120" y="446" width="420" height="96" rx="8" fill="#FFFFFF" data-svga-color-role="node"/>
+    <rect x="120" y="446" width="420" height="96" rx="8" fill="#FBF4E9" stroke="#9C6B30" stroke-width="1.2" data-svga-color-role="node_amber"/>
+    <text x="136" y="480" text-anchor="start" font-size="18" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#7F5420" data-svga-color-role="text_amber" data-svga-text="sub1-title">长期记忆与工程规范库</text>
+    <text x="136" y="514" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="sub1-desc">按需读取项目约定、错误码表与配色契约资源</text>
+  </g>
+
+  <g id="svga-showcase-architecture-light-solid-audit" data-svga-node="sub-audit">
+    <rect x="660" y="446" width="420" height="96" rx="8" fill="#EFECE4" stroke="#CCC7BD" stroke-width="1.2" data-svga-color-role="node_secondary"/>
+    <text x="676" y="480" text-anchor="start" font-size="18" font-weight="700"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#09090B" data-svga-color-role="text_primary" data-svga-text="sub2-title">全链路追踪与审计落盘</text>
+    <text x="676" y="514" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#3F3F46" data-svga-color-role="text_secondary" data-svga-text="sub2-desc">记录改动文件、真实退出码与未验证风险边界</text>
+  </g>
+
+  <!-- External Legend -->
+  <g id="svga-showcase-architecture-light-solid-legend">
+    <line x1="148" y1="598" x2="184" y2="598" stroke="#4D5E9E" stroke-width="2.5" data-svga-role="decoration" data-svga-color-role="edge_flow"/>
+    <text x="192" y="604" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#52525B" data-svga-color-role="text_muted" data-svga-text="legend-1">主控指令流</text>
+
+    <line x1="344" y1="598" x2="380" y2="598" stroke="#78716C" stroke-width="2.5" data-svga-role="decoration" data-svga-color-role="edge_neutral"/>
+    <text x="388" y="604" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#52525B" data-svga-color-role="text_muted" data-svga-text="legend-2">常规网关放行</text>
+
+    <line x1="568" y1="598" x2="604" y2="598" stroke="#387D64" stroke-width="2" stroke-dasharray="5,5" data-svga-role="decoration" data-svga-color-role="edge_green"/>
+    <text x="612" y="604" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#52525B" data-svga-color-role="text_muted" data-svga-text="legend-3">沙箱异步上报</text>
+
+    <rect x="796" y="590" width="22" height="16" rx="4" fill="none" stroke="#9C958D" stroke-width="1.5" stroke-dasharray="4,3" data-svga-role="decoration" data-svga-color-role="zone_border"/>
+    <text x="826" y="604" text-anchor="start" font-size="16" font-weight="400"
+          font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif"
+          fill="#52525B" data-svga-color-role="text_muted" data-svga-text="legend-4">边界域与暖纸纯底</text>
+  </g>
+</svg>
