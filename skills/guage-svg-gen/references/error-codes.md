@@ -4,18 +4,25 @@
 
 | Code | Meaning | Repair Responsibility |
 | :--- | :--- | :--- |
-| `E_VIEWBOX_MISSING` | Missing `viewBox` attribute | `svg_fixer.py` (auto) |
-| `E_VIEWBOX_INVALID` | Malformed `viewBox` format | `svg_fixer.py` (auto) |
+| `E_VIEWBOX_MISSING` | Missing `viewBox` attribute | `fix_svg.py` (auto) |
+| `E_VIEWBOX_INVALID` | Malformed `viewBox` format | `fix_svg.py` (auto) |
 | `E_GEOMETRY_OUT_OF_BOUNDS` | Safe area or slots exceed viewBox | `repair-cmd` / Manual |
 | `E_GEOMETRY_CONTRACT_MISSING` | Layout plan lacks nodes, text_boxes or edges | Manual |
 | `E_NODE_OVERLAP` | Declared node rectangles overlap | Manual |
 | `E_NODE_MISSING` | A planned node has no matching `data-svga-node` group | Manual |
+| `E_ZONE_MISSING` | A planned zone has no matching `data-svga-zone` element | Manual |
+| `E_ZONE_PARENT_MISSING` | A zone references an undefined `parent_zone` | Manual |
+| `E_ZONE_OVERLAP` | Sibling zones overlap, or an unowned node overlaps a boundary zone | Manual |
+| `E_ZONE_CONTAINMENT` | A zone's child node, label, or child zone escapes its boundary | Manual |
+| `E_LEGEND_INSIDE_ZONE` | Legend box overlaps a boundary zone; move legend outside all zones | Manual |
 | `E_NODE_SIDE_RAIL` | 节点内部存在贴左/右边缘的全高装饰竖条；默认仅保留外边框 | Manual |
 | `E_TEXT_MISSING` | A planned text box has no matching `data-svga-text` element | Manual |
 | `E_TEXT_OVERFLOW` | Measured text width exceeds its planned box | Manual |
 | `E_TEXT_OUT_OF_BOX` | Measured text escapes its planned box | Manual |
 | `E_TEXT_PADDING` | Text box violates its node padding | Manual |
 | `E_TEXT_RESERVED_OVERLAP` | Text overlaps a reserved icon or control zone | Manual |
+| `E_TEXT_TSPAN_ANCHOR_UNSAFE` | `text-anchor="middle"`/`"end"` combined with multiple `<tspan>` segments overlaps in `cairosvg`; split `<text>` or use `text-anchor="start"` | Manual |
+| `E_PLAN_SCHEMA_INVALID` | Layout plan JSON violates `assets/layout-plan.schema.json` contract | Manual |
 | `E_EDGE_MISSING` | A planned edge has no matching `data-svga-edge` path | Manual |
 | `E_EDGE_GRADIENT_STROKE` | 连线使用渐变描边，零宽/零高包围盒可能令线段消失 | Manual |
 | `E_EDGE_OCCLUDED` | 后绘制的不透明矩形遮挡连线 | Manual |
@@ -39,9 +46,9 @@
 | `E_CONTRAST_LOW` | Contrast ratio < 4.5:1 | `repair-cmd` / Manual |
 | `E_CONTRAST_UNRESOLVED` | Text color cannot be resolved (strict) | `repair-cmd` / Manual |
 | `E_SECURITY_TAG` | Dangerous tag (`script`, `iframe`, etc.) | `repair-cmd` / Manual |
-| `E_SECURITY_STYLE_CONTENT` | Unsafe CSS (`@import`, external `url()`) | `svg_fixer.py` (auto) |
+| `E_SECURITY_STYLE_CONTENT` | Unsafe CSS (`@import`, external `url()`) | `fix_svg.py` (auto) |
 | `E_SECURITY_EXTERNAL` | External `href` or `src` detected | `repair-cmd` / Manual |
-| `E_A11Y_MISSING` | Missing `<title>` or `<desc>` | `svg_fixer.py` (auto) |
+| `E_A11Y_MISSING` | Missing `<title>` or `<desc>` | `fix_svg.py` (auto) |
 | `E_ID_PREFIX_MISSING` | 有 `id` 属性但未使用允许前缀（默认 `svga-`）；修复：重命名 id 并同步所有 `url(#id)`、`href="#id"`、`xlink:href="#id"` 引用 | Manual |
 | `E_FONT_FAMILY_MISSING` | 文本元素缺少 `font-family`，且祖先也未提供可继承字体栈 | Manual |
 | `E_FONT_FALLBACK_MISSING` | `font-family` 缺少最终 fallback：`sans-serif` 或 `monospace` | Manual |

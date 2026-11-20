@@ -1,0 +1,48 @@
+{
+  "skill_name": "guage-svg-gen",
+  "evals": [
+    {
+      "id": 1,
+      "slug": "eval-agent-loop-flowchart",
+      "prompt": "我写了一篇讲 Agent Loop 的公众号技术文章，帮我画一张 SVG 闭环流程图，展示 Goal -> Plan -> Act -> Observe -> Feedback Loop 的完整过程。",
+      "expected_output": "一张默认 16:9（1200x675，或按复杂度选用 wechat_article 宽 1200、高 500–1200）的黑底灰网格（bg_dark）风格 SVG 闭环流程图及对应 layout.json，其中 Goal/Plan/Act/Observe/Feedback Loop 等英文通用词被翻译为中文（目标/规划/执行/观察/反馈闭环），所有元素在 Safe Area 内，对比度达标，连线正交且标签不遮挡连线，无遗留临时预览目录。",
+      "assertions": [
+        "The output SVG uses the wechat_article canvas width 1200 (default 16:9 viewBox 0 0 1200 675, height in 500–1200) with a non-transparent background and 1px clipped outer border",
+        "All visible text elements have font-size >= 16px and declare an unquoted font-family stack compatible with cairosvg (zero tofu boxes in rendered PNG)",
+        "Generic English terms (Agent, Loop, Goal, Plan, Act, Observe, Feedback Loop) are translated into Chinese per language policy",
+        "All text elements achieve contrast ratio >= 4.5:1 against their resolved background (validate_svg.py --strict contrast check passes)",
+        "A matching agent-loop.layout.json contract file is produced and passes validate_geometry.py --strict with zero overlaps or out-of-safe-area elements"
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "eval-rag-vs-agentic-comparison",
+      "prompt": "帮我做一张双核对比的 SVG 图卡用于公众号正文，左边是传统 RAG 检索（Query -> 向量检索 -> 拼接 Prompt -> LLM 生成），右边是 Agentic RAG 检索（Query -> 智能体路由与改写 -> 多工具/知识库迭代检索 -> 反思校验 -> LLM 生成）。",
+      "expected_output": "一张默认 16:9（1200x675，或紧凑 2.4:1 1200x500）的双栏/双核对比 SVG 图卡及对应 layout.json，中文优先，白名单缩写（RAG, LLM）保留，非白名单英文（如 Query, Prompt）翻译或用 data-svga-text-kind 标注，字号 >= 16px，色彩符合主题 token，通过几何与视觉校验。",
+      "assertions": [
+        "The output SVG uses the wechat_article canvas width 1200 (16:9 1200x675 default or compact 1200x500) with a non-transparent background and 1px clipped outer border",
+        "All visible text elements have font-size >= 16px and render cleanly in cairosvg without tofu boxes",
+        "All visible text passes validate_language.py --strict (allowlisted RAG/LLM kept; non-allowlisted terms translated or wrapped with data-svga-text-kind)",
+        "All colors come from the approved theme token palette and achieve >= 4.5:1 text contrast (validate_color.py and validate_svg.py pass)",
+        "A matching rag-vs-agentic.layout.json contract file is produced and passes validate_geometry.py --strict"
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "eval-in-place-edit-edge-case",
+      "prompt": "把现有的 gateway-arch.svg 改一下：主标题改成“AI 网关高可用架构 (Claude & OpenAI 双引擎)”，另外把图里右侧的“Order Service”节点改成“计费与限流中心”，并在底部加一条从“计费与限流中心”回到“API 网关”的异步审计虚线。请直接在原文件上更新，不要残留草稿或预览图。",
+      "expected_output": "原位更新 gateway-arch.svg 及其 layout.json（无多余新建 SVG 或残留 preview 目录），主标题居中混排英文（Claude & OpenAI）不触发 cairosvg 多 tspan 居中重叠（拆分为独立 text 或安全锚点），Order Service 替换为中文“计费与限流中心”，新增底部正交返回虚线且端口分离不穿过其他节点。",
+      "files": [
+        "evals/files/gateway-arch.svg",
+        "evals/files/gateway-arch.layout.json"
+      ],
+      "assertions": [
+        "gateway-arch.svg is updated in-place with zero leftover draft SVGs or preview directories in the output folder",
+        "The right node title 'Order Service' is replaced with '计费与限流中心' and a dashed orthogonal edge with label '异步审计' connects it back to 'API 网关'",
+        "The centered mixed-language main title avoids combining text-anchor='middle' with multiple <tspan> children (passes E_TEXT_TSPAN_ANCHOR_UNSAFE and renders without horizontal gap/overlap in cairosvg)",
+        "All text elements including the new '异步审计' edge label maintain font-size >= 16px",
+        "gateway-arch.layout.json is synchronized with the new edge/text boxes and passes validate_geometry.py --strict"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,170 @@
+{
+  "canvas": {
+    "viewBox": "0 0 1200 500",
+    "safe_area": {
+      "x": 80,
+      "y": 50,
+      "width": 1040,
+      "height": 400
+    }
+  },
+  "metadata": {
+    "theme": "bg_dark",
+    "platform": "wechat_article",
+    "language": "zh"
+  },
+  "slots": [
+    {
+      "slot_id": "background",
+      "rect": { "x": 0, "y": 0, "w": 1200, "h": 500 },
+      "content_type": "dark_flat_25px_gray_grid"
+    },
+    {
+      "slot_id": "title_area",
+      "rect": { "x": 80, "y": 50, "w": 1040, "h": 74 },
+      "content_type": "diagram_header"
+    },
+    {
+      "slot_id": "info_area",
+      "rect": { "x": 90, "y": 140, "w": 1020, "h": 300 },
+      "content_type": "main_diagram_nodes_and_edges"
+    }
+  ],
+  "creative_zone": {
+    "allowed_area": "x: 90-1110, y: 140-440",
+    "visual_language": "aligned stage cards connected by orthogonal or straight solid-token edges",
+    "focal_point": "central horizontal stage pipeline"
+  },
+  "palette": {
+    "background": "#050506",
+    "primary": "#3B82F6",
+    "text": "#FAFAFA"
+  },
+  "color_system": {
+    "theme": "bg_dark",
+    "diagram_type": "architecture",
+    "role_map": {
+      "background": "background",
+      "grid": "surface_grid",
+      "node": "surface",
+      "node_primary": "surface_accent",
+      "node_secondary": "surface_alt",
+      "badge_blue": "blue_chip",
+      "badge_purple": "purple_chip",
+      "text_primary": "text_primary",
+      "text_secondary": "text_secondary",
+      "text_muted": "text_muted",
+      "text_blue": "text_blue_bright",
+      "text_blue_soft": "text_blue_soft",
+      "text_purple": "text_purple_bright",
+      "text_purple_soft": "text_purple",
+      "edge_flow": "edge",
+      "edge_data": "edge_secondary"
+    }
+  },
+  "layout_constraints": {
+    "orthogonal_edges": true,
+    "uniform_node_groups": [
+      {
+        "id": "primary-stages",
+        "nodes": ["gateway", "auth-svc", "order-svc"],
+        "y": 180,
+        "height": 150,
+        "tolerance": 1
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "gateway",
+      "rect": { "x": 120, "y": 180, "w": 260, "h": 150 },
+      "padding": 14,
+      "ports": {
+        "right": { "x": 380, "y": 255 }
+      }
+    },
+    {
+      "id": "auth-svc",
+      "rect": { "x": 470, "y": 180, "w": 260, "h": 150 },
+      "padding": 14,
+      "ports": {
+        "left": { "x": 470, "y": 255 },
+        "right": { "x": 730, "y": 255 }
+      }
+    },
+    {
+      "id": "order-svc",
+      "rect": { "x": 820, "y": 180, "w": 260, "h": 150 },
+      "padding": 14,
+      "ports": {
+        "left": { "x": 820, "y": 255 }
+      }
+    }
+  ],
+  "text_boxes": [
+    {
+      "id": "main-title",
+      "rect": { "x": 340, "y": 54, "w": 520, "h": 42 }
+    },
+    {
+      "id": "sub-title",
+      "rect": { "x": 300, "y": 98, "w": 600, "h": 24 }
+    },
+    {
+      "id": "gw-title",
+      "node": "gateway",
+      "rect": { "x": 144, "y": 215, "w": 212, "h": 28 }
+    },
+    {
+      "id": "gw-desc",
+      "node": "gateway",
+      "rect": { "x": 144, "y": 255, "w": 212, "h": 24 }
+    },
+    {
+      "id": "auth-title",
+      "node": "auth-svc",
+      "rect": { "x": 494, "y": 215, "w": 212, "h": 28 }
+    },
+    {
+      "id": "auth-desc",
+      "node": "auth-svc",
+      "rect": { "x": 494, "y": 255, "w": 212, "h": 24 }
+    },
+    {
+      "id": "order-title",
+      "node": "order-svc",
+      "rect": { "x": 844, "y": 215, "w": 212, "h": 28 }
+    },
+    {
+      "id": "order-desc",
+      "node": "order-svc",
+      "rect": { "x": 844, "y": 255, "w": 212, "h": 24 }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-gw-auth",
+      "from": "gateway.right",
+      "to": "auth-svc.left",
+      "directed": true,
+      "route": "straight",
+      "waypoints": [
+        { "x": 380, "y": 255 },
+        { "x": 470, "y": 255 }
+      ],
+      "min_clearance": 10
+    },
+    {
+      "id": "edge-auth-order",
+      "from": "auth-svc.right",
+      "to": "order-svc.left",
+      "directed": true,
+      "route": "straight",
+      "waypoints": [
+        { "x": 730, "y": 255 },
+        { "x": 820, "y": 255 }
+      ],
+      "min_clearance": 10
+    }
+  ]
+}

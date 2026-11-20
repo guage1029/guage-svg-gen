@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Validate semantic SVG layout contracts: nodes, text boxes, ports and edges."""
+# /// script
+# requires-python = ">=3.10"
+# dependencies = [
+#   "pillow>=10.0.0",
+# ]
+# ///
+"""Validate semantic SVG layout contracts: nodes, text boxes, ports, icons, and edges."""
 
 import argparse
 import json
@@ -12,6 +18,14 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from PIL import ImageFont
+
+EPILOG = """Examples:
+  python3 scripts/validate_geometry.py --svg out.svg --plan out.layout.json --strict --json
+
+Exit codes:
+  0  PASS
+  1  ERROR (one or more geometry/layout contract violations detected)
+"""
 
 
 NUMBER = r"[-+]?(?:\d*\.\d+|\d+\.?)(?:[eE][-+]?\d+)?"
@@ -31,6 +45,10 @@ def fail(report, code, message):
 
 def warn(report, code, message):
     report["warnings"].append({"code": code, "msg": message})
+
+
+def _fmt_rect(r):
+    return f"({r[0]:.1f}, {r[1]:.1f}, {r[2]:.1f}, {r[3]:.1f})"
 
 
 def rect(data):
@@ -112,18 +130,153 @@ def measure_text(text, size, family):
     return len(text) * size * factor
 
 
-def text_bbox(elem):
-    text = "".join(elem.itertext()).strip()
-    size = float(elem.attrib.get("font-size", 16))
-    width = measure_text(text, size, elem.attrib.get("font-family", ""))
-    x = float(elem.attrib.get("x", 0))
-    y = float(elem.attrib.get("y", 0))
-    anchor = elem.attrib.get("text-anchor", "start")
+def _local_tag(elem):
+    return elem.tag.split("}")[-1].lower()
+
+
+def _build_ancestor_map(root):
+    parent_map = {}
+    for parent in root.iter():
+        for child in parent:
+            parent_map[id(child)] = parent
+    ancestors = {}
+    for elem in root.iter():
+        chain = []
+        cur = elem
+        while id(cur) in parent_map:
+            cur = parent_map[id(cur)]
+            chain.insert(0, cur)
+        ancestors[id(elem)] = chain
+    return ancestors
+
+
+def _resolve_attr(elem, attr, ancestors, default=None):
+    val = elem.attrib.get(attr)
+    if val:
+        return val
+    for anc in reversed(ancestors):
+        val = anc.attrib.get(attr)
+        if val:
+            return val
+    return default
+
+
+def _cumulative_translate(elem, ancestors):
+    dx, dy = 0.0, 0.0
+    for node in list(ancestors) + [elem]:
+        tf = node.attrib.get("transform", "")
+        for m in re.finditer(r"translate\(\s*([-+]?(?:\d*\.\d+|\d+))(?:[\s,]+([-+]?(?:\d*\.\d+|\d+)))?\s*\)", tf):
+            dx += float(m.group(1))
+            dy += float(m.group(2)) if m.group(2) is not None else 0.0
+    return dx, dy
+
+
+def _parse_float(value, default):
+    if value is None:
+        return default
+    match = re.match(r"\s*" + NUMBER, str(value))
+    return float(match.group()) if match else default
+
+
+def _collect_runs(elem, size, family, runs):
+    if elem.text:
+        runs.append((elem.text, size, family, False))
+    for child in elem:
+        if _local_tag(child) == "tspan":
+            child_size = _parse_float(child.attrib.get("font-size"), size)
+            child_family = child.attrib.get("font-family") or family
+            new_line = ("x" in child.attrib) or ("y" in child.attrib)
+            if child.text:
+                runs.append((child.text, child_size, child_family, new_line))
+                new_line = False
+            for nested in child:
+                if _local_tag(nested) == "tspan":
+                    _collect_runs(nested, child_size, child_family, runs)
+                else:
+                    nested_text = "".join(nested.itertext())
+                    if nested_text:
+                        runs.append((nested_text, child_size, child_family, False))
+                if nested.tail:
+                    runs.append((nested.tail, child_size, child_family, False))
+        else:
+            child_text = "".join(child.itertext())
+            if child_text:
+                runs.append((child_text, size, family, False))
+        if child.tail:
+            runs.append((child.tail, size, family, False))
+
+
+def _normalize_runs(raw_runs):
+    """Collapse XML formatting whitespace across <text>/<tspan> boundaries."""
+    collapsed = []
+    for text, size, family, new_line in raw_runs:
+        norm = re.sub(r"\s+", " ", text)
+        if not norm:
+            continue
+        if new_line:
+            if collapsed and collapsed[-1][0].endswith(" "):
+                prev_t, prev_s, prev_f, prev_nl = collapsed[-1]
+                collapsed[-1] = (prev_t.rstrip(" "), prev_s, prev_f, prev_nl)
+            norm = norm.lstrip(" ")
+        elif collapsed and collapsed[-1][0].endswith(" ") and norm.startswith(" "):
+            norm = norm.lstrip(" ")
+        if norm:
+            collapsed.append((norm, size, family, new_line))
+    if collapsed:
+        t0, s0, f0, nl0 = collapsed[0]
+        collapsed[0] = (t0.lstrip(" "), s0, f0, nl0)
+        t_last, s_last, f_last, nl_last = collapsed[-1]
+        collapsed[-1] = (t_last.rstrip(" "), s_last, f_last, nl_last)
+    return [(t, s, f, nl) for t, s, f, nl in collapsed if t]
+
+
+def has_unsafe_centered_tspans(elem, ancestors=None):
+    anchor = _resolve_attr(elem, "text-anchor", ancestors or [], "start")
+    if anchor not in {"middle", "end"}:
+        return False, anchor
+    tspans = [c for c in elem if _local_tag(c) == "tspan"]
+    if not tspans:
+        return False, anchor
+    non_empty_parts = 0
+    if (elem.text or "").strip():
+        non_empty_parts += 1
+    for tspan in tspans:
+        if "".join(tspan.itertext()).strip():
+            non_empty_parts += 1
+        if (tspan.tail or "").strip():
+            non_empty_parts += 1
+    return non_empty_parts >= 2, anchor
+
+
+def text_bbox(elem, ancestor_map=None):
+    ancestors = ancestor_map.get(id(elem), []) if ancestor_map else []
+    base_size = _parse_float(_resolve_attr(elem, "font-size", ancestors), 16.0)
+    base_family = _resolve_attr(elem, "font-family", ancestors, "")
+    raw_runs = []
+    _collect_runs(elem, base_size, base_family, raw_runs)
+    runs = _normalize_runs(raw_runs)
+    text = "".join(t for t, _, _, _ in runs)
+    if not runs:
+        width = 0.0
+        max_size = base_size
+        line_count = 1
+    else:
+        line_widths = [0.0]
+        max_size = max(s for _, s, _, _ in runs)
+        for run_text, run_size, run_family, new_line in runs:
+            if new_line and line_widths[-1] > 0:
+                line_widths.append(0.0)
+            line_widths[-1] += measure_text(run_text, run_size, run_family)
+        width = max(line_widths)
+        line_count = len(line_widths)
+    x = _parse_float(elem.attrib.get("x"), 0.0)
+    y = _parse_float(elem.attrib.get("y"), 0.0)
+    anchor = _resolve_attr(elem, "text-anchor", ancestors, "start")
     if anchor == "middle":
         x -= width / 2
     elif anchor == "end":
         x -= width
-    return x, y - size * 0.84, width, size * 1.18, text, size
+    return x, y - max_size * 0.84, width, max_size * 1.18 * line_count, text, max_size
 
 
 def parse_path_segments(d):
@@ -262,7 +415,7 @@ def numeric_attr(elem, name):
 
 
 def shape_bounds(elem):
-    tag = elem.tag.split("}")[-1]
+    tag = elem.tag.split("}")[-1].lower()
     if tag == "rect":
         x = numeric_attr(elem, "x")
         y = numeric_attr(elem, "y")
@@ -271,6 +424,21 @@ def shape_bounds(elem):
         if None in {x, y, width, height}:
             return None
         return x, y, width, height
+    if tag == "circle":
+        cx = numeric_attr(elem, "cx")
+        cy = numeric_attr(elem, "cy")
+        r = numeric_attr(elem, "r")
+        if None in {cx, cy, r}:
+            return None
+        return cx - r, cy - r, 2 * r, 2 * r
+    if tag == "ellipse":
+        cx = numeric_attr(elem, "cx")
+        cy = numeric_attr(elem, "cy")
+        rx = numeric_attr(elem, "rx")
+        ry = numeric_attr(elem, "ry")
+        if None in {cx, cy, rx, ry}:
+            return None
+        return cx - rx, cy - ry, 2 * rx, 2 * ry
     if tag == "line":
         x1 = numeric_attr(elem, "x1")
         y1 = numeric_attr(elem, "y1")
@@ -288,6 +456,26 @@ def shape_bounds(elem):
         ys = [item[1] for item in points]
         return min(xs), min(ys), max(xs) - min(xs), max(ys) - min(ys)
     return None
+
+
+def collect_icon_boxes(root, ancestor_map):
+    """Extract global bounding boxes for elements tagged data-svga-role='icon'."""
+    icon_boxes = []
+    for elem in root.iter():
+        ancestors = ancestor_map.get(id(elem), [])
+        in_icon = elem.attrib.get("data-svga-role") == "icon" or any(
+            anc.attrib.get("data-svga-role") == "icon" for anc in ancestors
+        )
+        if not in_icon:
+            continue
+        bounds = shape_bounds(elem)
+        if bounds is None:
+            continue
+        dx, dy = _cumulative_translate(elem, ancestors)
+        bx, by, bw, bh = bounds
+        if bw > 0 or bh > 0:
+            icon_boxes.append((bx + dx, by + dy, bw, bh))
+    return icon_boxes
 
 
 def validate_node_chrome(root, node_rects, report):
@@ -342,7 +530,95 @@ def validate(svg_path, plan_path, strict=False):
         report["status"] = "ERROR"
         return report
 
+    zones = {item["id"]: item for item in plan.get("zones", [])}
+    zone_rects = {key: rect(value["rect"]) for key, value in zones.items()}
     node_rects = {key: rect(value["rect"]) for key, value in nodes.items()}
+    safe_area_data = plan.get("canvas", {}).get("safe_area")
+    safe_area = rect(safe_area_data) if safe_area_data else None
+    if safe_area is not None:
+        for zone_id, zone_rect in zone_rects.items():
+            if not contains(safe_area, zone_rect, 1.0):
+                fail(report, "E_GEOMETRY_OUT_OF_BOUNDS", f"zone {zone_id} escapes safe_area: zone={_fmt_rect(zone_rect)} vs safe_area={_fmt_rect(safe_area)}")
+        for node_id, node_rect in node_rects.items():
+            if not contains(safe_area, node_rect, 1.0):
+                fail(report, "E_GEOMETRY_OUT_OF_BOUNDS", f"node {node_id} escapes safe_area: node={_fmt_rect(node_rect)} vs safe_area={_fmt_rect(safe_area)}")
+        for text_id, spec in text_boxes.items():
+            t_rect = rect(spec["rect"])
+            if not contains(safe_area, t_rect, 1.0):
+                fail(report, "E_GEOMETRY_OUT_OF_BOUNDS", f"text_box {text_id} escapes safe_area: box={_fmt_rect(t_rect)} vs safe_area={_fmt_rect(safe_area)}")
+
+    if zone_rects:
+        svg_zones = {elem.attrib.get("data-svga-zone") for elem in root.iter() if elem.attrib.get("data-svga-zone")}
+        zone_ancestors = {}
+        for z_id, z_spec in zones.items():
+            if z_id not in svg_zones:
+                fail(report, "E_ZONE_MISSING", f"missing SVG zone: {z_id}")
+            anc_set = set()
+            cur = z_spec.get("parent_zone")
+            while cur:
+                if cur in anc_set or cur == z_id:
+                    fail(report, "E_ZONE_CONTAINMENT", f"cyclic parent_zone detected at {z_id}")
+                    break
+                if cur not in zone_rects:
+                    fail(report, "E_ZONE_PARENT_MISSING", f"zone {z_id} references missing parent_zone: {cur}")
+                    break
+                anc_set.add(cur)
+                cur = zones[cur].get("parent_zone")
+            zone_ancestors[z_id] = anc_set
+            p_id = z_spec.get("parent_zone")
+            if p_id and p_id in zone_rects:
+                parent_inner = inset(zone_rects[p_id], float(zones[p_id].get("padding", 0)))
+                if not contains(parent_inner, zone_rects[z_id], 1.0):
+                    fail(report, "E_ZONE_CONTAINMENT", f"child zone {z_id} escapes parent_zone {p_id}: child={_fmt_rect(zone_rects[z_id])} vs parent={_fmt_rect(parent_inner)}")
+        for z1, zr1 in zone_rects.items():
+            for z2, zr2 in zone_rects.items():
+                if z1 >= z2:
+                    continue
+                if z1 in zone_ancestors.get(z2, set()) or z2 in zone_ancestors.get(z1, set()):
+                    continue
+                if overlaps(zr1, zr2):
+                    fail(report, "E_ZONE_OVERLAP", f"sibling zones overlap: {z1} / {z2}")
+
+        owned_node_zones = {}
+        for z_id, z_spec in zones.items():
+            z_inner = inset(zone_rects[z_id], float(z_spec.get("padding", 0)))
+            for n_id in z_spec.get("nodes", []):
+                if n_id not in node_rects:
+                    fail(report, "E_LAYOUT_CONSTRAINT_NODE_MISSING", f"zone {z_id} references missing node: {n_id}")
+                    continue
+                owned_node_zones.setdefault(n_id, set()).add(z_id)
+                if not contains(z_inner, node_rects[n_id], 1.0):
+                    fail(report, "E_ZONE_CONTAINMENT", f"node {n_id} escapes zone {z_id}: node={_fmt_rect(node_rects[n_id])} vs zone_inner={_fmt_rect(z_inner)}")
+            label_id = z_spec.get("label")
+            if label_id:
+                if label_id not in text_boxes:
+                    fail(report, "E_TEXT_MISSING", f"zone {z_id} label text_box missing: {label_id}")
+                elif not contains(zone_rects[z_id], rect(text_boxes[label_id]["rect"]), 1.0):
+                    fail(report, "E_ZONE_CONTAINMENT", f"zone {z_id} label {label_id} escapes zone boundary")
+
+        for n_id, n_rect in node_rects.items():
+            allowed_z = owned_node_zones.get(n_id, set())
+            expanded_allowed = set(allowed_z)
+            for az in allowed_z:
+                expanded_allowed.update(zone_ancestors.get(az, set()))
+            for z_id, z_rect in zone_rects.items():
+                if z_id not in expanded_allowed and overlaps(n_rect, z_rect):
+                    fail(report, "E_ZONE_OVERLAP", f"node {n_id} overlaps unowned zone {z_id} (add to zone.nodes or move outside)")
+
+        legend_boxes = []
+        for slot in plan.get("slots", []):
+            if slot.get("slot_id") == "legend_area":
+                legend_boxes.append(("slot:legend_area", rect(slot["rect"])))
+        for n_id, n_rect in node_rects.items():
+            if "legend" in n_id.split("-"):
+                legend_boxes.append((f"node:{n_id}", n_rect))
+        for t_id, t_spec in text_boxes.items():
+            if t_spec.get("role") == "legend" or "legend" in t_id.split("-"):
+                legend_boxes.append((f"text:{t_id}", rect(t_spec["rect"])))
+        for l_name, l_rect in legend_boxes:
+            for z_id, z_rect in zone_rects.items():
+                if overlaps(l_rect, z_rect):
+                    fail(report, "E_LEGEND_INSIDE_ZONE", f"legend {l_name} overlaps zone {z_id}; place legend outside all boundary zones")
     layout_constraints = plan.get("layout_constraints", {})
     for group in layout_constraints.get("uniform_node_groups", []):
         group_id = group.get("id", "unnamed")
@@ -389,30 +665,49 @@ def validate(svg_path, plan_path, strict=False):
 
     validate_node_chrome(root, node_rects, report)
 
+    ancestor_map = _build_ancestor_map(root)
+    icon_boxes = collect_icon_boxes(root, ancestor_map)
     svg_texts = {elem.attrib.get("data-svga-text"): elem for elem in root.iter() if elem.attrib.get("data-svga-text")}
     for text_id, spec in text_boxes.items():
         elem = svg_texts.get(text_id)
         if elem is None:
             fail(report, "E_TEXT_MISSING", f"missing SVG text: {text_id}")
             continue
-        actual = text_bbox(elem)
+        unsafe_tspan, anchor_val = has_unsafe_centered_tspans(elem, ancestor_map.get(id(elem), []))
+        if unsafe_tspan:
+            fail(
+                report,
+                "E_TEXT_TSPAN_ANCHOR_UNSAFE",
+                f"text {text_id} uses text-anchor={anchor_val!r} with multiple tspans, which overlaps in cairosvg; split into separate <text> elements or use text-anchor='start'",
+            )
+        actual = text_bbox(elem, ancestor_map)
         actual_rect = actual[:4]
         allowed = rect(spec["rect"])
         if actual[2] > allowed[2] + 1:
             fail(report, "E_TEXT_OVERFLOW", f"text width exceeds box: {text_id} ({actual[2]:.1f} > {allowed[2]:.1f})")
         if not contains(allowed, actual_rect, 2):
-            fail(report, "E_TEXT_OUT_OF_BOX", f"text escapes box: {text_id}")
+            fail(report, "E_TEXT_OUT_OF_BOX", f"text escapes box: {text_id} (actual={_fmt_rect(actual_rect)} vs box={_fmt_rect(allowed)})")
         node_id = spec.get("node")
         if node_id:
             inner = inset(node_rects[node_id], float(nodes[node_id].get("padding", 0)))
             if not contains(inner, allowed, 0.5):
-                fail(report, "E_TEXT_PADDING", f"text box violates node padding: {text_id}")
+                fail(report, "E_TEXT_PADDING", f"text box violates node padding: {text_id} (box={_fmt_rect(allowed)} vs node_inner={_fmt_rect(inner)})")
             for reserved in nodes[node_id].get("reserved", []):
                 if overlaps(allowed, rect(reserved)):
                     fail(report, "E_TEXT_RESERVED_OVERLAP", f"text overlaps reserved zone: {text_id}")
+        zone_id = spec.get("zone")
+        if zone_id:
+            if zone_id not in zone_rects:
+                fail(report, "E_ZONE_MISSING", f"text_box {text_id} references missing zone: {zone_id}")
+            elif not contains(zone_rects[zone_id], allowed, 1.0):
+                fail(report, "E_ZONE_CONTAINMENT", f"text_box {text_id} escapes zone {zone_id}")
         for reserved in spec.get("reserved_overlap", []):
             if overlaps(allowed, rect(reserved)):
                 fail(report, "E_TEXT_RESERVED_OVERLAP", f"text overlaps reserved zone: {text_id}")
+        for icon_box in icon_boxes:
+            if overlaps(actual_rect, icon_box):
+                fail(report, "E_TEXT_RESERVED_OVERLAP", f"text overlaps icon geometry: {text_id}")
+                break
 
     extra_texts = set(svg_texts) - set(text_boxes)
     for text_id in sorted(extra_texts):
@@ -485,9 +780,9 @@ def validate(svg_path, plan_path, strict=False):
                     fail(report, "E_EDGE_NON_ORTHOGONAL", f"edge {edge_id} contains a diagonal segment")
                     break
         if distance(start, source) > TOLERANCE:
-            fail(report, "E_EDGE_START_MISMATCH", f"edge start misses port: {edge_id}")
+            fail(report, "E_EDGE_START_MISMATCH", f"edge start misses port: {edge_id} (actual=({start[0]:.1f}, {start[1]:.1f}) vs port=({source[0]:.1f}, {source[1]:.1f}))")
         if distance(end, target) > TOLERANCE:
-            fail(report, "E_EDGE_END_MISMATCH", f"edge end misses port: {edge_id}")
+            fail(report, "E_EDGE_END_MISMATCH", f"edge end misses port: {edge_id} (actual=({end[0]:.1f}, {end[1]:.1f}) vs port=({target[0]:.1f}, {target[1]:.1f}))")
         waypoints = edge.get("waypoints", [])
         if len(waypoints) < 2:
             fail(report, "E_EDGE_WAYPOINTS_MISSING", f"edge needs at least two waypoints: {edge_id}")
@@ -502,6 +797,10 @@ def validate(svg_path, plan_path, strict=False):
         source_node = edge["from"].split(".", 1)[0]
         target_node = edge["to"].split(".", 1)[0]
         sampled = [point for segment in segments for point in sample_segment(segment)]
+        if safe_area is not None and any(
+            not contains(safe_area, (pt[0], pt[1], 0.0, 0.0), 2.0) for pt in sampled
+        ):
+            fail(report, "E_GEOMETRY_OUT_OF_BOUNDS", f"edge {edge_id} escapes safe_area")
         edge_records.append({
             "id": edge_id,
             "points": sampled,
@@ -548,11 +847,15 @@ def validate(svg_path, plan_path, strict=False):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Guage SVG Gen semantic geometry validator")
-    parser.add_argument("--svg", required=True)
-    parser.add_argument("--plan", required=True)
-    parser.add_argument("--strict", action="store_true")
-    parser.add_argument("--json", action="store_true")
+    parser = argparse.ArgumentParser(
+        description="Guage SVG Gen semantic geometry validator (nodes, text boxes, ports, icons, and edges).",
+        epilog=EPILOG,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument("--svg", required=True, help="Path to SVG file")
+    parser.add_argument("--plan", required=True, help="Path to layout plan JSON")
+    parser.add_argument("--strict", action="store_true", help="Enable strict checking")
+    parser.add_argument("--json", action="store_true", help="Emit JSON report to stdout")
     args = parser.parse_args()
     report = validate(args.svg, args.plan, args.strict)
     if args.json:

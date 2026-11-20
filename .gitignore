@@ -1,7 +1,8 @@
 .DS_Store
 .gemini-extension-install.json
 **/.DS_Store
-**/.pyc
+*.pyc
+**/*.pyc
 **/__pycache__/
 .claude/
 *.local.json

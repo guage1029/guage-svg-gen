@@ -173,6 +173,8 @@ fi
 if [ -n "$DEST" ]; then
     rsync -a --delete \
         --exclude='.git/' \
+        --exclude='__pycache__/' \
+        --exclude='*.pyc' \
         --exclude='.DS_Store' \
         "$SKILL_SRC/" "$DEST/"
     echo "  ✓ Skill 已安装到：$DEST"

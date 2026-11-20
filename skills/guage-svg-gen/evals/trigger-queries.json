@@ -1,0 +1,102 @@
+[
+  {
+    "query": "帮我生成一张结构清晰的 skill 渐进式加载原理的图，用于公众号正文配图。",
+    "should_trigger": true,
+    "category": "explicit_mechanism_diagram"
+  },
+  {
+    "query": "我写了一篇讲 Agent Loop 的公众号文章，帮我画一张 1200x500 的 SVG 闭环流程图。",
+    "should_trigger": true,
+    "category": "explicit_svg_flowchart"
+  },
+  {
+    "query": "帮我生成一个关于 skill 目录结构的层级图，要求纯矢量 SVG。",
+    "should_trigger": true,
+    "category": "hierarchy_diagram"
+  },
+  {
+    "query": "把 ~/Documents/workspace/svg-architect/skill-directory-structure.svg 里的标题改成“标准技能包目录”，原位更新。",
+    "should_trigger": true,
+    "category": "in_place_svg_edit"
+  },
+  {
+    "query": "给微服务网关到下游鉴权、计费、订单服务的调用关系画一张白底灰网格风格的技术架构图。",
+    "should_trigger": true,
+    "category": "themed_architecture_diagram"
+  },
+  {
+    "query": "帮我做一张双核对比的暗黑风 SVG 图卡，左边是传统 RAG 检索，右边是 Agentic 检索。",
+    "should_trigger": true,
+    "category": "dual_hero_comparison_card"
+  },
+  {
+    "query": "画个 OAuth2 授权码模式的时序图，准备插进技术博客正文里。",
+    "should_trigger": true,
+    "category": "sequence_diagram"
+  },
+  {
+    "query": "帮我用 SVG 画一张订单状态机流转图（待支付 -> 已支付 -> 已发货 -> 已完成/已取消）。",
+    "should_trigger": true,
+    "category": "state_diagram"
+  },
+  {
+    "query": "我们需要一张展示用户表、订单表、商品表关联关系的 ER 数据模型示意图（SVG 格式）。",
+    "should_trigger": true,
+    "category": "er_diagram"
+  },
+  {
+    "query": "明确需要一张纯 SVG 格式的公众号封面头图（1800x766），主题是 DeepSeek 推理架构解析。",
+    "should_trigger": true,
+    "category": "explicit_svg_cover"
+  },
+  {
+    "query": "帮我生成一套新视频的封面图，要三套不同风格，包含 16:9 和 9:16 比例。",
+    "should_trigger": false,
+    "category": "near_miss_video_cover_guage_image_flow"
+  },
+  {
+    "query": "给这篇公众号文章做一张普通位图封面，要有瓜哥手绘 IP 形象。",
+    "should_trigger": false,
+    "category": "near_miss_bitmap_cover_guage_image_flow"
+  },
+  {
+    "query": "这篇文章我先只做配图规划，看看哪几个段落适合插图，先别生成图片也别改文章。",
+    "should_trigger": false,
+    "category": "near_miss_planning_only_guage_image_flow"
+  },
+  {
+    "query": "帮我把这张个人照片抠图去掉背景，存到素材库里。",
+    "should_trigger": false,
+    "category": "near_miss_photo_bg_removal"
+  },
+  {
+    "query": "在飞书云文档里插入一个飞书画板，绘制系统的流程图。",
+    "should_trigger": false,
+    "category": "near_miss_lark_whiteboard"
+  },
+  {
+    "query": "帮我把这份产品方案做成一个带演讲者备注的单文件 HTML PPT 幻灯片。",
+    "should_trigger": false,
+    "category": "near_miss_html_ppt"
+  },
+  {
+    "query": "用 React 和 Tailwind 帮我写一个 SaaS 后台的数据看板页面组件。",
+    "should_trigger": false,
+    "category": "near_miss_frontend_ui_code"
+  },
+  {
+    "query": "帮我出一张图。",
+    "should_trigger": false,
+    "category": "ambiguous_generic_image_request"
+  },
+  {
+    "query": "把这段口播录音和录屏剪辑成带单行字幕的 AI 教程讲解视频。",
+    "should_trigger": false,
+    "category": "near_miss_video_flow"
+  },
+  {
+    "query": "帮我审校这篇公众号技术长文，去掉 AI 腔并核查事实引用。",
+    "should_trigger": false,
+    "category": "near_miss_write_flow"
+  }
+]

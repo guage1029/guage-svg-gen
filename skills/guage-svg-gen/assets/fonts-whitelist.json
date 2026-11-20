@@ -1,8 +1,8 @@
 [
   {
     "family": "PingFang SC",
-    "weight": ["400", "600", "700", "800", "900"],
-    "usage": "Chinese primary — macOS/iOS only, always pair with cross-platform fallbacks"
+    "weight": ["400", "500", "600", "700", "800"],
+    "usage": "Chinese primary — macOS/iOS only, always pair unquoted with cross-platform fallbacks (bg_dark, bg_light)"
   },
   {
     "family": "Noto Sans SC",
@@ -16,18 +16,13 @@
   },
   {
     "family": "Inter",
-    "weight": ["400", "600", "800"],
-    "usage": "English/Latin display text (tech_dark, glass_premium)"
-  },
-  {
-    "family": "SF Pro Display",
-    "weight": ["400", "700", "800"],
-    "usage": "Apple-style English heading (minimal_clean)"
+    "weight": ["400", "500", "600", "700", "800"],
+    "usage": "Unified English/Latin display text across bg_dark and bg_light"
   },
   {
     "family": "JetBrains Mono",
-    "weight": ["400", "700"],
-    "usage": "Code snippets and monospace labels"
+    "weight": ["400", "600", "700"],
+    "usage": "Code snippets, file paths, parameter tokens, and monospace labels"
   },
   {
     "family": "Roboto",

@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.10"
+# dependencies = [
+#   "cairosvg>=2.7.1",
+# ]
+# ///
+"""Optimize SVG assets and optionally export PNG bitmaps matching viewBox dimensions."""
 import argparse
 import os
 import subprocess
@@ -7,6 +14,16 @@ import re
 import sys
 import xml.etree.ElementTree as ET
 import json
+
+EPILOG = """Examples:
+  python3 scripts/optimize_svg.py out.svg --output out.svg --format svg --json
+  python3 scripts/optimize_svg.py out.svg --png out.png --format png --json
+
+Exit codes:
+  0  SUCCESS
+  1  FAILED (missing input file or fatal error)
+  4  PARTIAL_SUCCESS (SVG ready, PNG conversion failed)
+"""
 
 def prefix_svg_ids_xml(svg_path, prefix):
     ET.register_namespace('', "http://www.w3.org/2000/svg")
@@ -43,27 +60,54 @@ def optimize_with_svgo(input_path, output_path):
         except: return False
     return False
 
+def infer_svg_dimensions(svg_path):
+    try:
+        root = ET.parse(svg_path).getroot()
+        vb = root.attrib.get("viewBox", "")
+        parts = re.split(r"[,\s]+", vb.strip())
+        if len(parts) == 4:
+            return int(round(float(parts[2]))), int(round(float(parts[3])))
+    except Exception:
+        pass
+    return 1200, 675
+
+
 def convert_to_png(svg_path, png_path, width=None, height=None):
-    for tool in ['cairosvg', 'resvg-js']:
+    try:
+        import cairosvg
+        kwargs = {"url": str(svg_path), "write_to": str(png_path)}
+        if width:
+            kwargs["output_width"] = int(width)
+        if height:
+            kwargs["output_height"] = int(height)
+        cairosvg.svg2png(**kwargs)
+        return True
+    except Exception:
+        pass
+    for tool in ['resvg-js']:
         if shutil.which(tool):
             try:
-                cmd = [tool, svg_path, '-o', png_path] if tool == 'cairosvg' else ['resvg-js', svg_path, png_path]
-                if width and tool == 'cairosvg': cmd.extend(['-w', str(width)])
+                cmd = [tool, svg_path, png_path]
                 subprocess.run(cmd, check=True, capture_output=True)
                 return True
-            except: continue
+            except Exception:
+                continue
     return False
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("input")
-    parser.add_argument("--output")
-    parser.add_argument("--png")
-    parser.add_argument("--prefix")
-    parser.add_argument("--width", type=int, default=1200)
-    parser.add_argument("--height", type=int, default=630)
-    parser.add_argument("--format", default="svg", choices=["svg", "png", "all"], help="Export format")
-    parser.add_argument("--json", action="store_true")
+    parser = argparse.ArgumentParser(
+        description="Optimize SVG and optionally convert to PNG using viewBox dimensions.",
+        epilog=EPILOG,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument("input", help="Input SVG path")
+    parser.add_argument("--output", help="Output SVG path (defaults to input in-place)")
+    parser.add_argument("--png", help="Output PNG path when --format is png or all")
+    parser.add_argument("--prefix", help="Optional ID prefix to prepend to all element IDs")
+    parser.add_argument("--width", type=int, default=None, help="Override PNG width (inferred from viewBox if omitted)")
+    parser.add_argument("--height", type=int, default=None, help="Override PNG height (inferred from viewBox if omitted)")
+    parser.add_argument("--format", default="svg", choices=["svg", "png", "all"], help="Export format (default: svg)")
+    parser.add_argument("--json", action="store_true", help="Emit JSON report to stdout")
     args = parser.parse_args()
     
     report = {"status": "SUCCESS", "details": {}}
@@ -76,12 +120,16 @@ def main():
     output_png = args.png if args.png else args.input.replace('.svg', '.png')
     if args.output and args.output != args.input: shutil.copy(args.input, args.output)
 
+    inferred_w, inferred_h = infer_svg_dimensions(output_svg)
+    png_w = args.width if args.width is not None else inferred_w
+    png_h = args.height if args.height is not None else inferred_h
+
     if args.prefix: report["details"]["prefix"] = "SUCCESS" if prefix_svg_ids_xml(output_svg, args.prefix) else "FAILED"
     report["details"]["svgo"] = "SUCCESS" if optimize_with_svgo(output_svg, output_svg) else "SKIPPED"
     
     # New Logic: Bitmap conversion only if requested
     if args.format in ["png", "all"]:
-        if convert_to_png(output_svg, output_png, args.width, args.height):
+        if convert_to_png(output_svg, output_png, png_w, png_h):
             report["details"]["png"] = "SUCCESS"
         else:
             report["details"]["png"] = "FAILED"

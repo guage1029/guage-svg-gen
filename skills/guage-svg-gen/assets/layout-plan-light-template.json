@@ -1,0 +1,266 @@
+{
+  "canvas": {
+    "viewBox": "0 0 1200 675",
+    "aspect_ratio": "16:9",
+    "safe_area": {
+      "x": 80,
+      "y": 50,
+      "width": 1040,
+      "height": 575
+    }
+  },
+  "metadata": {
+    "theme": "bg_light",
+    "platform": "wechat_article",
+    "language": "zh"
+  },
+  "slots": [
+    {
+      "slot_id": "background",
+      "rect": { "x": 0, "y": 0, "w": 1200, "h": 675 },
+      "content_type": "paper_white_flat_25px_warm_gray_grid_with_1px_border"
+    },
+    {
+      "slot_id": "title_area",
+      "rect": { "x": 80, "y": 52, "w": 1040, "h": 74 },
+      "content_type": "diagram_header"
+    },
+    {
+      "slot_id": "info_area",
+      "rect": { "x": 96, "y": 148, "w": 1008, "h": 400 },
+      "content_type": "zones_primary_and_secondary_nodes"
+    },
+    {
+      "slot_id": "legend_area",
+      "rect": { "x": 140, "y": 588, "w": 920, "h": 28 },
+      "content_type": "external_legend_and_radius_guide"
+    }
+  ],
+  "creative_zone": {
+    "allowed_area": "x: 96-1104, y: 148-548",
+    "visual_language": "pure white opaque cards on warm paper background with 4-tier corner radius hierarchy, dashed zone container, crisp 25px warm-gray grid, and 1px edge-clipped outer border on 16:9 default canvas",
+    "focal_point": "aligned primary stage cards inside dashed core zone"
+  },
+  "palette": {
+    "background": "#F7F5F0",
+    "primary": "#2563EB",
+    "text": "#09090B"
+  },
+  "color_system": {
+    "theme": "bg_light",
+    "diagram_type": "architecture",
+    "role_map": {
+      "background": "background",
+      "grid": "surface_grid_alt",
+      "zone_border": "border_zone",
+      "zone_fill": "surface_alt",
+      "node": "surface",
+      "node_secondary": "surface_alt",
+      "node_focus": "surface_accent",
+      "border": "border",
+      "border_mid": "border_mid",
+      "border_primary": "border_primary",
+      "badge_blue": "blue_chip",
+      "badge_neutral": "surface_alt",
+      "text_primary": "text_primary",
+      "text_secondary": "text_secondary",
+      "text_muted": "text_muted",
+      "text_blue": "text_blue_bright",
+      "text_blue_soft": "text_blue_soft",
+      "text_purple": "text_purple_bright",
+      "edge_flow": "edge",
+      "edge_data": "edge_secondary"
+    }
+  },
+  "layout_constraints": {
+    "orthogonal_edges": true,
+    "uniform_node_groups": [
+      {
+        "id": "primary-stages",
+        "nodes": ["stage-1", "stage-2"],
+        "y": 194,
+        "height": 142,
+        "tolerance": 1
+      },
+      {
+        "id": "secondary-cards",
+        "nodes": ["sub-1", "sub-2"],
+        "y": 444,
+        "height": 96,
+        "tolerance": 1
+      }
+    ]
+  },
+  "zones": [
+    {
+      "id": "zone-core",
+      "rect": { "x": 96, "y": 148, "w": 1008, "h": 212 },
+      "nodes": ["stage-1", "stage-2"],
+      "label": "zone-core-label",
+      "padding": 12
+    }
+  ],
+  "nodes": [
+    {
+      "id": "stage-1",
+      "rect": { "x": 120, "y": 194, "w": 420, "h": 142 },
+      "padding": 12,
+      "ports": {
+        "right": { "x": 540, "y": 265 }
+      }
+    },
+    {
+      "id": "stage-2",
+      "rect": { "x": 660, "y": 194, "w": 420, "h": 142 },
+      "padding": 12,
+      "ports": {
+        "left": { "x": 660, "y": 265 },
+        "bottom": { "x": 870, "y": 336 }
+      }
+    },
+    {
+      "id": "sub-1",
+      "rect": { "x": 120, "y": 444, "w": 420, "h": 96 },
+      "padding": 10,
+      "ports": {}
+    },
+    {
+      "id": "sub-2",
+      "rect": { "x": 660, "y": 444, "w": 420, "h": 96 },
+      "padding": 10,
+      "ports": {
+        "top": { "x": 870, "y": 444 }
+      }
+    }
+  ],
+  "text_boxes": [
+    {
+      "id": "main-title",
+      "rect": { "x": 400, "y": 54, "w": 400, "h": 48 }
+    },
+    {
+      "id": "sub-title",
+      "rect": { "x": 280, "y": 104, "w": 640, "h": 24 }
+    },
+    {
+      "id": "zone-core-label",
+      "zone": "zone-core",
+      "role": "zone_label",
+      "rect": { "x": 112, "y": 157, "w": 300, "h": 24 }
+    },
+    {
+      "id": "s1-title",
+      "node": "stage-1",
+      "rect": { "x": 136, "y": 209, "w": 260, "h": 26 }
+    },
+    {
+      "id": "s1-badge",
+      "node": "stage-1",
+      "rect": { "x": 434, "y": 211, "w": 84, "h": 24 }
+    },
+    {
+      "id": "s1-desc-1",
+      "node": "stage-1",
+      "rect": { "x": 136, "y": 253, "w": 384, "h": 24 }
+    },
+    {
+      "id": "s1-desc-2",
+      "node": "stage-1",
+      "rect": { "x": 136, "y": 289, "w": 384, "h": 24 }
+    },
+    {
+      "id": "s2-title",
+      "node": "stage-2",
+      "rect": { "x": 676, "y": 209, "w": 260, "h": 26 }
+    },
+    {
+      "id": "s2-badge",
+      "node": "stage-2",
+      "rect": { "x": 974, "y": 211, "w": 84, "h": 24 }
+    },
+    {
+      "id": "s2-desc-1",
+      "node": "stage-2",
+      "rect": { "x": 676, "y": 253, "w": 384, "h": 24 }
+    },
+    {
+      "id": "s2-desc-2",
+      "node": "stage-2",
+      "rect": { "x": 676, "y": 289, "w": 384, "h": 24 }
+    },
+    {
+      "id": "sub1-title",
+      "node": "sub-1",
+      "rect": { "x": 136, "y": 461, "w": 384, "h": 24 }
+    },
+    {
+      "id": "sub1-desc",
+      "node": "sub-1",
+      "rect": { "x": 136, "y": 496, "w": 384, "h": 24 }
+    },
+    {
+      "id": "sub2-title",
+      "node": "sub-2",
+      "rect": { "x": 676, "y": 461, "w": 384, "h": 24 }
+    },
+    {
+      "id": "sub2-desc",
+      "node": "sub-2",
+      "rect": { "x": 676, "y": 496, "w": 384, "h": 24 }
+    },
+    {
+      "id": "edge-label-12",
+      "rect": { "x": 560, "y": 229, "w": 80, "h": 22 }
+    },
+    {
+      "id": "edge-label-async",
+      "rect": { "x": 884, "y": 391, "w": 88, "h": 23 }
+    },
+    {
+      "id": "legend-flow",
+      "role": "legend",
+      "rect": { "x": 192, "y": 591, "w": 100, "h": 24 }
+    },
+    {
+      "id": "legend-async",
+      "role": "legend",
+      "rect": { "x": 362, "y": 591, "w": 132, "h": 24 }
+    },
+    {
+      "id": "legend-zone",
+      "role": "legend",
+      "rect": { "x": 548, "y": 591, "w": 136, "h": 24 }
+    },
+    {
+      "id": "legend-radius",
+      "role": "legend",
+      "rect": { "x": 712, "y": 591, "w": 270, "h": 24 }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-1-2",
+      "from": "stage-1.right",
+      "to": "stage-2.left",
+      "directed": true,
+      "route": "straight",
+      "waypoints": [
+        { "x": 540, "y": 265 },
+        { "x": 660, "y": 265 }
+      ],
+      "min_clearance": 10
+    },
+    {
+      "id": "edge-async-2",
+      "from": "stage-2.bottom",
+      "to": "sub-2.top",
+      "directed": true,
+      "route": "straight",
+      "waypoints": [
+        { "x": 870, "y": 336 },
+        { "x": 870, "y": 444 }
+      ],
+      "min_clearance": 10
+    }
+  ]
+}

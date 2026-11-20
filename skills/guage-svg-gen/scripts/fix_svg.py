@@ -1,9 +1,21 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.10"
+# dependencies = []
+# ///
+"""Auto-fix deterministic structural SVG errors (viewBox, a11y tags, unsafe CSS)."""
 import xml.etree.ElementTree as ET
 import json
 import os
 import argparse
 import re
+
+EPILOG = """Examples:
+  python3 scripts/fix_svg.py --svg draft.svg --errors E_VIEWBOX_MISSING,E_A11Y_MISSING --plan out.layout.json
+
+Exit codes:
+  0  Completed auto-fix attempt (prints Fix status: SUCCESS or NO_CHANGE)
+"""
 
 def fix_svg(svg_path, error_codes, plan_path=None):
     ET.register_namespace('', "http://www.w3.org/2000/svg")
@@ -56,10 +68,14 @@ def fix_svg(svg_path, error_codes, plan_path=None):
     return fixed_any
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--svg", required=True)
-    parser.add_argument("--errors", required=True)
-    parser.add_argument("--plan")
+    parser = argparse.ArgumentParser(
+        description="Auto-fix deterministic SVG issues (E_VIEWBOX_MISSING, E_A11Y_MISSING, E_SECURITY_STYLE_CONTENT).",
+        epilog=EPILOG,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument("--svg", required=True, help="Path to SVG file to repair in place")
+    parser.add_argument("--errors", required=True, help="Comma-separated error codes to fix")
+    parser.add_argument("--plan", help="Optional path to layout plan JSON")
     args = parser.parse_args()
     error_list = args.errors.split(',')
     success = fix_svg(args.svg, error_list, args.plan)

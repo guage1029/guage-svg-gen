@@ -12,9 +12,9 @@
         "viewBox": { 
           "type": "string", 
           "pattern": "^-?\\d+(\\.\\d+)? -?\\d+(\\.\\d+)? \\d+(\\.\\d+)? \\d+(\\.\\d+)?$",
-          "description": "支持负起点的标准 viewBox 格式" 
+          "description": "标准 viewBox：wechat_article 默认 16:9 (0 0 1200 675)，固定宽 1200、高 500–1200（推荐 25 整数倍）；wechat_cover 固定 0 0 1800 766" 
         },
-        "aspect_ratio": { "type": "string", "enum": ["16:9", "4:3", "1:1"] },
+        "aspect_ratio": { "type": "string", "enum": ["16:9", "4:3", "1:1", "2.4:1", "2.35:1", "custom"] },
         "safe_area": {
           "type": "object",
           "properties": {
@@ -32,7 +32,7 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "theme": { "type": "string", "enum": ["tech_dark", "minimal_clean", "glass_premium", "neubrutalism", "bento_info", "clay_soft"] },
+        "theme": { "type": "string", "enum": ["bg_dark", "bg_light"] },
         "platform": { "type": "string" },
         "language": { "type": "string", "enum": ["zh", "en", "mixed"] }
       },
@@ -44,7 +44,7 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "slot_id": { "type": "string", "enum": ["background", "title_area", "info_area", "brand_mark"] },
+          "slot_id": { "type": "string", "enum": ["background", "title_area", "info_area", "brand_mark", "legend_area"] },
           "rect": {
             "type": "object",
             "properties": {
@@ -83,7 +83,7 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "theme": { "type": "string", "enum": ["gemini", "claude", "codex"] },
+        "theme": { "type": "string", "enum": ["bg_dark", "bg_light"] },
         "diagram_type": { "type": "string", "enum": ["architecture", "flowchart", "sequence", "state", "er", "deployment", "swimlane", "timeline", "comparison", "data_visualization", "hierarchy"] },
         "role_map": { "type": "object", "additionalProperties": { "type": "string" } }
       },
@@ -115,6 +115,34 @@
         }
       }
     },
+    "zones": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "rect": {
+            "type": "object",
+            "properties": {
+              "x": { "type": "number" },
+              "y": { "type": "number" },
+              "w": { "type": "number", "exclusiveMinimum": 0 },
+              "h": { "type": "number", "exclusiveMinimum": 0 }
+            },
+            "required": ["x", "y", "w", "h"]
+          },
+          "parent_zone": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "nodes": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^[a-z0-9-]+$" }
+          },
+          "label": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "padding": { "type": "number", "minimum": 0 }
+        },
+        "required": ["id", "rect"]
+      }
+    },
     "nodes": {
       "type": "array",
       "items": {
@@ -133,6 +161,7 @@
             "required": ["x", "y", "w", "h"]
           },
           "padding": { "type": "number", "minimum": 0 },
+          "reserved": { "type": "array" },
           "ports": {
             "type": "object",
             "additionalProperties": {
@@ -156,6 +185,8 @@
         "properties": {
           "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
           "node": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "zone": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "role": { "type": "string", "enum": ["default", "legend", "zone_label"] },
           "rect": {
             "type": "object",
             "properties": {

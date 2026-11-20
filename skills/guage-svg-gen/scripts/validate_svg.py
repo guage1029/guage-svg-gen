@@ -1,10 +1,23 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.10"
+# dependencies = []
+# ///
+"""Validate structural, security, contrast, font, and accessibility rules on an SVG asset."""
 import xml.etree.ElementTree as ET
 import json
 import os
 import argparse
 import sys
 import re
+
+EPILOG = """Examples:
+  python3 scripts/validate_svg.py --svg out.svg --plan out.layout.json --strict --json
+
+Exit codes:
+  0  PASS
+  1  ERROR (one or more structural/security/contrast/font checks failed)
+"""
 
 ERR_CODES = {
     "E_VIEWBOX_MISSING": "缺失 viewBox 属性",
@@ -63,25 +76,102 @@ _CSS_NAMED_COLORS = {
     'whitesmoke': 'f5f5f5', 'ghostwhite': 'f8f8ff',
 }
 
-def parse_color(color_str):
-    if not color_str or color_str in ('none', 'transparent'):
-        return None
-    color_str = color_str.strip().lower()
-    if color_str in _CSS_NAMED_COLORS:
-        return _CSS_NAMED_COLORS[color_str]
-    if color_str.startswith('#'):
-        c = color_str.lstrip('#')
+def parse_color_with_alpha(color_str):
+    """Parse hex, CSS named color, rgb(), or rgba() into (rrggbb, alpha)."""
+    if not color_str or color_str.strip().lower() in ('none', 'transparent'):
+        return None, 0.0
+    s = color_str.strip().lower()
+    if s in _CSS_NAMED_COLORS:
+        return _CSS_NAMED_COLORS[s], 1.0
+    if s.startswith('#'):
+        c = s.lstrip('#')
         if len(c) == 3:
             c = ''.join([ch * 2 for ch in c])
+            return c, 1.0
         if len(c) == 6:
-            return c
-        return None
-    if color_str.startswith('rgb'):
-        nums = re.findall(r'\d+', color_str)
+            return c, 1.0
+        if len(c) == 8:
+            return c[:6], int(c[6:8], 16) / 255.0
+        return None, 1.0
+    if s.startswith('rgb'):
+        nums = re.findall(r'[-+]?(?:\d*\.\d+|\d+)', s)
         if len(nums) >= 3:
-            return '{:02x}{:02x}{:02x}'.format(int(nums[0]), int(nums[1]), int(nums[2]))
-        return None
-    return None
+            r = max(0, min(255, int(round(float(nums[0])))))
+            g = max(0, min(255, int(round(float(nums[1])))))
+            b = max(0, min(255, int(round(float(nums[2])))))
+            alpha = 1.0
+            if len(nums) >= 4:
+                alpha = max(0.0, min(1.0, float(nums[3])))
+            return '{:02x}{:02x}{:02x}'.format(r, g, b), alpha
+        return None, 1.0
+    return None, 1.0
+
+
+def parse_color(color_str):
+    hex_val, _ = parse_color_with_alpha(color_str)
+    return hex_val
+
+
+def _blend_hex(fg_hex, alpha, bg_hex):
+    if not fg_hex:
+        return bg_hex
+    if alpha >= 0.999 or not bg_hex:
+        return fg_hex
+    if alpha <= 0.0:
+        return bg_hex
+    out = []
+    for i in (0, 2, 4):
+        fg_c = int(fg_hex[i:i+2], 16)
+        bg_c = int(bg_hex[i:i+2], 16)
+        val = max(0, min(255, int(round(fg_c * alpha + bg_c * (1.0 - alpha)))))
+        out.append(f'{val:02x}')
+    return ''.join(out)
+
+
+def _cumulative_translate(elem, ancestors):
+    dx, dy = 0.0, 0.0
+    for node in list(ancestors) + [elem]:
+        tf = node.attrib.get('transform', '')
+        for m in re.finditer(r'translate\(\s*([-+]?(?:\d*\.\d+|\d+))(?:[\s,]+([-+]?(?:\d*\.\d+|\d+)))?\s*\)', tf):
+            dx += float(m.group(1))
+            dy += float(m.group(2)) if m.group(2) is not None else 0.0
+    return dx, dy
+
+
+def _effective_opacity(elem, ancestors, kind='fill-opacity'):
+    op = 1.0
+    for node in list(ancestors) + [elem]:
+        for attr in ('opacity', kind) if node is elem else ('opacity',):
+            val = node.attrib.get(attr) or _get_style_prop(node.attrib.get('style', ''), attr)
+            if val is not None:
+                try:
+                    op *= max(0.0, min(1.0, float(val)))
+                except ValueError:
+                    pass
+    return op
+
+
+def _collect_gradients(root):
+    grads = {}
+    for elem in root.iter():
+        tag = elem.tag.split('}')[-1].lower()
+        if tag in ('lineargradient', 'radialgradient') and elem.attrib.get('id'):
+            stops = []
+            for child in elem:
+                if child.tag.split('}')[-1].lower() == 'stop':
+                    sc = child.attrib.get('stop-color') or _get_style_prop(child.attrib.get('style', ''), 'stop-color')
+                    so_raw = child.attrib.get('stop-opacity') or _get_style_prop(child.attrib.get('style', ''), 'stop-opacity')
+                    sc_hex, sc_alpha = parse_color_with_alpha(sc)
+                    if sc_hex:
+                        if so_raw is not None:
+                            try:
+                                sc_alpha *= max(0.0, min(1.0, float(so_raw)))
+                            except ValueError:
+                                pass
+                        stops.append((sc_hex, sc_alpha))
+            if stops:
+                grads[elem.attrib['id']] = stops
+    return grads
 
 def get_luminance(hex_color):
     if not hex_color:
@@ -171,14 +261,22 @@ def _build_ancestor_map(root):
         ancestors[id(elem)] = chain
     return ancestors
 
+WECHAT_COVER_W = 1800
+WECHAT_COVER_H = 766
+WECHAT_ARTICLE_W = 1200
+WECHAT_ARTICLE_MIN_H = 500
+WECHAT_ARTICLE_MAX_H = 1200
+WECHAT_ARTICLE_DEFAULT_H = 675
+
+
 def detect_platform(vb_parts):
     """根据 viewBox 自动识别平台，返回 (platform_name, min_font_size)。"""
     if not vb_parts:
         return None, None
     _, _, w, h = vb_parts
-    if abs(w - 1800) <= 20 and abs(h - 766) <= 20:
+    if abs(w - WECHAT_COVER_W) <= 20 and abs(h - WECHAT_COVER_H) <= 20:
         return 'wechat_cover', 18
-    if abs(w - 1200) <= 20 and abs(h - 500) <= 20:
+    if abs(w - WECHAT_ARTICLE_W) <= 20 and (WECHAT_ARTICLE_MIN_H - 20) <= h <= (WECHAT_ARTICLE_MAX_H + 20):
         return 'wechat_article', 16
     return None, None
 
@@ -190,8 +288,8 @@ def validate_svg(svg_file, layout_plan_file=None, strict=False, id_prefix='svga-
         vb_raw = root.attrib.get('viewBox', '')
         vb_parts = parse_rect(vb_raw)
 
-        v_w = 1200
-        v_h = 500
+        v_w = WECHAT_ARTICLE_W
+        v_h = WECHAT_ARTICLE_DEFAULT_H
         if vb_parts:
             v_w = vb_parts[2]
             v_h = vb_parts[3]
@@ -294,60 +392,174 @@ def validate_svg(svg_file, layout_plan_file=None, strict=False, id_prefix='svga-
                                 "code": "W_ID_REF_MISSING",
                                 "msg": f"{attr}=\"{ref}\" 引用的 id 不存在",
                             })
-                fill = elem.attrib.get('fill', '')
-                m = re.match(r'url\(#([^)]+)\)', fill.strip())
-                if m:
-                    target = m.group(1)
-                    if target not in all_ids and target != root.attrib.get('id', ''):
-                        report["warnings"].append({
-                            "code": "W_ID_REF_MISSING",
-                            "msg": f"fill=\"{fill}\" 引用的 id 不存在",
-                        })
+                for attr in ('fill', 'stroke', 'marker-end', 'marker-start', 'marker-mid', 'filter', 'clip-path', 'mask'):
+                    val = elem.attrib.get(attr, '')
+                    for m in re.finditer(r'url\(#([^)]+)\)', val):
+                        target = m.group(1)
+                        if target not in all_ids and target != root.attrib.get('id', ''):
+                            report["warnings"].append({
+                                "code": "W_ID_REF_MISSING",
+                                "msg": f"{attr}=\"{val}\" 引用的 id 不存在",
+                            })
 
         # ── 4. Contrast ───────────────────────────────────────────────────────
+        ancestor_map = _build_ancestor_map(root)
+        gradients = _collect_gradients(root)
+        draw_order = {id(el): idx for idx, el in enumerate(root.iter())}
+
         bg_color_hex = "0a0a0b"
         max_area = 0
+        rect_layers = []
         for rect in root.iter(f'{{{SVG_NS}}}rect'):
+            r_anc = ancestor_map.get(id(rect), [])
+            dx, dy = _cumulative_translate(rect, r_anc)
+            rx = parse_length(rect.attrib.get('x', '0'), v_w) + dx
+            ry = parse_length(rect.attrib.get('y', '0'), v_h) + dy
             w = parse_length(rect.attrib.get('width', '0'), v_w)
-            h = parse_length(rect.attrib.get('height', '0'), v_w)
-            if w * h > max_area:
-                max_area = w * h
-                c = parse_color(rect.attrib.get('fill', '#000000'))
-                if c:
-                    bg_color_hex = c
+            h = parse_length(rect.attrib.get('height', '0'), v_h)
+            raw_fill = _resolve_attr(rect, 'fill', r_anc) or '#000000'
+            r_op = _effective_opacity(rect, r_anc, 'fill-opacity')
+            if r_op <= 0 or raw_fill.strip().lower() in ('none', 'transparent'):
+                continue
+            grad_match = re.match(r'url\(#([^)]+)\)', raw_fill.strip())
+            if grad_match:
+                gid = grad_match.group(1)
+                if gid in gradients:
+                    rect_layers.append((draw_order[id(rect)], (rx, ry, w, h), ('grad', gradients[gid], r_op)))
+                continue
+            c_hex, c_alpha = parse_color_with_alpha(raw_fill)
+            if c_hex:
+                total_alpha = c_alpha * r_op
+                rect_layers.append((draw_order[id(rect)], (rx, ry, w, h), ('solid', c_hex, total_alpha)))
+                if w * h > max_area and total_alpha >= 0.8:
+                    max_area = w * h
+                    bg_color_hex = c_hex
 
-        ancestor_map = _build_ancestor_map(root)
+        def _bg_candidates_for_point(px, py, before_idx):
+            candidates = [bg_color_hex]
+            for layer_idx, (rx, ry, rw, rh), paint in rect_layers:
+                if layer_idx >= before_idx:
+                    continue
+                if rx <= px <= rx + rw and ry <= py <= ry + rh:
+                    kind = paint[0]
+                    if kind == 'solid':
+                        _, c_hex, alpha = paint
+                        candidates = [_blend_hex(c_hex, alpha, bg) for bg in candidates]
+                    else:
+                        _, stops, r_op = paint
+                        new_cands = []
+                        for s_hex, s_alpha in stops:
+                            for bg in candidates:
+                                new_cands.append(_blend_hex(s_hex, s_alpha * r_op, bg))
+                        candidates = new_cands or candidates
+            # Deduplicate while preserving order
+            return list(dict.fromkeys(candidates))
 
-        for text in root.iter(f'{{{SVG_NS}}}text'):
-            ancestors = ancestor_map.get(id(text), [])
-            fill_val = _resolve_attr(text, 'fill', ancestors) or 'white'
+        def _text_label(elem, elem_ancestors):
+            tid = elem.attrib.get('data-svga-text')
+            if not tid:
+                for anc in reversed(elem_ancestors):
+                    tid = anc.attrib.get('data-svga-text')
+                    if tid:
+                        break
+            if tid:
+                return tid
+            snippet = "".join(elem.itertext()).strip()[:20]
+            return snippet or elem.tag.split('}')[-1]
+
+        def _check_paint_contrast(elem, elem_ancestors, bg_candidates):
+            fill_val = _resolve_attr(elem, 'fill', elem_ancestors) or 'white'
+            t_id = _text_label(elem, elem_ancestors)
 
             if _is_gradient_fill(fill_val):
                 if strict:
                     report["errors"].append({
                         "code": "E_CONTRAST_GRADIENT_TEXT",
-                        "msg": ERR_CODES["E_CONTRAST_GRADIENT_TEXT"],
+                        "msg": f"{ERR_CODES['E_CONTRAST_GRADIENT_TEXT']} (text={t_id!r})",
+                        "text_id": t_id,
                     })
                 else:
                     report["warnings"].append({
                         "code": "W_CONTRAST_GRADIENT_TEXT",
-                        "msg": "文字 fill 为渐变，对比度无法自动验证",
+                        "msg": f"文字 fill 为渐变，对比度无法自动验证 (text={t_id!r})",
+                        "text_id": t_id,
                     })
-                continue
+                return
 
-            txt_color_hex = parse_color(fill_val)
-            ratio = check_contrast_ratio(bg_color_hex, txt_color_hex)
-            if ratio is None:
+            txt_hex, txt_alpha = parse_color_with_alpha(fill_val)
+            txt_op = txt_alpha * _effective_opacity(elem, elem_ancestors, 'fill-opacity')
+            if not txt_hex:
                 if strict:
                     report["errors"].append({"code": "E_CONTRAST_UNRESOLVED",
-                                             "msg": "Text color unresolved."})
+                                             "msg": f"Text color unresolved for {t_id!r} (fill={fill_val!r}).",
+                                             "text_id": t_id})
                 else:
                     report["warnings"].append({"code": "W_COLOR_UNRESOLVED",
-                                               "msg": "Text color unresolved."})
-            elif ratio < 4.5:
-                level = "errors" if strict else "warnings"
-                report[level].append({"code": "E_CONTRAST_LOW",
-                                      "msg": f"Contrast ratio {ratio:.2f}:1 low."})
+                                               "msg": f"Text color unresolved for {t_id!r} (fill={fill_val!r}).",
+                                               "text_id": t_id})
+                return
+
+            ratios = []
+            for bg in bg_candidates:
+                effective_txt = _blend_hex(txt_hex, txt_op, bg)
+                r = check_contrast_ratio(bg, effective_txt)
+                if r is not None:
+                    ratios.append((r, bg))
+            if not ratios:
+                if strict:
+                    report["errors"].append({"code": "E_CONTRAST_UNRESOLVED",
+                                             "msg": f"Text color unresolved for {t_id!r}.",
+                                             "text_id": t_id})
+                else:
+                    report["warnings"].append({"code": "W_COLOR_UNRESOLVED",
+                                               "msg": f"Text color unresolved for {t_id!r}.",
+                                               "text_id": t_id})
+            else:
+                min_ratio, worst_bg = min(ratios, key=lambda item: item[0])
+                if min_ratio < 4.5:
+                    level = "errors" if strict else "warnings"
+                    report[level].append({"code": "E_CONTRAST_LOW",
+                                          "msg": f"Contrast ratio {min_ratio:.2f}:1 < 4.5:1 for text {t_id!r} on #{worst_bg}.",
+                                          "text_id": t_id})
+
+        for text in root.iter(f'{{{SVG_NS}}}text'):
+            ancestors = ancestor_map.get(id(text), [])
+            dx, dy = _cumulative_translate(text, ancestors)
+            tx = parse_length(text.attrib.get('x', '0'), v_w) + dx
+            ty = parse_length(text.attrib.get('y', '0'), v_h) + dy
+            fs_str = _resolve_attr(text, 'font-size', ancestors)
+            fs = parse_length(fs_str) if fs_str else 16.0
+            anchor = _resolve_attr(text, 'text-anchor', ancestors) or 'start'
+            cx = tx if anchor == 'middle' else (tx - 10.0 if anchor == 'end' else tx + 10.0)
+            cy = ty - fs * 0.35
+            bg_candidates = _bg_candidates_for_point(cx, cy, draw_order[id(text)])
+
+            non_empty_tspans = [
+                ts for ts in text.iter(f'{{{SVG_NS}}}tspan')
+                if ts is not text and "".join(ts.itertext()).strip()
+            ]
+            has_direct_text = bool((text.text or "").strip()) or any(
+                bool((c.tail or "").strip()) for c in text
+            )
+            overridden_tspans = [
+                ts for ts in non_empty_tspans
+                if any(
+                    ts.attrib.get(a) or _get_style_prop(ts.attrib.get('style', ''), a)
+                    for a in ('fill', 'fill-opacity', 'opacity')
+                )
+            ]
+            all_covered_by_tspan_fill = (
+                not has_direct_text
+                and bool(non_empty_tspans)
+                and all(
+                    ts.attrib.get('fill') or _get_style_prop(ts.attrib.get('style', ''), 'fill')
+                    for ts in non_empty_tspans
+                )
+            )
+            if not all_covered_by_tspan_fill:
+                _check_paint_contrast(text, ancestors, bg_candidates)
+            for ts in overridden_tspans:
+                _check_paint_contrast(ts, ancestor_map.get(id(ts), []), bg_candidates)
 
         # ── 5. A11y ───────────────────────────────────────────────────────────
         has_title = any(c.tag.split('}')[-1].lower() == 'title' for c in root)
@@ -361,16 +573,19 @@ def validate_svg(svg_file, layout_plan_file=None, strict=False, id_prefix='svga-
             if elem.tag not in text_tags:
                 continue
             ancestors = ancestor_map.get(id(elem), [])
+            t_id = _text_label(elem, ancestors)
             ff = _resolve_attr(elem, 'font-family', ancestors)
             if not ff:
                 report["errors"].append({
                     "code": "E_FONT_FAMILY_MISSING",
-                    "msg": ERR_CODES["E_FONT_FAMILY_MISSING"],
+                    "msg": f"{ERR_CODES['E_FONT_FAMILY_MISSING']} (text={t_id!r})",
+                    "text_id": t_id,
                 })
             elif not _has_generic_fallback(ff):
                 report["errors"].append({
                     "code": "E_FONT_FALLBACK_MISSING",
-                    "msg": f"font-family=\"{ff}\" 缺少 sans-serif/monospace fallback",
+                    "msg": f"font-family=\"{ff}\" 缺少 sans-serif/monospace fallback (text={t_id!r})",
+                    "text_id": t_id,
                 })
 
         # ── 7. 字号检查 ───────────────────────────────────────────────────────
@@ -379,24 +594,28 @@ def validate_svg(svg_file, layout_plan_file=None, strict=False, id_prefix='svga-
                 if elem.tag not in text_tags:
                     continue
                 ancestors = ancestor_map.get(id(elem), [])
+                t_id = _text_label(elem, ancestors)
                 fs_str = _resolve_attr(elem, 'font-size', ancestors)
                 if fs_str is None:
                     if strict:
                         report["errors"].append({
                             "code": "E_FONT_SIZE_TOO_SMALL",
-                            "msg": "font-size 无法解析（strict 模式视为违规）",
+                            "msg": f"font-size 无法解析（strict 模式视为违规, text={t_id!r}）",
+                            "text_id": t_id,
                         })
                     else:
                         report["warnings"].append({
                             "code": "W_FONT_SIZE_UNRESOLVED",
-                            "msg": "font-size 无法解析",
+                            "msg": f"font-size 无法解析 (text={t_id!r})",
+                            "text_id": t_id,
                         })
                     continue
                 fs = parse_length(fs_str)
                 if fs < min_font_size:
                     report["errors"].append({
                         "code": "E_FONT_SIZE_TOO_SMALL",
-                        "msg": f"font-size={fs}px 低于平台下限 {min_font_size}px",
+                        "msg": f"font-size={fs}px 低于平台下限 {min_font_size}px (text={t_id!r})",
+                        "text_id": t_id,
                     })
 
     except ET.ParseError as e:
@@ -409,7 +628,11 @@ def validate_svg(svg_file, layout_plan_file=None, strict=False, id_prefix='svga-
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Guage SVG Gen Validator")
+    parser = argparse.ArgumentParser(
+        description="Guage SVG Gen structural, security, contrast, font, and a11y validator.",
+        epilog=EPILOG,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
     parser.add_argument("--svg", required=True, help="SVG 文件路径")
     parser.add_argument("--plan", help="layout_plan.json 路径")
     parser.add_argument("--strict", action="store_true", help="strict 模式（对比度/渐变文字等升为 error）")

@@ -1,8 +1,8 @@
-# Guage SVG Gen (v0.17.9)
+# Guage SVG Gen (v0.17.23)
 
 **公众号专属工业级 SVG 设计引擎**
 
-`guage-svg-gen` 是一个遵循 [Agent Skills](https://agentskills.io) 协议的专业级设计 Skill，专为公众号内容创作者打造。通过 AI Agent 驱动，一句话生成封面图、配图、架构图、流程图等高质量 SVG 图像，完美适配手机端阅读体验。
+`guage-svg-gen` 是一个遵循 [Agent Skills](https://agentskills.io) 协议的专业级 SVG 技术图表与配图 Skill。通过 AI Agent 驱动，输出结构清晰、字体字号可控、几何与对比度严格校验的纯代码 SVG（结构架构图、流程图、原理图、时序图、层级图、ER 图、状态机与双核对比图卡）。
 
 ---
 
@@ -28,14 +28,13 @@
 
 ## 核心特性
 
-- **公众号原生适配**：封面图 1800×766px、配图 1200×500px，自动处理安全区，手机端不裁切
-- **六种专业风格**：Tech Dark / Minimal Clean / Glass Premium / Neubrutalism / Bento Info / Clay Soft
-- **工业级验证**：内置 Python 脚本自动校验 viewBox、对比度、ID 前缀、字体栈、字号下限、安全标签等
-- **技术图质量门禁**：布局、中文文案、主题色、连接线与标签遮挡自动校验
-- **QA 预览渲染**：Playwright/Chromium 驱动，自动输出 preview.png + 焦点裁切缩略图 + 渲染质量报告
-- **评测闭环**：64 条 eval 用例（触发/负例/风格覆盖/输出质量），配套 eval_protocol.md 指导评测执行
-- **原位进化**：修改已有图时直接覆盖原文件，不产生冗余副本
-- **纯代码生成**：无需设计软件，SVG 跨平台渲染一致
+- **16:9 默认画幅 + 定宽弹性高度分档**：
+  - `wechat_article`（默认）：锁定 `1200px` 宽度确保跨图字号与网格标尺一致，默认 **`16:9`（`1200×675`）**，支持 `2.4:1`（`1200×500`）/ `16:9`（`1200×675`）/ `4:3`（`1200×900`）/ `1:1`（`1200×1200`）或 `[500, 1200]` 间 `25` 的整数倍高度；正文配图自动附带像素级 `1px` 整数裁切收边外框。
+  - `wechat_cover`（显式封面需求）：保持 `1800×766px`（无外框，满足微信 `2.35:1` 封面规格）。
+- **黑白极简双核心风格**：收敛为 **`bg_dark`（默认：`#050506` 黑底 + `25px` 灰网格 + 中性深炭灰卡片）**与 **`bg_light`（`#F7F5F0` 纸白底 + `25px` 暖灰网格 + 纯白实体卡片）**，配套透明填充虚线区（`fill="none"` 消除框内外色差）、四级圆角规范与蓝紫语义高亮。
+- **全流程质量门禁（`run_pipeline.py --strict`）**：内置结构/对比度/字号检查（`validate_svg.py`）、中文优先文案校验（`validate_language.py`）、主题色与语义角色校验（`validate_color.py`）、节点/端口/正交连线/文本框越界校验（`validate_geometry.py`）及确定性自愈（`fix_svg.py`）。
+- **隔离视觉 QA（`render_preview.py`）**：渲染 `preview.png` + 水平中央 50% `thumbnail_crop.png` + `visual_report.json` 到临时目录，检查透明背景与 `cairosvg` 隐患并自动 `--cleanup-dir`。
+- **标准化起手模板与评测闭环**：提供黑白双套 `16:9` 起手模板（`assets/svg-starter-template.svg` / `svg-starter-light-template.svg` + 配对 `.layout.json`）与 `skills/guage-svg-gen/evals/` 测试基准。
 
 ---
 
@@ -43,8 +42,8 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/guage1029/svg-architect.git
-cd svg-architect
+git clone https://github.com/guage1029/guage-svg-gen.git
+cd guage-svg-gen
 
 # 安装（交互模式）
 bash scripts/install.sh
@@ -54,108 +53,85 @@ bash scripts/install.sh --dest ~/.claude/skills --workspace ~/svg-output --yes -
 ```
 
 安装向导会完成：
-1. 初始化 SVG 产出物目录（workspace）
-2. 安装 Python 后处理依赖（可选，PNG 导出与 QA 预览渲染需要）
-3. 将 skill 安装到你选择的 AI 工具目录
+1. 初始化 SVG 产出物目录（workspace，默认 `$HOME/Documents/workspace/svg-architect`）
+2. 安装 Python 依赖（可选，PNG 导出与 QA 预览渲染需要）
+3. 将 skill 安装到目标 AI 工具 Skills 目录
 
 ---
 
 ## 项目结构
 
 ```
-svg-architect/
+guage-svg-gen/
 ├── README.md
 ├── .gitignore
 ├── scripts/
-│   ├── install.sh                  # 安装向导（支持 --dest / --workspace / --yes / --skip-deps）
-│   └── check_release.sh            # 发布自检脚本
+│   ├── install.sh                       # 安装向导（--dest / --workspace / --yes / --skip-deps）
+│   └── check_release.sh                 # 发布前自检脚本
 ├── skills/
-│   └── guage-svg-gen/              # Agent Skills 标准 skill 根
-│       ├── SKILL.md                # 核心指令（Agent Skills compatible）
-│       ├── references/             # 按需加载的参考文档
-│       │   ├── fonts_whitelist.json
-│       │   ├── platform_profiles.md
-│       │   ├── layout_plan.schema.json
-│       │   ├── quality_checklist.md
-│       │   ├── error_codes.md
-│       │   ├── prompt_template.md
-│       │   └── specs/              # 六种风格规格说明
-│       │       ├── tech_dark.md
-│       │       ├── minimal_clean.md
-│       │       ├── glass_premium.md
-│       │       ├── neubrutalism.md
-│       │       ├── bento_info.md
-│       │       └── clay_soft.md
-│       ├── scripts/                # 验证与后处理脚本
-│       │   ├── svg_validator.py    # 规范校验（ID前缀/字体/对比度/尺寸）
-│       │   ├── render_svg_preview.py  # QA 预览渲染（Playwright/cairosvg）
-│       │   ├── geometry_validator.py  # 节点、连线与标签几何校验
-│       │   ├── color_validator.py     # 主题色校验
-│       │   ├── text_language_validator.py # 中文文案校验
-│       │   ├── svg_fixer.py
-│       │   ├── optimize_and_convert.py
-│       │   └── run_pipeline.py
-│       └── requirements.txt
-├── tests/                          # 冒烟测试（不随 skill 安装）
-│   ├── run_smoke_tests.sh          # 17 条冒烟测试
-│   └── cases/                      # 11 个 SVG 测试用例
-├── evals/                          # 评测体系
-│   ├── eval_protocol.md            # 评测执行协议
-│   ├── trigger_evals.json          # 正例触发用例（24 条）
-│   ├── negative_evals.json         # 负例用例（16 条）
-│   ├── style_coverage_evals.json   # 风格覆盖用例（12 条）
-│   └── output_quality_evals.json   # 输出质量断言（12 条）
+│   └── guage-svg-gen/                   # Agent Skills 标准 skill 根目录
+│       ├── SKILL.md                     # 核心指令与工作流契约
+│       ├── requirements.txt             # 可选后处理与 QA 预览依赖
+│       ├── assets/                      # 按需加载的设计资产与默认 16:9 起手模板
+│       │   ├── color-tokens.json
+│       │   ├── fonts-whitelist.json
+│       │   ├── language-policy.json
+│       │   ├── layout-plan.schema.json
+│       │   ├── layout-plan-template.json
+│       │   ├── layout-plan-light-template.json
+│       │   ├── svg-starter-template.svg
+│       │   └── svg-starter-light-template.svg
+│       ├── references/                  # 风格规格与错误码手册（单层扁平结构）
+│       │   ├── style-bg-dark.md
+│       │   ├── style-bg-light.md
+│       │   └── error-codes.md
+│       ├── scripts/                     # PEP 723 验证、流水线与渲染预览脚本
+│       │   ├── validate_svg.py
+│       │   ├── validate_color.py
+│       │   ├── validate_geometry.py
+│       │   ├── validate_language.py
+│       │   ├── fix_svg.py
+│       │   ├── optimize_svg.py
+│       │   ├── render_preview.py
+│       │   ├── run_pipeline.py
+│       │   └── test_skill_scripts.py
+│       └── evals/                       # 评测集与评测夹具
+│           ├── evals.json
+│           ├── trigger-queries.json
+│           └── files/
+├── tests/                               # 仓库级冒烟测试（不随 skill 安装）
+│   ├── run_smoke_tests.sh
+│   └── cases/
 ├── integrations/
 │   └── gemini/
-│       └── gemini-extension.json   # Gemini CLI 适配（可选）
+│       └── gemini-extension.json        # Gemini CLI 扩展清单
 └── docs/
-    └── showcase/                   # 设计成品展示
+    └── showcase/                        # 设计成品展示
 ```
 
 ---
 
-## 使用方法
-
-在支持 Agent Skills 的工具（Claude Code、Cursor 等）中直接输入需求：
-
-```
-帮我做一张公众号封面图，主题是"AI 编程的三种模式"
-画一张微服务架构的配图，科技暗黑风格
-出一张 RAG 检索流程的示意图
-```
-
----
-
-## 脚本工具（手动使用）
+## 脚本工具与自检
 
 ```bash
-# 验证 SVG 合规性（自动检测平台）
-python skills/guage-svg-gen/scripts/svg_validator.py --svg input.svg
+# 运行完整流水线（草稿严格校验 + 输出正式 SVG + 自动清理草稿）
+python3 skills/guage-svg-gen/scripts/run_pipeline.py \
+  --svg /tmp/draft.svg \
+  --plan out/my-diagram.layout.json \
+  --output-svg out/my-diagram.svg \
+  --cleanup-draft --strict --json
 
-# 严格模式（WARN 也视为失败，报告 JSON）
-python skills/guage-svg-gen/scripts/svg_validator.py --svg input.svg --strict --json
+# 隔离视觉 QA 预览渲染（完成后使用 --cleanup-dir 清理临时目录）
+python3 skills/guage-svg-gen/scripts/render_preview.py \
+  --svg out/my-diagram.svg --platform wechat_article --strict --json
 
-# 指定平台与 ID 前缀
-python skills/guage-svg-gen/scripts/svg_validator.py \
-  --svg input.svg --platform wechat_cover --id-prefix svga-
+# 运行单元回归测试（10 项）
+python3 -B skills/guage-svg-gen/scripts/test_skill_scripts.py
 
-# QA 预览渲染（输出 preview.png / thumbnail_crop.png / visual_report.json）
-python skills/guage-svg-gen/scripts/render_svg_preview.py \
-  --svg input.svg --platform wechat_article --out-dir ./preview/
-
-# 自动修复常见错误
-python skills/guage-svg-gen/scripts/svg_fixer.py --svg input.svg
-
-# 导出 PNG
-python skills/guage-svg-gen/scripts/optimize_and_convert.py input.svg --format png
-
-# 完整流水线（验证 + 修复 + 输出）
-python skills/guage-svg-gen/scripts/run_pipeline.py --svg input.svg --slug my-cover
-
-# 运行冒烟测试（17 条）
+# 运行仓库级冒烟 + 单元测试（18/18 PASS）
 bash tests/run_smoke_tests.sh
 
-# 发布前自检
+# 发布前全量自检
 bash scripts/check_release.sh
 ```
 
@@ -163,12 +139,10 @@ bash scripts/check_release.sh
 
 ## 环境要求
 
-- Python 3.8+（必须，用于验证脚本）
-- playwright + chromium（推荐，QA 预览渲染主引擎）：`pip install playwright && playwright install chromium`
-- Pillow + numpy（图像分析，随 playwright 一并安装）：`pip install Pillow numpy`
-- cairosvg（可选，渲染备用引擎）：需本机安装 libcairo
-- svgo（可选，SVG 压缩优化）
+- Python 3.10+（必须，用于验证、几何/语言门禁与流水线脚本）
+- `Pillow>=10.0.0`、`cairosvg>=2.7.1`（或 `playwright` + Chromium）用于 `render_preview.py` 与 PNG 导出
+- `fontconfig`（`fc-match`）用于本地字体检查；`svgo`（可选）用于 SVG 压缩
 
 ---
 
-**作者**：zhaodl1983 | **许可证**：MIT | **协议**：[Agent Skills](https://agentskills.io)
+**作者**：donglinzhao (`guage1029`) | **许可证**：MIT | **协议**：[Agent Skills](https://agentskills.io)
