@@ -4,7 +4,7 @@
 
 **让 AI Agent 一次生成「零遮挡、零溢出、可源码直改」的出版级纯代码 SVG 技术配图**
 
-[![Version](https://img.shields.io/badge/version-v0.17.27-6979B0?style=flat-square)](https://github.com/guage1029/guage-svg-gen/releases)
+[![Version](https://img.shields.io/badge/version-v0.17.28-6979B0?style=flat-square)](https://github.com/guage1029/guage-svg-gen/releases)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-Claude%20%7C%20Codex%20%7C%20Gemini-387D64?style=flat-square)](#30-秒快速安装与使用)
 [![Pipeline Gates](https://img.shields.io/badge/Hard%20Gates-SVG%20%C2%B7%20Lang%20%C2%B7%20Color%20%C2%B7%20Geometry-4D5E9E?style=flat-square)](#为什么选择-guage-svg-gen)
 [![License](https://img.shields.io/github/license/guage1029/guage-svg-gen?style=flat-square)](https://github.com/guage1029/guage-svg-gen)
@@ -166,13 +166,27 @@ bash scripts/install.sh --dest ~/.claude/skills --yes
 bash scripts/install.sh --dest ~/.agents/skills --workspace ~/Documents/svg-output --yes --skip-deps
 ```
 
-如需本地启用 PNG 预览与裁剪验收（可选）：
+如需本地启用 PNG 预览与裁剪验收：
 
 ```bash
 pip install -r skills/guage-svg-gen/requirements.txt
 ```
 
-Gemini CLI 扩展清单位于 [integrations/gemini/gemini-extension.json](integrations/gemini/gemini-extension.json)（已对齐 `0.17.27`）。
+### 运行环境与版本要求（开箱即用清单）
+
+| 依赖项 | 最低版本 | 用途 | 安装说明 |
+| --- | --- | --- | --- |
+| **Python** | `>= 3.10` | 运行全部校验与管线脚本 | macOS: `brew install python@3.12` |
+| **Pillow** | `>= 10.0.0` | 几何包围盒字体度量与裁切检查（**必需**） | `pip install -r skills/guage-svg-gen/requirements.txt` |
+| **cairosvg** | `>= 2.7.1` | 渲染 PNG 预览与高清导出（**推荐必需**） | 需先装系统 Cairo：macOS `brew install cairo`；Linux `apt install libcairo2` |
+| **numpy** | `>= 1.24.0` | 预览空白/透明角检测加速 | 包含在 `requirements.txt` |
+| **fontconfig (`fc-match`)** | 系统自带 | CJK/Latin 字体栈真机解析（**必需**） | macOS: `brew install fontconfig`；Linux 建议装 `fonts-noto-cjk` |
+| **Playwright + Chromium** | `>= 1.40.0` | 浏览器级高精度渲染后端（可选） | `pip install playwright>=1.40.0 && playwright install chromium` |
+| **svgo** | `>= 3.0.0` | 可选 SVG 压缩优化 | `npm install -g svgo` |
+
+> 导入 Skill 后若缺环境，可直接让你的 Agent 读取 `skills/guage-svg-gen/README.md` 与 `requirements.txt` 自动检测并指导安装。
+
+Gemini CLI 扩展清单位于 [integrations/gemini/gemini-extension.json](integrations/gemini/gemini-extension.json)（已对齐 `0.17.28`）。
 
 ### 对话触发示例
 
@@ -214,17 +228,19 @@ guage-svg-gen/
 ├── README.md                                  # 中文说明文档（含 Showcase 与快速上手）
 ├── README.en.md                               # English documentation
 ├── docs/showcase/                             # Showcase PNG 预览与校验通过的 SVG 源码
-├── integrations/gemini/gemini-extension.json  # Gemini CLI 扩展元数据（v0.17.27）
+├── integrations/gemini/gemini-extension.json  # Gemini CLI 扩展元数据（v0.17.28）
 ├── scripts/
 │   ├── install.sh                             # 一键安装至 Agent Skills 目录
+│   ├── package_skill.sh                       # 生成纯净分发/上架包（去缓存与开发测试文件）
 │   └── check_release.sh                       # 发布自检脚本（版本 / JSON / 路径 / 冒烟测试）
 ├── tests/                                     # 18 项端到端回归冒烟测试用例
-└── skills/guage-svg-gen/                      # 核心 Skill 实现（v0.17.27）
+└── skills/guage-svg-gen/                      # 核心 Skill 实现（v0.17.28 · author: donglin）
     ├── SKILL.md                               # 风格路由、契约规范与执行流定义
-    ├── requirements.txt                       # 可选渲染预览依赖
+    ├── README.md                              # 单包开箱即用环境安装与自检文档
+    ├── requirements.txt                       # 渲染与校验依赖清单
     ├── assets/                                # 调色板、字体白名单、JSON Schema 与起步模板
     ├── references/                            # BG-Dark / BG-Light 规范手册与错误码索引
-    ├── evals/                                 # 基准评测集与示例工程资产
+    ├── evals/                                 # 基准评测集与示例工程资产（打包可精简）
     └── scripts/                               # 4 重校验器、自动修复、预览与统一编排管线
 ```
 

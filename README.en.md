@@ -4,7 +4,7 @@
 
 **Generate publication-grade, pure-code SVG technical diagrams that pass strict geometry, color, and typography gates on the first try.**
 
-[![Version](https://img.shields.io/badge/version-v0.17.27-6979B0?style=flat-square)](https://github.com/guage1029/guage-svg-gen/releases)
+[![Version](https://img.shields.io/badge/version-v0.17.28-6979B0?style=flat-square)](https://github.com/guage1029/guage-svg-gen/releases)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-Claude%20%7C%20Codex%20%7C%20Gemini-387D64?style=flat-square)](#quick-start-in-30-seconds)
 [![Pipeline Gates](https://img.shields.io/badge/Hard%20Gates-SVG%20%C2%B7%20Lang%20%C2%B7%20Color%20%C2%B7%20Geometry-4D5E9E?style=flat-square)](#why-guage-svg-gen)
 [![License](https://img.shields.io/github/license/guage1029/guage-svg-gen?style=flat-square)](https://github.com/guage1029/guage-svg-gen)
@@ -171,7 +171,7 @@ Optional preview rendering dependencies:
 pip install -r skills/guage-svg-gen/requirements.txt
 ```
 
-Gemini CLI extension manifest is maintained in [integrations/gemini/gemini-extension.json](integrations/gemini/gemini-extension.json) (`0.17.27`).
+Gemini CLI extension manifest is maintained in [integrations/gemini/gemini-extension.json](integrations/gemini/gemini-extension.json) (`0.17.28`). See [skills/guage-svg-gen/README.md](skills/guage-svg-gen/README.md) for the standalone out-of-the-box setup guide (`Python >= 3.10`, `Pillow >= 10.0.0`, `cairosvg >= 2.7.1`, `fontconfig`, and optional `playwright >= 1.40.0` / `svgo`).
 
 ### Example Prompts
 
@@ -213,14 +213,16 @@ guage-svg-gen/
 ├── README.md                                  # Chinese documentation & showcase
 ├── README.en.md                               # English documentation & showcase
 ├── docs/showcase/                             # Rendered PNG previews & validated SVG sources
-├── integrations/gemini/gemini-extension.json  # Gemini CLI extension manifest (v0.17.27)
+├── integrations/gemini/gemini-extension.json  # Gemini CLI extension manifest (v0.17.28)
 ├── scripts/
 │   ├── install.sh                             # Interactive / scripted installer
+│   ├── package_skill.sh                       # Clean distributable skill packager
 │   └── check_release.sh                       # Release gate (versions / JSON / path leak / smoke tests)
 ├── tests/                                     # 18 regression smoke test fixtures
-└── skills/guage-svg-gen/                      # Core Agent Skill (v0.17.27)
+└── skills/guage-svg-gen/                      # Core Agent Skill (v0.17.28 · author: donglin)
     ├── SKILL.md                               # Style routing matrix, contracts & workflow
-    ├── requirements.txt                       # Optional preview rasterization dependencies
+    ├── README.md                              # Standalone out-of-the-box setup & environment guide
+    ├── requirements.txt                       # Preview & geometry dependency constraints
     ├── assets/                                # Color tokens, font whitelist, schemas & templates
     ├── references/                            # BG-Dark / BG-Light guides & error-code manual
     ├── evals/                                 # Benchmark eval suite & reference assets

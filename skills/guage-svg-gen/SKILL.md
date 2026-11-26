@@ -11,10 +11,10 @@ description: >
   illustrations, photo background removal, or planning-only requests without image generation
   (use guage-image-flow), nor for Feishu whiteboard drawings (use lark-whiteboard).
 compatibility: >
-  Requires Python 3.10+, Pillow, cairosvg (or playwright with chromium), and fontconfig (fc-match).
+  Requires Python 3.10+, Pillow>=10.0.0, fontconfig (fc-match), and optionally cairosvg>=2.7.1 / playwright>=1.40.0 for PNG preview. See README.md and requirements.txt for setup.
 metadata:
-  version: "0.17.27"
-  author: donglinzhao
+  version: "0.17.28"
+  author: donglin
 ---
 
 # Guage SVG Gen
