@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="docs/icons/icon_A3_v2_pop_offset_512.png" alt="guage-svg-gen logo" width="108" height="108" />
+
 # guage-svg-gen
 
 **Generate publication-grade, pure-code SVG technical diagrams that pass strict geometry, color, and typography gates on the first try.**

@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="docs/icons/icon_A3_v2_pop_offset_512.png" alt="guage-svg-gen logo" width="108" height="108" />
+
 # guage-svg-gen
 
 **让 AI Agent 一次生成「零遮挡、零溢出、可源码直改」的出版级纯代码 SVG 技术配图**
