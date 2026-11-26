@@ -1,7 +1,7 @@
 {
   "name": "guage-svg-gen",
   "description": "公众号专属工业级 SVG 设计 Skill。默认 16:9（1200x675，定宽 1200 弹性高 500–1200）正文配图与 1800x766 封面图，收敛为 bg_dark（黑底灰网格）与 bg_light（纸白暖灰网格）双核心风格，内置语言、配色、几何、对比度校验与预览 QA。",
-  "version": "0.17.28",
+  "version": "0.17.29",
   "skills": [
     {
       "name": "guage-svg-gen",

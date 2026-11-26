@@ -6,7 +6,7 @@
 
 **让 AI Agent 一次生成「零遮挡、零溢出、可源码直改」的出版级纯代码 SVG 技术配图**
 
-[![Version](https://img.shields.io/badge/version-v0.17.28-6979B0?style=flat-square)](https://github.com/guage1029/guage-svg-gen/releases)
+[![Version](https://img.shields.io/badge/version-v0.17.29-6979B0?style=flat-square)](https://github.com/guage1029/guage-svg-gen/releases)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-Claude%20%7C%20Codex%20%7C%20Gemini-387D64?style=flat-square)](#30-秒快速安装与使用)
 [![Pipeline Gates](https://img.shields.io/badge/Hard%20Gates-SVG%20%C2%B7%20Lang%20%C2%B7%20Color%20%C2%B7%20Geometry-4D5E9E?style=flat-square)](#为什么选择-guage-svg-gen)
 [![License](https://img.shields.io/github/license/guage1029/guage-svg-gen?style=flat-square)](https://github.com/guage1029/guage-svg-gen)
@@ -188,7 +188,7 @@ pip install -r skills/guage-svg-gen/requirements.txt
 
 > 导入 Skill 后若缺环境，可直接让你的 Agent 读取 `skills/guage-svg-gen/README.md` 与 `requirements.txt` 自动检测并指导安装。
 
-Gemini CLI 扩展清单位于 [integrations/gemini/gemini-extension.json](integrations/gemini/gemini-extension.json)（已对齐 `0.17.28`）。
+Gemini CLI 扩展清单位于 [integrations/gemini/gemini-extension.json](integrations/gemini/gemini-extension.json)（已对齐 `0.17.29`）。
 
 ### 对话触发示例
 
@@ -230,13 +230,13 @@ guage-svg-gen/
 ├── README.md                                  # 中文说明文档（含 Showcase 与快速上手）
 ├── README.en.md                               # English documentation
 ├── docs/showcase/                             # Showcase PNG 预览与校验通过的 SVG 源码
-├── integrations/gemini/gemini-extension.json  # Gemini CLI 扩展元数据（v0.17.28）
+├── integrations/gemini/gemini-extension.json  # Gemini CLI 扩展元数据（v0.17.29）
 ├── scripts/
 │   ├── install.sh                             # 一键安装至 Agent Skills 目录
 │   ├── package_skill.sh                       # 生成纯净分发/上架包（去缓存与开发测试文件）
 │   └── check_release.sh                       # 发布自检脚本（版本 / JSON / 路径 / 冒烟测试）
 ├── tests/                                     # 18 项端到端回归冒烟测试用例
-└── skills/guage-svg-gen/                      # 核心 Skill 实现（v0.17.28 · author: donglin）
+└── skills/guage-svg-gen/                      # 核心 Skill 实现（v0.17.29 · author: donglin）
     ├── SKILL.md                               # 风格路由、契约规范与执行流定义
     ├── README.md                              # 单包开箱即用环境安装与自检文档
     ├── requirements.txt                       # 渲染与校验依赖清单

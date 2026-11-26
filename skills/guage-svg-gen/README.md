@@ -1,6 +1,6 @@
 # guage-svg-gen — 确定性工程级 SVG 绘图 Skill
 
-- **版本**：`v0.17.28`
+- **版本**：`v0.17.29`
 - **作者**：`donglin`
 - **适用平台**：Claude Code · OpenAI Codex CLI · Antigravity · Gemini CLI · SkillPay（Agent Skills 标准）
 

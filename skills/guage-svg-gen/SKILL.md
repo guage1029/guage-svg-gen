@@ -1,5 +1,8 @@
 ---
 name: guage-svg-gen
+version: "0.17.29"
+display_name: "SVG 绘图专家"
+display_name_en: "SVG Drawing Expert"
 description: >
   Generate or edit pure-code SVG technical diagrams and WeChat article illustrations,
   including architecture diagrams, flowcharts, sequence diagrams, state machines, ER/data
@@ -10,10 +13,12 @@ description: >
   Do not use for photorealistic/bitmap images, ordinary non-SVG covers, IP character
   illustrations, photo background removal, or planning-only requests without image generation
   (use guage-image-flow), nor for Feishu whiteboard drawings (use lark-whiteboard).
+description_zh: "纯代码生成零遮挡、不穿框的 SVG 架构图、流程图、时序图、泳道图、时间线与公众号封面。内置布局规划与四重几何、配色、语言校验，自带黑白双套高级配色，支持局部改字调图且无额外生图费用。"
+description_en: "Pure-code SVG architecture diagrams, flowcharts, sequence diagrams, swimlanes, timelines, and WeChat covers with zero occlusion and zero border crossing. Includes built-in layout planning, fourfold geometry, color, and language validation, dual dark/light palettes, and targeted text or diagram edits at no extra image-generation cost."
 compatibility: >
   Requires Python 3.10+, Pillow>=10.0.0, fontconfig (fc-match), and optionally cairosvg>=2.7.1 / playwright>=1.40.0 for PNG preview. See README.md and requirements.txt for setup.
 metadata:
-  version: "0.17.28"
+  version: "0.17.29"
   author: donglin
 ---
 
