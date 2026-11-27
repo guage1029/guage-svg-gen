@@ -124,8 +124,12 @@ def main():
     preserved = {term.lower() for term in policy.get("preserve_terms", [])}
     allowed_kinds = set(policy.get("preserve_kinds", []))
     translate_map = {k.lower(): v for k, v in policy.get("translate_terms", {}).items()}
+    proper_noun_examples = {k.lower(): v for k, v in policy.get("proper_noun_examples", {}).items()}
+    require_zh_for_proper = bool(policy.get("proper_noun_requires_zh_annotation", True))
+    cjk_re = re.compile(r"[\u4e00-\u9fff]")
     if root is not None and language == "zh":
         for elem, text_id in visible_text_nodes(root):
+            tag = local_tag(elem)
             elem_kind = elem.attrib.get("data-svga-text-kind")
             if elem_kind and elem_kind not in allowed_kinds:
                 errors.append(error(
@@ -139,6 +143,23 @@ def main():
                     check_fragment(segment_text, segment_kind, text_id, preserved, allowed_kinds, translate_map, errors)
             else:
                 check_fragment("".join(elem.itertext()), elem_kind, text_id, preserved, allowed_kinds, translate_map, errors)
+
+            # In zh mode, visible <text> elements using proper_noun / professional_term must include a Chinese annotation
+            if require_zh_for_proper and tag == "text":
+                full_text = "".join(elem.itertext()).strip()
+                used_kinds = {
+                    node.attrib.get("data-svga-text-kind")
+                    for node in elem.iter()
+                    if node.attrib.get("data-svga-text-kind")
+                }
+                if used_kinds & {"proper_noun", "professional_term"} and full_text and not cjk_re.search(full_text):
+                    example_hint = proper_noun_examples.get(full_text.lower(), f"{full_text} 服务/组件")
+                    errors.append(error(
+                        "E_LANGUAGE_DEFAULT_NOT_ZH",
+                        f"Proper noun or technical term {full_text!r} in <text> lacks a Chinese annotation in zh mode. "
+                        f"Pair it with its Chinese role in the same <text> (e.g. '<tspan data-svga-text-kind=\"proper_noun\">{full_text}</tspan><tspan>（或中文注：{example_hint}）</tspan>').",
+                        text_id,
+                    ))
 
     report = {
         "status": "PASS" if not errors else "FAIL",

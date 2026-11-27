@@ -13,6 +13,7 @@ from pathlib import Path
 
 HEX_RE = re.compile(r"^#[0-9a-f]{6}$", re.I)
 ATTRS = ("fill", "stroke", "stop-color", "color")
+THEME_ALIASES = {"dark": "bg_dark", "light": "bg_light"}
 EPILOG = """Examples:
   python3 scripts/validate_color.py --svg out.svg --plan out.layout.json --strict --json
 
@@ -47,14 +48,25 @@ def main():
     token_data = json.loads(Path(args.tokens).read_text(encoding="utf-8"))
     plan = json.loads(Path(args.plan).read_text(encoding="utf-8"))
     color_system = plan.get("color_system", {})
-    theme_name = color_system.get("theme", token_data.get("default_theme"))
+    raw_theme = color_system.get("theme", token_data.get("default_theme"))
+    theme_name = THEME_ALIASES.get(raw_theme, raw_theme)
     theme = token_data.get("themes", {}).get(theme_name)
     if not theme:
-        avail_themes = ", ".join(sorted(token_data.get("themes", {}).keys()))
-        errors.append(fail("E_COLOR_THEME_UNKNOWN", f"Unknown color theme: {theme_name!r}. Available themes: {avail_themes}"))
+        avail_themes = ", ".join(sorted(list(token_data.get("themes", {}).keys()) + list(THEME_ALIASES.keys())))
+        errors.append(fail("E_COLOR_THEME_UNKNOWN", f"Unknown color theme: {raw_theme!r}. Available themes: {avail_themes}"))
     else:
-        tokens = theme.get("tokens", {})
-        allowed = {value.lower() for value in tokens.values() if HEX_RE.match(value)}
+        tokens = dict(theme.get("tokens", {}))
+        custom_tokens = color_system.get("custom_tokens", {})
+        if isinstance(custom_tokens, dict):
+            for k, v in custom_tokens.items():
+                if isinstance(v, str) and HEX_RE.match(v):
+                    tokens[k] = v
+        palette = plan.get("palette", {})
+        allowed = {value.lower() for value in tokens.values() if isinstance(value, str) and HEX_RE.match(value)}
+        if isinstance(palette, dict):
+            for pv in palette.values():
+                if isinstance(pv, str) and HEX_RE.match(pv):
+                    allowed.add(pv.lower())
         role_map = color_system.get("role_map", {})
         for role, token_name in role_map.items():
             if token_name not in tokens:

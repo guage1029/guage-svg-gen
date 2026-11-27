@@ -524,15 +524,23 @@ def validate(svg_path, plan_path, strict=False):
 
     nodes = {item["id"]: item for item in plan.get("nodes", [])}
     text_boxes = {item["id"]: item for item in plan.get("text_boxes", [])}
-    edges = {item["id"]: item for item in plan.get("edges", [])}
-    if not nodes or not edges or not text_boxes:
-        fail(report, "E_GEOMETRY_CONTRACT_MISSING", "plan must declare nodes, text_boxes and edges")
+    edges_raw = plan.get("edges", [])
+    if edges_raw is None:
+        edges_raw = []
+    edges = {item["id"]: item for item in (edges_raw if isinstance(edges_raw, list) else [])}
+    if not nodes or not text_boxes or not isinstance(edges_raw, list):
+        fail(report, "E_GEOMETRY_CONTRACT_MISSING", "plan must declare non-empty nodes and text_boxes (edges may be [] or omitted for non-edge charts)")
         report["status"] = "ERROR"
         return report
 
     zones = {item["id"]: item for item in plan.get("zones", [])}
     zone_rects = {key: rect(value["rect"]) for key, value in zones.items()}
     node_rects = {key: rect(value["rect"]) for key, value in nodes.items()}
+    vb_raw = root.attrib.get("viewBox", "")
+    vb_parts = [float(p) for p in re.split(r"[,\s]+", vb_raw.strip()) if p] if vb_raw.strip() else []
+    vb_w = vb_parts[2] if len(vb_parts) == 4 and vb_parts[2] > 0 else 1200.0
+    canvas_scale = min(1.0, max(0.4, vb_w / 1200.0))
+    default_edge_gap = max(6.0, min(EDGE_MIN_GAP, round(EDGE_MIN_GAP * canvas_scale, 1)))
     safe_area_data = plan.get("canvas", {}).get("safe_area")
     safe_area = rect(safe_area_data) if safe_area_data else None
     if safe_area is not None:
@@ -804,7 +812,7 @@ def validate(svg_path, plan_path, strict=False):
         edge_records.append({
             "id": edge_id,
             "points": sampled,
-            "min_clearance": float(edge.get("min_clearance", EDGE_MIN_GAP)),
+            "min_clearance": float(edge.get("min_clearance", default_edge_gap)),
             "from": edge["from"],
             "to": edge["to"],
         })
@@ -839,8 +847,13 @@ def validate(svg_path, plan_path, strict=False):
             continue
         if id(elem) in defs_paths:
             continue
-        if elem.attrib.get("data-svga-role") not in {"icon", "decoration"}:
-            fail(report, "E_PATH_UNTAGGED", "non-edge path lacks data-svga-role")
+        ancestors = ancestor_map.get(id(elem), [])
+        role = elem.attrib.get("data-svga-role") or next(
+            (anc.attrib.get("data-svga-role") for anc in reversed(ancestors) if anc.attrib.get("data-svga-role")),
+            None,
+        )
+        if role not in {"icon", "decoration"}:
+            fail(report, "E_PATH_UNTAGGED", "non-edge path lacks data-svga-role ('decoration' for chart arcs/needles/dividers, 'icon' for standalone icons)")
 
     report["status"] = "ERROR" if report["errors"] else "PASS"
     return report

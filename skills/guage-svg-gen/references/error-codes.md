@@ -7,7 +7,7 @@
 | `E_VIEWBOX_MISSING` | Missing `viewBox` attribute | `fix_svg.py` (auto) |
 | `E_VIEWBOX_INVALID` | Malformed `viewBox` format | `fix_svg.py` (auto) |
 | `E_GEOMETRY_OUT_OF_BOUNDS` | Safe area or slots exceed viewBox | `repair-cmd` / Manual |
-| `E_GEOMETRY_CONTRACT_MISSING` | Layout plan lacks nodes, text_boxes or edges | Manual |
+| `E_GEOMETRY_CONTRACT_MISSING` | Layout plan lacks non-empty `nodes` or `text_boxes`, or `edges` is not a list (`[]` allowed for edge-less charts) | Manual |
 | `E_NODE_OVERLAP` | Declared node rectangles overlap | Manual |
 | `E_NODE_MISSING` | A planned node has no matching `data-svga-node` group | Manual |
 | `E_ZONE_MISSING` | A planned zone has no matching `data-svga-zone` element | Manual |
@@ -55,7 +55,7 @@
 | `E_FONT_FAMILY_QUOTED` | `font-family` 包含单引号或双引号（`cairosvg` 下易导致字体匹配失败） | Manual |
 | `E_FONT_SYSTEM_UI` | `font-family` 包含 `system-ui`/`-apple-system`（跨系统字体漂移，请改用明确字体栈） | Manual |
 | `E_FONT_EXTERNAL` | 检测到 `@font-face` 或外部字体 `url(...)` | Manual |
-| `E_FONT_SIZE_TOO_SMALL` | 文本字号低于当前平台 Caption 下限（`wechat_cover` < 18px，`wechat_article` < 16px） | Manual |
+| `E_FONT_SIZE_TOO_SMALL` | 文本字号低于当前平台 Caption 下限（`wechat_cover` < 18px，`wechat_article` < 16px，`custom` 按画布等比缩放下限 8–16px） | Manual |
 | `E_CONTRAST_GRADIENT_TEXT` | strict 模式下关键文字使用 `url(#...)` 渐变/pattern fill，对比度无法计算；需改为 solid fill 或人工确认 | Manual |
 | `E_XML_PARSE_FAIL` | SVG is not a valid XML | Manual |
 | `E_VALIDATOR_CRASH` | Internal validator logic error | Developer |

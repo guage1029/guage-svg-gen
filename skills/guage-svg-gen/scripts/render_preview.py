@@ -46,6 +46,13 @@ PLATFORM_SPECS = {
         "max_h": 1200,
         "default_h": 675,
     },
+    "custom": {
+        "w": None,
+        "min_h": 1,
+        "max_h": 10000,
+        "default_h": 360,
+        "note": "Supports any arbitrary user-specified W×H canvas (e.g. 480×300, 600×340, 640×360) inferred from viewBox",
+    },
 }
 
 
@@ -76,7 +83,16 @@ def _render_playwright(svg_path, width, height, scale, out_path):
     w = max(1, int(width * scale))
     h = max(1, int(height * scale))
     with sync_playwright() as p:
-        browser = p.chromium.launch()
+        browser = None
+        last_err = None
+        for channel in (None, "msedge", "chrome"):
+            try:
+                browser = p.chromium.launch(channel=channel) if channel else p.chromium.launch()
+                break
+            except Exception as e:
+                last_err = e
+        if browser is None:
+            raise RuntimeError(f"chromium/msedge/chrome launch failed: {last_err}")
         page = browser.new_page(viewport={"width": w, "height": h})
         page.goto(f"file://{os.path.abspath(svg_path)}")
         page.wait_for_load_state("networkidle")
@@ -97,10 +113,252 @@ def _render_cairosvg(svg_path, width, height, scale, out_path):
     return "cairosvg"
 
 
+def _render_cli_rasterizer(svg_path, width, height, scale, out_path):
+    import subprocess
+    w = max(1, int(width * scale))
+    h = max(1, int(height * scale))
+    try:
+        import resvg_py
+        png_bytes = resvg_py.svg_to_bytes(svg_path=str(svg_path), width=w, height=h)
+        Path(out_path).write_bytes(png_bytes)
+        return "resvg_py"
+    except Exception:
+        pass
+    for tool, build_cmd in (
+        ("resvg", lambda exe: [exe, "-w", str(w), "-h", str(h), str(svg_path), str(out_path)]),
+        ("resvg-js", lambda exe: [exe, "--fit-to", "width", str(w), str(svg_path), str(out_path)]),
+        ("rsvg-convert", lambda exe: [exe, "-w", str(w), "-h", str(h), str(svg_path), "-o", str(out_path)]),
+    ):
+        exe = shutil.which(tool)
+        if exe:
+            try:
+                subprocess.run(build_cmd(exe), check=True, capture_output=True)
+                if Path(out_path).exists():
+                    return tool
+            except Exception:
+                continue
+    raise ImportError("resvg / rsvg-convert not found")
+
+
+def _parse_hex_rgba(color_str, opacity=1.0):
+    if not color_str:
+        return None
+    s = color_str.strip()
+    if not s.startswith("#"):
+        return None
+    if len(s) == 4:
+        r, g, b = int(s[1] * 2, 16), int(s[2] * 2, 16), int(s[3] * 2, 16)
+    elif len(s) == 7:
+        try:
+            r, g, b = int(s[1:3], 16), int(s[3:5], 16), int(s[5:7], 16)
+        except ValueError:
+            return None
+    else:
+        return None
+    a = max(0, min(255, int(round(255 * max(0.0, min(1.0, float(opacity)))))))
+    return (r, g, b, a)
+
+
+def _sample_path_points(d_str, dx, dy, sx, sy):
+    tokens = re.findall(r"[A-Za-z]|[-+]?(?:\d*\.\d+|\d+\.?)(?:[eE][-+]?\d+)?", d_str or "")
+    pts = []
+    i = 0
+    cmd = None
+    cx, cy = 0.0, 0.0
+    start = None
+
+    def next_f():
+        nonlocal i
+        val = float(tokens[i])
+        i += 1
+        return val
+
+    while i < len(tokens):
+        if re.match(r"[A-Za-z]", tokens[i]):
+            cmd = tokens[i]
+            i += 1
+            if cmd in ("Z", "z"):
+                if start is not None:
+                    pts.append(((start[0] + dx) * sx, (start[1] + dy) * sy))
+                    cx, cy = start
+                continue
+        if not cmd:
+            break
+        rel = cmd.islower()
+        u = cmd.upper()
+        try:
+            if u in ("M", "L"):
+                x, y = next_f(), next_f()
+                cx, cy = (cx + x, cy + y) if rel else (x, y)
+                if u == "M" and start is None:
+                    start = (cx, cy)
+                pts.append(((cx + dx) * sx, (cy + dy) * sy))
+                if u == "M":
+                    cmd = "l" if rel else "L"
+            elif u == "H":
+                x = next_f()
+                cx = cx + x if rel else x
+                pts.append(((cx + dx) * sx, (cy + dy) * sy))
+            elif u == "V":
+                y = next_f()
+                cy = cy + y if rel else y
+                pts.append(((cx + dx) * sx, (cy + dy) * sy))
+            elif u == "C":
+                x1, y1, x2, y2, x, y = [next_f() for _ in range(6)]
+                if rel:
+                    x1, y1, x2, y2, x, y = cx + x1, cy + y1, cx + x2, cy + y2, cx + x, cy + y
+                for step in range(1, 9):
+                    t = step / 8.0
+                    mt = 1.0 - t
+                    px = mt**3 * cx + 3 * mt**2 * t * x1 + 3 * mt * t**2 * x2 + t**3 * x
+                    py = mt**3 * cy + 3 * mt**2 * t * y1 + 3 * mt * t**2 * y2 + t**3 * y
+                    pts.append(((px + dx) * sx, (py + dy) * sy))
+                cx, cy = x, y
+            elif u == "Q":
+                x1, y1, x, y = [next_f() for _ in range(4)]
+                if rel:
+                    x1, y1, x, y = cx + x1, cy + y1, cx + x, cy + y
+                for step in range(1, 9):
+                    t = step / 8.0
+                    mt = 1.0 - t
+                    px = mt**2 * cx + 2 * mt * t * x1 + t**2 * x
+                    py = mt**2 * cy + 2 * mt * t * y1 + t**2 * y
+                    pts.append(((px + dx) * sx, (py + dy) * sy))
+                cx, cy = x, y
+            elif u == "A":
+                _rx, _ry, _rot, _laf, _sf, x, y = [next_f() for _ in range(7)]
+                if rel:
+                    x, y = cx + x, cy + y
+                mx, my = (cx + x) / 2.0, (cy + y) / 2.0 - max(4.0, abs(_ry) * 0.4)
+                for step in range(1, 9):
+                    t = step / 8.0
+                    mt = 1.0 - t
+                    px = mt**2 * cx + 2 * mt * t * mx + t**2 * x
+                    py = mt**2 * cy + 2 * mt * t * my + t**2 * y
+                    pts.append(((px + dx) * sx, (py + dy) * sy))
+                cx, cy = x, y
+            else:
+                break
+        except (IndexError, ValueError):
+            break
+    return pts
+
+
+def _render_pillow_svg(svg_path, width, height, scale, out_path):
+    """零原生依赖（无需 libcairo / Playwright）的纯 Python + Pillow SVG 预览光栅化兜底后端。"""
+    from PIL import Image, ImageDraw
+    tree = ET.parse(svg_path)
+    root = tree.getroot()
+    vb_w, vb_h = parse_viewbox(svg_path)
+    out_w = max(1, int(round(width * scale)))
+    out_h = max(1, int(round(height * scale)))
+    sx = out_w / float(vb_w if (vb_w and vb_w > 0) else width)
+    sy = out_h / float(vb_h if (vb_h and vb_h > 0) else height)
+
+    canvas = Image.new("RGBA", (out_w, out_h), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(canvas, "RGBA")
+
+    def walk(node, dx=0.0, dy=0.0, inh_fill=None):
+        tag = node.tag.split("}")[-1].lower()
+        if tag in ("defs", "title", "desc", "metadata", "style", "marker", "pattern"):
+            return
+        tf = node.attrib.get("transform", "")
+        for m in re.finditer(r"translate\(\s*([-+]?(?:\d*\.\d+|\d+))(?:[\s,]+([-+]?(?:\d*\.\d+|\d+)))?\s*\)", tf):
+            dx += float(m.group(1))
+            dy += float(m.group(2)) if m.group(2) is not None else 0.0
+
+        op = float(node.attrib.get("opacity", "1") or 1.0)
+        f_op = op * float(node.attrib.get("fill-opacity", "1") or 1.0)
+        s_op = op * float(node.attrib.get("stroke-opacity", "1") or 1.0)
+        fill_raw = node.attrib.get("fill", inh_fill)
+        stroke_raw = node.attrib.get("stroke")
+        fill_rgba = _parse_hex_rgba(fill_raw, f_op) if fill_raw not in (None, "none") else None
+        stroke_rgba = _parse_hex_rgba(stroke_raw, s_op) if stroke_raw not in (None, "none") else None
+        sw = max(1, int(round(float(node.attrib.get("stroke-width", "1") or 1.0) * min(sx, sy))))
+
+        try:
+            if tag == "rect":
+                x = (float(node.attrib.get("x", "0")) + dx) * sx
+                y = (float(node.attrib.get("y", "0")) + dy) * sy
+                w = float(node.attrib.get("width", "0")) * sx
+                h = float(node.attrib.get("height", "0")) * sy
+                rx = float(node.attrib.get("rx", "0") or 0.0) * min(sx, sy)
+                if w > 0 and h > 0 and (fill_rgba or stroke_rgba):
+                    box = [x, y, x + w, y + h]
+                    if rx > 0 and hasattr(draw, "rounded_rectangle"):
+                        draw.rounded_rectangle(box, radius=rx, fill=fill_rgba, outline=stroke_rgba, width=sw if stroke_rgba else 0)
+                    else:
+                        draw.rectangle(box, fill=fill_rgba, outline=stroke_rgba, width=sw if stroke_rgba else 0)
+            elif tag == "circle":
+                cx = (float(node.attrib.get("cx", "0")) + dx) * sx
+                cy = (float(node.attrib.get("cy", "0")) + dy) * sy
+                r = float(node.attrib.get("r", "0")) * min(sx, sy)
+                if r > 0 and (fill_rgba or stroke_rgba):
+                    draw.ellipse([cx - r, cy - r, cx + r, cy + r], fill=fill_rgba, outline=stroke_rgba, width=sw if stroke_rgba else 0)
+            elif tag == "ellipse":
+                cx = (float(node.attrib.get("cx", "0")) + dx) * sx
+                cy = (float(node.attrib.get("cy", "0")) + dy) * sy
+                rx = float(node.attrib.get("rx", "0")) * sx
+                ry = float(node.attrib.get("ry", "0")) * sy
+                if rx > 0 and ry > 0 and (fill_rgba or stroke_rgba):
+                    draw.ellipse([cx - rx, cy - ry, cx + rx, cy + ry], fill=fill_rgba, outline=stroke_rgba, width=sw if stroke_rgba else 0)
+            elif tag == "line":
+                x1 = (float(node.attrib.get("x1", "0")) + dx) * sx
+                y1 = (float(node.attrib.get("y1", "0")) + dy) * sy
+                x2 = (float(node.attrib.get("x2", "0")) + dx) * sx
+                y2 = (float(node.attrib.get("y2", "0")) + dy) * sy
+                if stroke_rgba:
+                    draw.line([(x1, y1), (x2, y2)], fill=stroke_rgba, width=sw)
+            elif tag in ("polyline", "polygon"):
+                nums = [float(v) for v in re.findall(r"[-+]?(?:\d*\.\d+|\d+)", node.attrib.get("points", ""))]
+                pts = [((nums[k] + dx) * sx, (nums[k + 1] + dy) * sy) for k in range(0, len(nums) - 1, 2)]
+                if len(pts) >= 2:
+                    if tag == "polygon" and fill_rgba and len(pts) >= 3:
+                        draw.polygon(pts, fill=fill_rgba, outline=stroke_rgba)
+                    elif stroke_rgba:
+                        draw.line(pts, fill=stroke_rgba, width=sw)
+            elif tag == "path":
+                pts = _sample_path_points(node.attrib.get("d", ""), dx, dy, sx, sy)
+                if len(pts) >= 2:
+                    if fill_rgba and len(pts) >= 3:
+                        draw.polygon(pts, fill=fill_rgba)
+                    if stroke_rgba:
+                        draw.line(pts, fill=stroke_rgba, width=sw)
+            elif tag == "text":
+                txt = "".join(node.itertext()).strip()
+                t_rgba = fill_rgba or _parse_hex_rgba("#FAFAFA", f_op)
+                if txt and t_rgba:
+                    tx = (float(node.attrib.get("x", "0")) + dx) * sx
+                    ty = (float(node.attrib.get("y", "0")) + dy) * sy
+                    fs = max(8.0, float(re.sub(r"[^0-9.]", "", node.attrib.get("font-size", "14")) or 14.0) * min(sx, sy))
+                    est_w = len(txt) * fs * 0.75
+                    anchor = node.attrib.get("text-anchor", "start")
+                    if anchor == "middle":
+                        tx -= est_w / 2.0
+                    elif anchor == "end":
+                        tx -= est_w
+                    draw.rectangle([tx, ty - fs * 0.75, tx + max(4.0, est_w), ty - fs * 0.75 + max(3.0, fs * 0.65)], fill=t_rgba)
+        except Exception:
+            pass
+
+        next_fill = fill_raw if fill_raw is not None else inh_fill
+        for child in node:
+            walk(child, dx, dy, next_fill)
+
+    walk(root)
+    canvas.save(str(out_path), format="PNG")
+    return "pillow-svg"
+
+
 def render_preview(svg_path, width, height, scale, out_path):
-    """尝试 Playwright，失败则 cairosvg。返回 backend 名称。"""
+    """依次尝试 Playwright → cairosvg → resvg/rsvg-convert → 纯 Pillow 兜底光栅化。返回 backend 名称。"""
     errors = []
-    for fn, name in [(_render_playwright, "playwright"), (_render_cairosvg, "cairosvg")]:
+    for fn, name in [
+        (_render_playwright, "playwright"),
+        (_render_cairosvg, "cairosvg"),
+        (_render_cli_rasterizer, "resvg/rsvg-convert"),
+        (_render_pillow_svg, "pillow-svg"),
+    ]:
         try:
             return fn(svg_path, width, height, scale, out_path)
         except ImportError:
@@ -109,7 +367,6 @@ def render_preview(svg_path, width, height, scale, out_path):
             errors.append(f"{name}: {e}")
     raise RuntimeError(
         "No rendering backend available. "
-        "Install playwright (then `playwright install chromium`) or cairosvg. "
         f"Details: {'; '.join(errors)}"
     )
 
@@ -275,14 +532,16 @@ def get_default_preview_root():
 
 
 def cleanup_preview_dir(target_dir):
-    """Safely remove a generated QA preview directory."""
+    """Safely remove a generated QA preview directory (including fallback qa/preview folders without deliverables)."""
     p = Path(target_dir).resolve()
     if not p.exists() or not p.is_dir():
         return False, f"Preview directory does not exist: {p}"
     temp_root = get_default_preview_root().resolve()
     has_report = (p / "visual_report.json").exists()
+    has_preview_png = (p / "preview.png").exists() or (p / "thumbnail_crop.png").exists()
+    has_deliverables = any(f.suffix.lower() == ".svg" or f.name.endswith(".layout.json") for f in p.iterdir() if f.is_file())
     is_under_temp_root = p != temp_root and temp_root in p.parents
-    if not (has_report or is_under_temp_root):
+    if not (has_report or is_under_temp_root or (has_preview_png and not has_deliverables)):
         return False, f"Refusing to remove non-preview directory: {p}"
     shutil.rmtree(p)
     return True, f"Removed preview directory: {p}"
@@ -290,12 +549,26 @@ def cleanup_preview_dir(target_dir):
 
 EPILOG = """Examples:
   python3 scripts/render_preview.py --svg out.svg --platform wechat_article --strict --json
+  python3 scripts/render_preview.py --svg out.svg --platform custom --strict --json
   python3 scripts/render_preview.py --cleanup-dir /tmp/guage-svg-gen-preview/out_abc123 --json
 
 Exit codes:
   0  PASS (or WARN without --strict)
   1  FAIL (or WARN with --strict)
 """
+
+
+def resolve_auto_platform(vb_w, vb_h):
+    """根据 viewBox 自动匹配预览档位，非标准微信画布回退到 custom。"""
+    if vb_w is None or vb_h is None or vb_w <= 0 or vb_h <= 0:
+        return "custom"
+    wc = PLATFORM_SPECS["wechat_cover"]
+    if abs(vb_w - wc["w"]) <= 20 and abs(vb_h - wc["default_h"]) <= 20:
+        return "wechat_cover"
+    wa = PLATFORM_SPECS["wechat_article"]
+    if abs(vb_w - wa["w"]) <= 20 and (wa["min_h"] - 20) <= vb_h <= (wa["max_h"] + 20):
+        return "wechat_article"
+    return "custom"
 
 
 def main():
@@ -307,8 +580,9 @@ def main():
     parser.add_argument("--svg", help="SVG 文件路径（绝对或相对）")
     parser.add_argument(
         "--platform",
-        choices=list(PLATFORM_SPECS.keys()),
-        help="目标平台（决定预期尺寸和缩略图裁切区）",
+        choices=["auto", *PLATFORM_SPECS.keys(), "custom"],
+        default="auto",
+        help="目标平台（auto 根据 viewBox 识别，custom 支持任意 W×H 画布）",
     )
     parser.add_argument(
         "--out-dir",
@@ -335,8 +609,8 @@ def main():
         print(json.dumps(payload, ensure_ascii=False) if args.json else msg)
         sys.exit(0 if ok else 1)
 
-    if not args.svg or not args.platform:
-        parser.error("--svg and --platform are required unless --cleanup-dir is used")
+    if not args.svg:
+        parser.error("--svg is required unless --cleanup-dir is used")
 
     svg_path = Path(args.svg).resolve()
     if not svg_path.exists():
@@ -353,28 +627,48 @@ def main():
         out_dir = Path(tempfile.mkdtemp(prefix=f"{svg_path.stem}_", dir=str(preview_root))).resolve()
         is_isolated_temp = True
 
-    spec = PLATFORM_SPECS[args.platform]
-    expected_w = spec["w"]
-    min_h, max_h, default_h = spec["min_h"], spec["max_h"], spec["default_h"]
-
     preview_path = out_dir / "preview.png"
     thumb_path = out_dir / "thumbnail_crop.png"
     report_path = out_dir / "visual_report.json"
 
     # ── 1. 解析 viewBox ──────────────────────────────────────────────────────
     vb_w, vb_h = parse_viewbox(str(svg_path))
-    viewbox_ok = vb_w is not None
-    dimensions_match = (
-        viewbox_ok
-        and abs(vb_w - expected_w) <= 2
-        and (min_h - 2) <= vb_h <= (max_h + 2)
-    )
-    expected_h = int(round(vb_h)) if dimensions_match else default_h
-    crop_x, crop_y, crop_w, crop_h = expected_w // 4, 0, expected_w // 2, expected_h
+    viewbox_ok = vb_w is not None and vb_w > 0 and vb_h is not None and vb_h > 0
+    if args.platform == "auto":
+        effective_platform = resolve_auto_platform(vb_w, vb_h)
+    elif (
+        args.platform == "wechat_article"
+        and viewbox_ok
+        and abs(vb_w - PLATFORM_SPECS["wechat_article"]["w"]) > 20
+        and abs(vb_w - PLATFORM_SPECS["wechat_cover"]["w"]) > 20
+    ):
+        # 自定义宽度画布（如 640×360、600×340、480×300）即使误传 --platform wechat_article 也自动按 custom 渲染
+        effective_platform = "custom"
+    else:
+        effective_platform = args.platform
 
-    range_note = f" (allowed h={min_h}..{max_h})" if min_h != max_h else ""
+    if effective_platform == "custom":
+        dimensions_match = viewbox_ok
+        expected_w = max(1, int(round(vb_w))) if viewbox_ok else 1200
+        expected_h = max(1, int(round(vb_h))) if viewbox_ok else 675
+        min_h = max_h = expected_h
+        range_note = " (custom viewBox)"
+    else:
+        spec = PLATFORM_SPECS[effective_platform]
+        expected_w = spec["w"]
+        min_h, max_h, default_h = spec["min_h"], spec["max_h"], spec["default_h"]
+        dimensions_match = (
+            viewbox_ok
+            and abs(vb_w - expected_w) <= 2
+            and (min_h - 2) <= vb_h <= (max_h + 2)
+        )
+        expected_h = max(1, int(round(vb_h))) if dimensions_match else default_h
+        range_note = f" (allowed h={min_h}..{max_h})" if min_h != max_h else ""
+
+    crop_x, crop_y, crop_w, crop_h = expected_w // 4, 0, max(1, expected_w // 2), expected_h
+
     log_err(f"[*] SVG      : {svg_path}")
-    log_err(f"[*] Platform : {args.platform}  expected={expected_w}×{expected_h}{range_note}")
+    log_err(f"[*] Platform : {effective_platform}  expected={expected_w}×{expected_h}{range_note}")
     log_err(f"[*] viewBox  : {vb_w}×{vb_h}  match={dimensions_match}")
 
     # ── 2. 渲染完整预览 ──────────────────────────────────────────────────────
@@ -468,7 +762,8 @@ def main():
         "blocking_issues": blocking,
         "warn_flags": warn_flags,
         "backend": backend,
-        "platform": args.platform,
+        "platform": effective_platform,
+        "requested_platform": args.platform,
         "scale": args.scale,
         "svg_path": str(svg_path),
         "preview_dir": str(out_dir),

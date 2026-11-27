@@ -84,15 +84,25 @@ def convert_to_png(svg_path, png_path, width=None, height=None):
         return True
     except Exception:
         pass
-    for tool in ['resvg-js']:
+    for tool in ['resvg', 'resvg-js', 'rsvg-convert']:
         if shutil.which(tool):
             try:
-                cmd = [tool, svg_path, png_path]
+                if tool == 'rsvg-convert':
+                    cmd = [tool, '-w', str(width or 1200), '-h', str(height or 675), svg_path, '-o', png_path]
+                elif tool == 'resvg':
+                    cmd = [tool, '-w', str(width or 1200), '-h', str(height or 675), svg_path, png_path]
+                else:
+                    cmd = [tool, svg_path, png_path]
                 subprocess.run(cmd, check=True, capture_output=True)
                 return True
             except Exception:
                 continue
-    return False
+    try:
+        from render_preview import _render_pillow_svg
+        _render_pillow_svg(svg_path, width or 1200, height or 675, 1.0, png_path)
+        return os.path.exists(png_path)
+    except Exception:
+        return False
 
 def main():
     parser = argparse.ArgumentParser(

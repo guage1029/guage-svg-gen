@@ -1,6 +1,20 @@
 {
   "version": "1.0.0",
   "default_language": "zh",
+  "proper_noun_requires_zh_annotation": true,
+  "proper_noun_examples": {
+    "Kubernetes": "Kubernetes 容器编排",
+    "Redis": "Redis 缓存",
+    "Kafka": "Kafka 消息队列",
+    "Nginx": "Nginx 网关",
+    "Docker": "Docker 容器",
+    "PostgreSQL": "PostgreSQL 数据库",
+    "MySQL": "MySQL 数据库",
+    "Elasticsearch": "Elasticsearch 检索",
+    "Prometheus": "Prometheus 监控",
+    "Grafana": "Grafana 看板",
+    "gRPC": "gRPC 远程调用"
+  },
   "preserve_kinds": [
     "proper_noun",
     "model_name",

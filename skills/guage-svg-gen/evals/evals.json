@@ -11,20 +11,20 @@
         "All visible text elements have font-size >= 16px and declare an unquoted font-family stack without system-ui from assets/fonts-whitelist.json (passes validate_svg.py --strict with zero tofu boxes)",
         "Generic English terms (Agent, Loop, Goal, Plan, Act, Observe, Feedback Loop) are translated into Chinese per language policy",
         "All colors follow Scheme 3 tokens and achieve contrast ratio >= 4.5:1 against their resolved background (validate_svg.py --strict and validate_color.py --strict pass)",
-        "A matching agent-loop.layout.json contract file (with metadata.background_style='dot' or 'solid' if dense) is produced and passes validate_geometry.py --strict with zero overlaps or out-of-safe-area elements"
+        "A matching <slug>.layout.json contract file (with metadata.background_style='dot' or 'solid' if dense) is produced and passes validate_geometry.py --strict with zero overlaps or out-of-safe-area elements"
       ]
     },
     {
       "id": 2,
       "slug": "eval-rag-vs-agentic-comparison",
       "prompt": "帮我做一张双核对比的 SVG 图卡用于公众号正文，左边是传统 RAG 检索（Query -> 向量检索 -> 拼接 Prompt -> LLM 生成），右边是 Agentic RAG 检索（Query -> 智能体路由与改写 -> 多工具/知识库迭代检索 -> 反思校验 -> LLM 生成）。",
-      "expected_output": "一张默认 16:9（1200x675，或紧凑 2.4:1 1200x500）的双栏/双核对比 SVG 图卡及对应 layout.json：comparison 类型路由到纯色无网格底板（background_style='solid'），采用 Scheme 3 莫兰迪强调色，中文优先并保留白名单缩写（RAG, LLM），非白名单英文翻译或用 data-svga-text-kind 标注，字号 >= 16px，通过几何、色彩与语言校验。",
+      "expected_output": "一张 wechat_article 宽 1200（高 500–1200，如默认 16:9 1200x675、紧凑 2.4:1 1200x500 或 4:3 1200x900）的双栏/双核对比 SVG 图卡及对应 layout.json：comparison 类型路由到纯色无网格底板（background_style='solid'），采用 Scheme 3 莫兰迪强调色，中文优先并保留白名单缩写（RAG, LLM），非白名单英文翻译或用 data-svga-text-kind 标注，字号 >= 16px，通过几何、色彩与语言校验。",
       "assertions": [
-        "The output SVG uses the wechat_article canvas width 1200 (16:9 1200x675 default or compact 1200x500) with solid flat background (metadata.background_style='solid', no grid pattern) and 1px clipped outer border",
-        "All visible text elements have font-size >= 16px, unquoted non-system-ui font stacks, and render cleanly in cairosvg without tofu boxes",
+        "The output SVG uses the wechat_article canvas width 1200 (height in 500–1200 such as 16:9 1200x675, 2.4:1 1200x500, or 4:3 1200x900) with solid flat background (metadata.background_style='solid', no grid pattern) and 1px clipped outer border",
+        "All visible text elements have font-size >= 16px, unquoted non-system-ui font stacks, and render cleanly in preview without tofu boxes",
         "All visible text passes validate_language.py --strict (allowlisted RAG/LLM kept; non-allowlisted terms translated or wrapped with data-svga-text-kind)",
         "All colors come from Scheme 3 theme tokens (Color-by-Source / semantic contrast) and achieve >= 4.5:1 text contrast (validate_color.py and validate_svg.py pass)",
-        "A matching rag-vs-agentic.layout.json contract file is produced and passes validate_geometry.py --strict"
+        "A matching <slug>.layout.json contract file is produced and passes validate_geometry.py --strict"
       ]
     },
     {
@@ -39,7 +39,7 @@
       "assertions": [
         "gateway-arch.svg is updated in-place with zero leftover draft SVGs or preview directories in the output folder",
         "The right node title 'Order Service' is replaced with '计费与限流中心' and a dashed orthogonal edge with label '异步审计' connects it back to 'API 网关'",
-        "The centered mixed-language main title avoids combining text-anchor='middle' with multiple <tspan> children (passes E_TEXT_TSPAN_ANCHOR_UNSAFE and renders without horizontal gap/overlap in cairosvg)",
+        "The centered mixed-language main title avoids combining text-anchor='middle' with multiple <tspan> children (passes E_TEXT_TSPAN_ANCHOR_UNSAFE and renders without horizontal gap/overlap in preview)",
         "All text elements including the new '异步审计' edge label maintain font-size >= 16px and unquoted approved fonts",
         "gateway-arch.layout.json is synchronized with the new edge/text boxes and passes validate_geometry.py --strict"
       ]
@@ -53,6 +53,17 @@
         "Uses bg_light (#F7F5F0 paper background, #FFFFFF cards, 1px #CCC7BD outer border) on default 16:9 1200x675 canvas",
         "Routes timeline diagram to metadata.background_style='line' with a 40x40px 1px faint grid pattern (#D6D2C9) and pre-edge label-halos cutout group",
         "All text >= 16px with >= 4.5:1 contrast using Scheme 3 bg_light tokens (validate_svg.py --strict, validate_color.py --strict, validate_geometry.py --strict all pass)"
+      ]
+    },
+    {
+      "id": 5,
+      "slug": "eval-custom-640x360-three-gauges",
+      "prompt": "按以下规格生成一张三表盘监控面板 SVG：画布尺寸 640×360，主题 dark，卡片圆角 radius: 8，标题“核心服务运行表盘”，并排展示三个表盘指标：系统健康度 92、服务可用率 88、缓存命中率 64（量程均为 0–100，未提供判定阈值口径）。",
+      "expected_output": "一张精确保持 640×360 自定义画布（metadata.platform='custom'，不私自放大为 1200 宽）的暗色三表盘 SVG 及对应 layout.json：卡片圆角 rx=8，采用无连线契约（edges: []），表盘弧线/刻度/指针标注为 data-svga-role='decoration'，仅展示 92/88/64 数值与 0–100 量程端点，严禁自拟判定胶囊（如达标/关注/正常）或未提供的阈值口径，通过 run_pipeline.py --strict 与 render_preview.py --platform auto --strict 且无残留临时文件。",
+      "assertions": [
+        "The output SVG preserves the exact user-specified 640x360 canvas (width='640' height='360' viewBox='0 0 640 360', metadata.platform='custom') without rescaling to 1200 width, and uses rx='8' on the three gauge cards",
+        "Displays the 3 gauge panels with values 92, 88, 64 and 0–100 range endpoints, and strictly omits self-invented threshold judgment pills (such as 达标/关注/正常/警告/异常) or unprovided cutoff criteria",
+        "Uses an edge-less layout contract (edges: [] in <slug>.layout.json) with gauge arcs/ticks/needles tagged as data-svga-role='decoration', and passes validate_svg.py --strict, validate_color.py --strict, validate_language.py --strict, and validate_geometry.py --strict with zero leftover preview/helper files"
       ]
     }
   ]

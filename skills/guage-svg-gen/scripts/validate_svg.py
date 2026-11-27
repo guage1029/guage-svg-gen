@@ -322,6 +322,16 @@ WECHAT_ARTICLE_W = 1200
 WECHAT_ARTICLE_MIN_H = 500
 WECHAT_ARTICLE_MAX_H = 1200
 WECHAT_ARTICLE_DEFAULT_H = 675
+CUSTOM_FONT_MIN_FLOOR = 8
+CUSTOM_FONT_MAX_FLOOR = 16
+
+
+def calc_custom_min_font_size(w, h):
+    """按 1200×675 基准等比计算自定义画布字号下限（范围 8–16px）。"""
+    if not w or not h or w <= 0 or h <= 0:
+        return None
+    scale = min(float(w) / WECHAT_ARTICLE_W, float(h) / WECHAT_ARTICLE_DEFAULT_H)
+    return max(CUSTOM_FONT_MIN_FLOOR, min(CUSTOM_FONT_MAX_FLOOR, round(16.0 * scale)))
 
 
 def detect_platform(vb_parts):
@@ -331,9 +341,14 @@ def detect_platform(vb_parts):
     _, _, w, h = vb_parts
     if abs(w - WECHAT_COVER_W) <= 20 and abs(h - WECHAT_COVER_H) <= 20:
         return 'wechat_cover', 18
-    if abs(w - WECHAT_ARTICLE_W) <= 20 and (WECHAT_ARTICLE_MIN_H - 20) <= h <= (WECHAT_ARTICLE_MAX_H + 20):
-        return 'wechat_article', 16
+    if abs(w - WECHAT_ARTICLE_W) <= 20:
+        if (WECHAT_ARTICLE_MIN_H - 20) <= h <= (WECHAT_ARTICLE_MAX_H + 20):
+            return 'wechat_article', 16
+        return None, None
+    if w > 0 and h > 0:
+        return 'custom', calc_custom_min_font_size(w, h)
     return None, None
+
 
 def validate_svg(svg_file, layout_plan_file=None, strict=False, id_prefix='svga-', platform='auto'):
     report = {"status": "PASS", "errors": [], "warnings": [], "info": []}
@@ -349,15 +364,35 @@ def validate_svg(svg_file, layout_plan_file=None, strict=False, id_prefix='svga-
             v_w = vb_parts[2]
             v_h = vb_parts[3]
 
+        plan = None
+        plan_platform = None
+        if layout_plan_file and os.path.exists(layout_plan_file):
+            with open(layout_plan_file, 'r') as f:
+                plan = json.load(f)
+            plan_platform = (plan.get('metadata') or {}).get('platform')
+
         # 确定平台与字号下限
         if platform == 'auto':
-            detected_platform, min_font_size = detect_platform(vb_parts)
+            if plan_platform and plan_platform not in ('wechat_cover', 'wechat_article'):
+                if vb_parts and v_w > 0 and v_h > 0:
+                    detected_platform = 'custom'
+                    min_font_size = calc_custom_min_font_size(v_w, v_h)
+                else:
+                    detected_platform, min_font_size = None, None
+            else:
+                detected_platform, min_font_size = detect_platform(vb_parts)
         else:
             detected_platform = platform
             if platform == 'wechat_cover':
                 min_font_size = 18
             elif platform == 'wechat_article':
-                min_font_size = 16
+                if vb_parts and v_w > 0 and v_h > 0 and abs(v_w - WECHAT_ARTICLE_W) > 20 and abs(v_w - WECHAT_COVER_W) > 20:
+                    detected_platform = 'custom'
+                    min_font_size = calc_custom_min_font_size(v_w, v_h)
+                else:
+                    min_font_size = 16
+            elif platform == 'custom':
+                min_font_size = calc_custom_min_font_size(v_w, v_h) if (vb_parts and v_w > 0 and v_h > 0) else None
             else:
                 min_font_size = None
 
@@ -371,9 +406,7 @@ def validate_svg(svg_file, layout_plan_file=None, strict=False, id_prefix='svga-
             report["errors"].append({"code": "E_VIEWBOX_INVALID", "msg": ERR_CODES["E_VIEWBOX_INVALID"]})
         else:
             v_x, v_y, v_w, v_h = vb_parts
-            if layout_plan_file and os.path.exists(layout_plan_file):
-                with open(layout_plan_file, 'r') as f:
-                    plan = json.load(f)
+            if plan is not None:
                 sa = plan['canvas']['safe_area']
                 if (sa['x'] < v_x or sa['y'] < v_y
                         or (sa['x'] + sa['width']) > (v_x + v_w)
@@ -726,8 +759,8 @@ def main():
     parser.add_argument("--id-prefix", default="svga-", dest="id_prefix",
                         help="ID 前缀规则（默认 svga-，设为空字符串可跳过检查）")
     parser.add_argument("--platform", default="auto",
-                        choices=["auto", "wechat_cover", "wechat_article"],
-                        help="目标平台（auto 时从 viewBox 自动识别）")
+                        choices=["auto", "wechat_cover", "wechat_article", "custom"],
+                        help="目标平台（auto 时从 viewBox 或 layout.json 自动识别；custom 支持任意 W×H 画布）")
     args = parser.parse_args()
 
     log_stderr(f"[*] Validating {args.svg}...")

@@ -81,7 +81,7 @@ def validate_layout_plan_schema(plan_path):
         "canvas", "metadata", "slots", "creative_zone", "palette",
         "color_system", "layout_constraints", "zones", "nodes", "text_boxes", "edges",
     }
-    required_root = allowed_root - {"layout_constraints", "zones"}
+    required_root = {"canvas", "metadata", "palette", "color_system", "nodes", "text_boxes"}
     for key in sorted(required_root - set(plan.keys())):
         errors.append(f"Missing required root field: {key}")
     for key in sorted(set(plan.keys()) - allowed_root):
@@ -106,7 +106,7 @@ def validate_layout_plan_schema(plan_path):
     if isinstance(meta, dict):
         for k in set(meta.keys()) - {"theme", "platform", "language", "background_style"}:
             errors.append(f"Unexpected metadata field: {k}")
-        if meta.get("theme") not in {"bg_dark", "bg_light"}:
+        if meta.get("theme") not in {"bg_dark", "bg_light", "dark", "light"}:
             errors.append(f"Invalid metadata.theme: {meta.get('theme')}")
         if not isinstance(meta.get("platform"), str):
             errors.append("metadata.platform must be a string")
@@ -125,12 +125,16 @@ def validate_layout_plan_schema(plan_path):
 
     cs = plan.get("color_system")
     if isinstance(cs, dict):
-        for k in set(cs.keys()) - {"theme", "diagram_type", "role_map"}:
+        for k in set(cs.keys()) - {"theme", "diagram_type", "role_map", "custom_tokens"}:
             errors.append(f"Unexpected color_system field: {k}")
-        if cs.get("theme") not in {"bg_dark", "bg_light"}:
+        if cs.get("theme") not in {"bg_dark", "bg_light", "dark", "light"}:
             errors.append(f"Invalid color_system.theme: {cs.get('theme')}")
         if not isinstance(cs.get("role_map"), dict):
             errors.append("color_system.role_map must be an object")
+        if "custom_tokens" in cs:
+            ct = cs.get("custom_tokens")
+            if not isinstance(ct, dict) or any(not isinstance(v, str) or not HEX6_RE.match(v) for v in ct.values()):
+                errors.append("color_system.custom_tokens must be an object mapping token names to 6-digit hex colors")
 
     for idx, zone in enumerate(plan.get("zones", []) if isinstance(plan.get("zones"), list) else []):
         if not isinstance(zone, dict):

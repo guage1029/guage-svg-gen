@@ -26,7 +26,7 @@
 
   <g id="svga-gateway-arch-node-order" data-svga-node="order-svc">
     <rect id="svga-gateway-arch-rect-order" x="820" y="180" width="260" height="150" rx="10" fill="#111114" stroke="#52525B" stroke-width="2" data-svga-color-role="node"/>
-    <text id="svga-gateway-arch-order-title" data-svga-text="order-title" x="844" y="236" font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="20" font-weight="700" fill="#FAFAFA" data-svga-color-role="text_primary"><tspan data-svga-text-kind="proper_noun">Order Service</tspan></text>
+    <text id="svga-gateway-arch-order-title" data-svga-text="order-title" x="844" y="236" font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="20" font-weight="700" fill="#FAFAFA" data-svga-color-role="text_primary"><tspan>订单服务（</tspan><tspan data-svga-text-kind="proper_noun">Order Service</tspan><tspan>）</tspan></text>
     <text id="svga-gateway-arch-order-desc" data-svga-text="order-desc" x="844" y="274" font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="16" fill="#D4D4D8" data-svga-color-role="text_secondary">下游订单履约处理</text>
   </g>
 

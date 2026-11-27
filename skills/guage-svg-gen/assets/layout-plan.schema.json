@@ -12,7 +12,7 @@
         "viewBox": { 
           "type": "string", 
           "pattern": "^-?\\d+(\\.\\d+)? -?\\d+(\\.\\d+)? \\d+(\\.\\d+)? \\d+(\\.\\d+)?$",
-          "description": "标准 viewBox：wechat_article 默认 16:9 (0 0 1200 675)，固定宽 1200、高 500–1200（推荐 25 整数倍）；wechat_cover 固定 0 0 1800 766" 
+          "description": "标准 viewBox：wechat_article 默认 16:9 (0 0 1200 675)，固定宽 1200、高 500–1200（推荐 25 整数倍）；wechat_cover 固定 0 0 1800 766；custom 为用户显式指定的任意正数画布 0 0 W H（如 0 0 640 360）" 
         },
         "aspect_ratio": { "type": "string", "enum": ["16:9", "4:3", "1:1", "2.4:1", "2.35:1", "custom"] },
         "safe_area": {
@@ -32,8 +32,8 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "theme": { "type": "string", "enum": ["bg_dark", "bg_light"] },
-        "platform": { "type": "string" },
+        "theme": { "type": "string", "enum": ["bg_dark", "bg_light", "dark", "light"] },
+        "platform": { "type": "string", "description": "平台档位：wechat_article | wechat_cover | custom" },
         "language": { "type": "string", "enum": ["zh", "en", "mixed"] },
         "background_style": {
           "type": "string",
@@ -88,9 +88,10 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "theme": { "type": "string", "enum": ["bg_dark", "bg_light"] },
+        "theme": { "type": "string", "enum": ["bg_dark", "bg_light", "dark", "light"] },
         "diagram_type": { "type": "string", "enum": ["architecture", "flowchart", "sequence", "state", "er", "deployment", "swimlane", "timeline", "comparison", "data_visualization", "hierarchy"] },
-        "role_map": { "type": "object", "additionalProperties": { "type": "string" } }
+        "role_map": { "type": "object", "additionalProperties": { "type": "string" } },
+        "custom_tokens": { "type": "object", "additionalProperties": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" } }
       },
       "required": ["theme", "diagram_type", "role_map"]
     },
@@ -236,5 +237,5 @@
       }
     }
   },
-  "required": ["canvas", "metadata", "slots", "creative_zone", "palette", "color_system", "nodes", "text_boxes", "edges"]
+  "required": ["canvas", "metadata", "palette", "color_system", "nodes", "text_boxes"]
 }

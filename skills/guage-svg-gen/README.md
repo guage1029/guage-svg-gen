@@ -1,6 +1,6 @@
 # guage-svg-gen — 确定性工程级 SVG 绘图 Skill
 
-- **版本**：`v0.17.29`
+- **版本**：`v0.17.30`
 - **作者**：`donglin`
 - **适用平台**：Claude Code · OpenAI Codex CLI · Antigravity · Gemini CLI · SkillPay（Agent Skills 标准）
 
@@ -33,10 +33,10 @@
 | 组件 | 要求版本 | 作用说明 | 是否必需 | 安装命令参考 |
 | --- | --- | --- | --- | --- |
 | **Python** | `>= 3.10` | 运行校验与渲染管线脚本 | **必需** | `python3 --version`（macOS: `brew install python@3.12`） |
-| **Pillow** | `>= 10.0.0` | `validate_geometry.py` 字体度量与 `render_preview.py` 裁剪分析 | **必需** | `pip install -r requirements.txt` |
-| **cairosvg** | `>= 2.7.1` | SVG 转 PNG 预览与高清 PNG 导出后端 | **推荐必需** | `pip install -r requirements.txt` |
-| **numpy** | `>= 1.24.0` | `render_preview.py` 高速像素占比与空白边角检测 | 推荐 | `pip install -r requirements.txt` |
-| **系统 Cairo 库** | `libcairo >= 1.16` | `cairosvg` 底层 C 库支撑 | 用 `cairosvg` 时必需 | macOS: `brew install cairo`<br>Ubuntu/Debian: `sudo apt-get install -y libcairo2` |
+| **Pillow** | `>= 10.0.0` | `validate_geometry.py` 字体度量、`render_preview.py` 裁剪分析及内置零 `libcairo` `pillow-svg` 预览光栅化兜底 | **必需** | `pip install -r requirements.txt` |
+| **cairosvg** | `>= 2.7.1` | 高保真 SVG 转 PNG 预览与导出后端（缺 `libcairo` 时自动回退到 `resvg` 或内置 `pillow-svg`） | 可选推荐 | `pip install cairosvg>=2.7.1` |
+| **numpy** | `>= 1.24.0` | `render_preview.py` 高速像素占比检测（未安装时自动回退纯 Pillow 像素检测） | 可选推荐 | `pip install numpy>=1.24.0` |
+| **系统 Cairo 库** | `libcairo >= 1.16` | `cairosvg` 底层 C 库支撑（无此库时 `render_preview.py` 自动走内置 `pillow-svg` 兜底，不阻塞预览门禁） | 仅用 `cairosvg` 时需装 | macOS: `brew install cairo`<br>Ubuntu/Debian: `sudo apt-get install -y libcairo2` |
 | **fontconfig (`fc-match`)** | 系统自带或最新 | `validate_geometry.py` 匹配真实 CJK/Latin 字体文件 | **必需** | macOS: `brew install fontconfig`<br>Ubuntu/Debian: `sudo apt-get install -y fontconfig` |
 | **中文字体** | 任意现代黑体 | 确保中文渲染不出现方块（`Hiragino Sans GB` / `PingFang SC` / `Noto Sans CJK` / `Microsoft YaHei`） | **中文图必需** | macOS / Windows 自带；Linux: `sudo apt-get install -y fonts-noto-cjk` |
 | **Playwright + Chromium** | `>= 1.40.0` | 当无需 `cairosvg` 或追求浏览器原汁原味渲染时作为主预览引擎 | 可选 | `pip install playwright>=1.40.0 && playwright install chromium` |

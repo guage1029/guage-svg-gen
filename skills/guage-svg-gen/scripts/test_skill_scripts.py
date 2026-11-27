@@ -184,6 +184,27 @@ class TestGuageSvgGenSkill(unittest.TestCase):
             self.assertEqual(rep2["status"], "FAIL")
             self.assertIn("目标", rep2["errors"][0]["message"])
 
+            # 3. Bare proper_noun without Chinese annotation (e.g. 'Kubernetes' or 'Redis') fails in zh mode
+            bare_proper_svg = BASE_SVG.replace(
+                '<tspan>读取 </tspan><tspan font-family="JetBrains Mono, monospace" data-svga-text-kind="path">SKILL.md</tspan>',
+                '<tspan data-svga-text-kind="proper_noun">Kubernetes</tspan>',
+            )
+            svg_p.write_text(bare_proper_svg, encoding="utf-8")
+            r3 = run_script("validate_language.py", ["--svg", str(svg_p), "--plan", str(plan_p), "--strict", "--json"])
+            rep3 = json.loads(r3.stdout)
+            self.assertEqual(rep3["status"], "FAIL")
+            self.assertIn("Kubernetes 容器编排", rep3["errors"][0]["message"])
+
+            # 4. Proper noun paired with Chinese annotation in the same <text> passes
+            annotated_proper_svg = BASE_SVG.replace(
+                '<tspan>读取 </tspan><tspan font-family="JetBrains Mono, monospace" data-svga-text-kind="path">SKILL.md</tspan>',
+                '<tspan data-svga-text-kind="proper_noun">Kubernetes</tspan><tspan> 容器编排</tspan>',
+            )
+            svg_p.write_text(annotated_proper_svg, encoding="utf-8")
+            r4 = run_script("validate_language.py", ["--svg", str(svg_p), "--plan", str(plan_p), "--strict", "--json"])
+            rep4 = json.loads(r4.stdout)
+            self.assertEqual(rep4["status"], "PASS", rep4)
+
     def test_validate_color_diagnostics(self):
         with tempfile.TemporaryDirectory() as td:
             td_p = pathlib.Path(td)
@@ -656,6 +677,207 @@ class TestGuageSvgGenSkill(unittest.TestCase):
             rep_u = json.loads(r_u.stdout)
             self.assertEqual(rep_u["status"], "PASS", rep_u)
             self.assertIn("W_FONT_UNLISTED", [w["code"] for w in rep_u["warnings"]])
+
+    def test_custom_canvas_640x360_end_to_end(self):
+        custom_plan = {
+            "canvas": {
+                "viewBox": "0 0 640 360",
+                "aspect_ratio": "16:9",
+                "safe_area": {"x": 38, "y": 22, "width": 564, "height": 316},
+            },
+            "metadata": {"theme": "bg_dark", "platform": "custom", "language": "zh"},
+            "slots": [
+                {"slot_id": "background", "rect": {"x": 0, "y": 0, "w": 640, "h": 360}},
+                {"slot_id": "title_area", "rect": {"x": 38, "y": 22, "w": 564, "h": 42}},
+                {"slot_id": "info_area", "rect": {"x": 40, "y": 76, "w": 560, "h": 250}},
+            ],
+            "creative_zone": {
+                "allowed_area": "x: 40-600, y: 76-326",
+                "visual_language": "compact dark cards on 640x360 custom canvas",
+                "focal_point": "step-a -> step-b",
+            },
+            "palette": {"background": "#050506", "primary": "#8FA1D9", "text": "#FAFAFA"},
+            "color_system": {
+                "theme": "bg_dark",
+                "diagram_type": "flowchart",
+                "role_map": {
+                    "background": "background",
+                    "border": "border",
+                    "node": "surface",
+                    "node_stroke": "border_mid",
+                    "edge_flow": "edge",
+                    "text_primary": "text_primary",
+                    "text_secondary": "text_secondary",
+                },
+            },
+            "nodes": [
+                {"id": "step-a", "rect": {"x": 60, "y": 130, "w": 200, "h": 110}, "padding": 10, "ports": {"right": {"x": 260, "y": 185}}},
+                {"id": "step-b", "rect": {"x": 380, "y": 130, "w": 200, "h": 110}, "padding": 10, "ports": {"left": {"x": 380, "y": 185}}},
+            ],
+            "text_boxes": [
+                {"id": "main-title", "rect": {"x": 40, "y": 28, "w": 360, "h": 30}},
+                {"id": "sa-title", "node": "step-a", "rect": {"x": 74, "y": 146, "w": 170, "h": 24}},
+                {"id": "sa-desc", "node": "step-a", "rect": {"x": 74, "y": 178, "w": 170, "h": 20}},
+                {"id": "sb-title", "node": "step-b", "rect": {"x": 394, "y": 146, "w": 170, "h": 24}},
+                {"id": "sb-desc", "node": "step-b", "rect": {"x": 394, "y": 178, "w": 170, "h": 20}},
+                {"id": "edge-ab-label", "rect": {"x": 274, "y": 160, "w": 92, "h": 20}},
+            ],
+            "edges": [
+                {
+                    "id": "edge-ab",
+                    "from": "step-a.right",
+                    "to": "step-b.left",
+                    "directed": True,
+                    "route": "straight",
+                    "waypoints": [{"x": 260, "y": 185}, {"x": 380, "y": 185}],
+                }
+            ],
+        }
+        custom_svg = """<svg xmlns="http://www.w3.org/2000/svg"
+     width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="自定义画布测试图">
+  <title>自定义画布流程</title>
+  <desc>测试任意尺寸 640×360 画布与等比字号下限校验</desc>
+  <defs>
+    <marker id="svga-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 1 2 L 9 5 L 1 8 Z" fill="#8FA1D9" data-svga-color-role="edge_flow"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="640" height="360" fill="#050506" data-svga-color-role="background"/>
+  <rect x="0" y="0" width="640" height="360" fill="none" stroke="#3F3F46" stroke-width="2" data-svga-role="decoration" data-svga-color-role="border"/>
+  <text x="40" y="50" font-size="20" font-weight="800" font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif" fill="#FAFAFA" data-svga-color-role="text_primary" data-svga-text="main-title">任意画布流程验证</text>
+  <path d="M 260 185 L 380 185" fill="none" stroke="#8FA1D9" stroke-width="2" marker-end="url(#svga-arr)" data-svga-role="edge" data-svga-edge="edge-ab" data-svga-color-role="edge_flow"/>
+  <text x="320" y="175" text-anchor="middle" font-size="11" font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif" fill="#D4D4D8" data-svga-color-role="text_secondary" data-svga-text="edge-ab-label">请求转发</text>
+  <g data-svga-node="step-a">
+    <rect x="60" y="130" width="200" height="110" rx="8" fill="#111114" stroke="#52525B" data-svga-color-role="node" stroke-width="1"/>
+    <text x="74" y="164" font-size="14" font-weight="700" font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif" fill="#FAFAFA" data-svga-color-role="text_primary" data-svga-text="sa-title">接入节点</text>
+    <text x="74" y="192" font-size="11" font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif" fill="#D4D4D8" data-svga-color-role="text_secondary" data-svga-text="sa-desc">接收并解析请求</text>
+  </g>
+  <g data-svga-node="step-b">
+    <rect x="380" y="130" width="200" height="110" rx="8" fill="#111114" stroke="#52525B" data-svga-color-role="node" stroke-width="1"/>
+    <text x="394" y="164" font-size="14" font-weight="700" font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif" fill="#FAFAFA" data-svga-color-role="text_primary" data-svga-text="sb-title">处理节点</text>
+    <text x="394" y="192" font-size="11" font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif" fill="#D4D4D8" data-svga-color-role="text_secondary" data-svga-text="sb-desc">完成状态校验</text>
+  </g>
+</svg>
+"""
+        with tempfile.TemporaryDirectory() as td:
+            td_p = pathlib.Path(td)
+            svg_p = td_p / "custom-640x360.svg"
+            plan_p = td_p / "custom-640x360.layout.json"
+            svg_p.write_text(custom_svg, encoding="utf-8")
+            plan_p.write_text(json.dumps(custom_plan), encoding="utf-8")
+
+            # 1. Pipeline passes strictly with 11px captions (custom 640x360 floor is 10px)
+            r_pipe = run_script("run_pipeline.py", [
+                "--svg", str(svg_p), "--plan", str(plan_p), "--in-place", "--strict", "--json",
+            ])
+            self.assertEqual(r_pipe.returncode, 0, r_pipe.stdout + r_pipe.stderr)
+
+            # 2. Validator recognizes metadata.platform=custom cleanly with zero W_PLATFORM_UNKNOWN
+            r_val = run_script("validate_svg.py", [
+                "--svg", str(svg_p), "--plan", str(plan_p), "--strict", "--json",
+            ])
+            rep_val = json.loads(r_val.stdout)
+            self.assertEqual(rep_val["status"], "PASS", rep_val)
+            self.assertNotIn("W_PLATFORM_UNKNOWN", [w["code"] for w in rep_val["warnings"]])
+
+            # 3. Sub-floor font size (7px < 9px on 640x360) still fails in custom mode
+            tiny_svg_p = td_p / "tiny.svg"
+            tiny_svg_p.write_text(custom_svg.replace('font-size="11"', 'font-size="7"', 1), encoding="utf-8")
+            r_tiny = run_script("validate_svg.py", [
+                "--svg", str(tiny_svg_p), "--plan", str(plan_p), "--strict", "--json",
+            ])
+            self.assertEqual(r_tiny.returncode, 1)
+            self.assertIn("E_FONT_SIZE_TOO_SMALL", [e["code"] for e in json.loads(r_tiny.stdout)["errors"]])
+
+            # 4. Preview passes for --platform custom, --platform auto, and even --platform wechat_article on custom-width 640x360,
+            #    while --platform wechat_cover still rejects 640x360 with dimensions_mismatch
+            for plat in ("custom", "auto", "wechat_article"):
+                r_prev = run_script("render_preview.py", [
+                    "--svg", str(svg_p), "--platform", plat, "--strict", "--json",
+                ])
+                self.assertEqual(r_prev.returncode, 0, r_prev.stdout + r_prev.stderr)
+                rep_prev = json.loads(r_prev.stdout)
+                self.assertTrue(rep_prev["dimensions_match"])
+                self.assertEqual(rep_prev["platform"], "custom")
+                self.assertEqual(rep_prev["expected_size"]["w"], 640)
+                self.assertEqual(rep_prev["expected_size"]["h"], 360)
+                run_script("render_preview.py", ["--cleanup-dir", rep_prev["preview_dir"], "--json"])
+
+            r_wx = run_script("render_preview.py", [
+                "--svg", str(svg_p), "--platform", "wechat_cover", "--strict", "--json",
+            ])
+            self.assertNotEqual(r_wx.returncode, 0)
+            rep_wx = json.loads(r_wx.stdout)
+            self.assertIn("dimensions_mismatch", rep_wx["blocking_issues"])
+            run_script("render_preview.py", ["--cleanup-dir", rep_wx["preview_dir"], "--json"])
+
+            # 5. Edge-less 640x360 3-gauge dashboard (theme="dark", rx="8", edges omitted, custom_tokens, group decoration paths)
+            #    and 480x300 compact custom canvas with 8px text both pass full pipeline strictly
+            gauge_plan = copy.deepcopy(custom_plan)
+            gauge_plan["metadata"]["theme"] = "dark"
+            gauge_plan["color_system"]["theme"] = "dark"
+            gauge_plan["color_system"]["diagram_type"] = "data_visualization"
+            gauge_plan["color_system"]["custom_tokens"] = {"gauge_accent": "#38BDF8"}
+            gauge_plan["color_system"]["role_map"]["gauge_arc"] = "gauge_accent"
+            del gauge_plan["edges"]
+            gauge_plan["text_boxes"] = [tb for tb in gauge_plan["text_boxes"] if tb["id"] != "edge-ab-label"]
+            gauge_svg = (
+                custom_svg.replace(
+                    '<path d="M 260 185 L 380 185" fill="none" stroke="#8FA1D9" stroke-width="2" marker-end="url(#svga-arr)" data-svga-role="edge" data-svga-edge="edge-ab" data-svga-color-role="edge_flow"/>',
+                    '<g data-svga-role="decoration"><path d="M 100 180 A 40 40 0 0 1 180 180" fill="none" stroke="#38BDF8" stroke-width="4" stroke-dasharray="4,2" data-svga-color-role="gauge_arc"/><path d="M 140 180 L 165 155" fill="none" stroke="#38BDF8" stroke-width="2" data-svga-color-role="gauge_arc"/></g>',
+                )
+                .replace(
+                    '<text x="320" y="175" text-anchor="middle" font-size="11" font-family="PingFang SC, Hiragino Sans GB, Noto Sans SC, Microsoft YaHei, sans-serif" fill="#D4D4D8" data-svga-color-role="text_secondary" data-svga-text="edge-ab-label">请求转发</text>',
+                    "",
+                )
+            )
+            g_svg_p = td_p / "gauge-640x360.svg"
+            g_plan_p = td_p / "gauge-640x360.layout.json"
+            g_svg_p.write_text(gauge_svg, encoding="utf-8")
+            g_plan_p.write_text(json.dumps(gauge_plan), encoding="utf-8")
+            r_gauge = run_script("run_pipeline.py", [
+                "--svg", str(g_svg_p), "--plan", str(g_plan_p), "--in-place", "--strict", "--json",
+            ])
+            self.assertEqual(r_gauge.returncode, 0, r_gauge.stdout + r_gauge.stderr)
+
+            # Verify pure-Pillow SVG fallback rasterizer works without libcairo/playwright
+            import sys as _sys
+            if str(SCRIPTS_DIR) not in _sys.path:
+                _sys.path.insert(0, str(SCRIPTS_DIR))
+            import render_preview as _rp
+            pil_png = td_p / "pillow-fallback.png"
+            backend_name = _rp._render_pillow_svg(str(g_svg_p), 640, 360, 1.0, str(pil_png))
+            self.assertEqual(backend_name, "pillow-svg")
+            self.assertTrue(pil_png.exists())
+            pil_analysis = _rp.analyze_image(str(pil_png), 160, 0, 320, 360, 1.0)
+            self.assertFalse(pil_analysis["is_blank"], pil_analysis)
+            self.assertFalse(pil_analysis["has_transparent_bg"], pil_analysis)
+            self.assertGreater(pil_analysis["core_region_pixel_ratio"], 0.01, pil_analysis)
+
+            # 480x300 canvas auto-detected as custom with 8px floor even without --plan
+            svg_480_p = td_p / "canvas-480x300.svg"
+            svg_480_p.write_text(
+                custom_svg.replace('width="640" height="360" viewBox="0 0 640 360"', 'width="480" height="300" viewBox="0 0 480 300"')
+                .replace('font-size="11"', 'font-size="8"'),
+                encoding="utf-8",
+            )
+            r_480 = run_script("validate_svg.py", ["--svg", str(svg_480_p), "--strict", "--json"])
+            rep_480 = json.loads(r_480.stdout)
+            self.assertEqual(rep_480["status"], "PASS", rep_480)
+            self.assertNotIn("W_PLATFORM_UNKNOWN", [w["code"] for w in rep_480["warnings"]])
+
+            # 6. Fallback qa/ preview directory (containing preview.png without visual_report.json) cleans up via --cleanup-dir,
+            #    while a directory containing .svg deliverables is protected from deletion
+            qa_dir = td_p / "qa"
+            qa_dir.mkdir()
+            shutil.copy(pil_png, qa_dir / "preview.png")
+            r_clean_qa = run_script("render_preview.py", ["--cleanup-dir", str(qa_dir), "--json"])
+            self.assertEqual(r_clean_qa.returncode, 0, r_clean_qa.stdout)
+            self.assertFalse(qa_dir.exists())
+
+            r_refuse = run_script("render_preview.py", ["--cleanup-dir", str(td_p), "--json"])
+            self.assertNotEqual(r_refuse.returncode, 0)
+            self.assertTrue(td_p.exists())
 
 
 if __name__ == "__main__":

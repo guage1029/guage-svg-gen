@@ -1,11 +1,10 @@
-# Core geometry & font metrics check (required for validate_geometry.py)
+# Core geometry, font metrics & built-in zero-libcairo SVG preview rasterizer (required)
 Pillow>=10.0.0
 
-# Raster preview & PNG export (required for render_preview.py / optimize_svg.py --format png)
-# Note: cairosvg requires system libcairo (macOS: `brew install cairo`; Debian/Ubuntu: `apt install libcairo2`)
-cairosvg>=2.7.1
+# Fast pixel ratio analysis in render_preview.py (optional; pure-Pillow fallback is built in)
 numpy>=1.24.0
 
-# Optional high-fidelity browser preview backend (recommended if using <feGaussianBlur> or complex CSS)
-# Install with: pip install playwright>=1.40.0 && playwright install chromium
+# Optional high-fidelity raster preview & PNG export backends
+# (render_preview.py automatically falls back to built-in pillow-svg when libcairo/playwright/resvg are absent)
+# cairosvg>=2.7.1
 # playwright>=1.40.0
